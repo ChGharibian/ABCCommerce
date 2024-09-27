@@ -12,6 +12,7 @@ function Seller() {
         name: "Bob",
         listings: [
             {
+                id: 0,
                 name: "Rare signed basketball",
                 description: "basketball signed by {insert basketball player}",
                 pricePerUnit: 505.23,
@@ -20,6 +21,7 @@ function Seller() {
                 date: new Date(2024, 4, 24, 18, 24)
             },
             {
+                id: 1,
                 name: "random item",
                 description: "this item is random or something",
                 pricePerUnit: 12.69,
@@ -28,11 +30,21 @@ function Seller() {
                 date: new Date(2024, 11, 2, 1, 3)
             },
             {
+                id: 2,
                 name: "more random item with a very long name",
                 description: "this item is even more random than the last",
                 pricePerUnit: 1.35,
                 quantity: 10,
                 tags: ["tag123", "tag321311"],
+                date: new Date(2024, 7, 17, 12, 52)
+            },
+            {
+                id: 3,
+                name: "no tags",
+                description: "tagsss",
+                pricePerUnit: 235235,
+                quantity: 1,
+                tags: [],
                 date: new Date(2024, 7, 17, 12, 52)
             }
         ]
@@ -42,29 +54,9 @@ function Seller() {
     let contents = seller ?
     <div id="seller-wrapper">
         <h1 id="seller-name">{seller.name}</h1>
-        <ul class="seller-listings">
+        <ul className="seller-listings">
             {seller.listings.map(l => 
-                <li className="listing">
-                    {/* image would go first */}
-                    <div class="listing-image-wrapper">image here</div>
-                    <div class="listing-details-wrapper">
-                        <p class="listing-price">{'$' + l.pricePerUnit}</p>
-                        <p class="listing-quantity">{l.quantity}</p>
-                        <p class="listing-name">{l.name}</p>
-                            <div class="listing-tags-date-wrapper">
-                                <div class="listing-tags">
-                                    {getTagItems(l.tags)}
-                                </div>
-                                <p class="listing-date small-text">
-                                    {
-                                    l.date.toDateString().slice(3) + ' ' + 
-                                    l.date.toLocaleTimeString('en-US').slice(0, -6) + ' ' + 
-                                    l.date.toLocaleTimeString('en-US').slice(-2)
-                                    }
-                                </p>
-                            </div>
-                    </div>
-                </li>
+                <Listing listing={l} key={l.id}/>
             )}
         </ul>
     </div>
@@ -72,23 +64,59 @@ function Seller() {
     <p>loading</p>
     return contents;
 
-    function getSellerData() {
+    async function getSellerData() {
         // implement backend call later
         //const sellerId = location.pathname.split('/seller/')[1];
+        // let response = await fetch(`http://localhost:5147/Seller/${sellerId}`);
+        // let data = await response.json();
         setSeller(fakeSeller);
 
     }
 
-    function getTagItems(tagList) {
-        return tagList.length <= 2 ?
-        tagList.map(t => <p class="listing-tag small-text">{t}</p>) 
-        : <>
-            <p class="listing-tag small-text">{tagList[0]}</p>
-            <p class="listing-tag small-text">{tagList[1]}</p>
-            <p class="small-text">{' + ' + (tagList.length - 2) + ' more'}</p>
+    
+}
+
+function Listing(props) {
+    
+
+    return <li className="listing" key={props.listing.id}>
+        {/* image would go first */}
+        <div className="listing-image-wrapper">image here</div>
+        <div className="listing-details-wrapper">
+            <p className="listing-price">{'$' + props.listing.pricePerUnit}</p>
+            <p className="listing-quantity">{props.listing.quantity}</p>
+            <p className="listing-name">{props.listing.name}</p>
+                <div className="listing-tags-date-wrapper">
+                    <div className="listing-tags">
+                        {getTagItems(props.listing.tags, props.listing.id)}
+                    </div>
+                    <p className="listing-date small-text">
+                        {
+                        props.listing.date.toDateString().slice(3) + ' ' + 
+                        props.listing.date.toLocaleTimeString('en-US').slice(0, -6) + ' ' + 
+                        props.listing.date.toLocaleTimeString('en-US').slice(-2)
+                        }
+                    </p>
+                </div>
+        </div>
+    </li>;
+
+    function getTagItems(tagList, lid) {
+        return tagList.length > 2 ?
+        <>
+            <p className="listing-tag small-text">{tagList[0]}</p>
+            <p className="listing-tag small-text">{tagList[1]}</p>
+            <p className="small-text">{' + ' + (tagList.length - 2) + ' more'}</p>
             
         </>
+        : tagList.length > 0 ?
+            tagList.map(t => <p key={t + lid} className="listing-tag small-text">{t}</p>) 
+        :
+            <></>
+        
     }
 }
+
+
 
 export default Seller;
