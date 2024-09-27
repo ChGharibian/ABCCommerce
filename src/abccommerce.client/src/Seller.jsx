@@ -1,4 +1,4 @@
-import {useLocation} from 'react-router-dom';
+// import {useLocation} from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import './Seller.css';
 function Seller() {
@@ -18,7 +18,7 @@ function Seller() {
                 pricePerUnit: 505.23,
                 quantity: 1,
                 tags: ["rare", "vintage"],
-                date: new Date(2024, 4, 24, 18, 24)
+                date: new Date(2024, 7, 27, 18, 24)
             },
             {
                 id: 1,
@@ -27,7 +27,7 @@ function Seller() {
                 pricePerUnit: 12.69,
                 quantity: 7,
                 tags: ["unused", "real", "tag", "tag2", "tagggg"],
-                date: new Date(2024, 11, 2, 1, 3)
+                date: new Date(2023, 11, 2, 1, 3)
             },
             {
                 id: 2,
@@ -36,7 +36,7 @@ function Seller() {
                 pricePerUnit: 1.35,
                 quantity: 10,
                 tags: ["tag123", "tag321311"],
-                date: new Date(2024, 7, 17, 12, 52)
+                date: new Date(2023, 7, 17, 12, 52)
             },
             {
                 id: 3,
@@ -79,29 +79,25 @@ function Seller() {
 function Listing(props) {
     
 
-    return <li className="listing" key={props.listing.id}>
+    return <li className="listing-wrapper" key={props.listing.id}>
+        <div className="listing">
         {/* image would go first */}
         <div className="listing-image-wrapper">image here</div>
-        <div className="listing-details-wrapper">
-            <p className="listing-price">{'$' + props.listing.pricePerUnit}</p>
-            <p className="listing-quantity">{props.listing.quantity}</p>
-            <p className="listing-name">{props.listing.name}</p>
-                <div className="listing-tags-date-wrapper">
-                    <div className="listing-tags">
-                        {getTagItems(props.listing.tags, props.listing.id)}
+            <div className="listing-details-wrapper">
+                <p className="listing-price">{'$' + props.listing.pricePerUnit}</p>
+                <p className="listing-quantity">{props.listing.quantity}</p>
+                <p className="listing-name">{props.listing.name}</p>
+                    <div className="listing-tags-date-wrapper">
+                        <div className="listing-tags">
+                            {getTagElements(props.listing.tags, props.listing.id)}
+                        </div>
+                        {getDateElement(props.listing.date)}
                     </div>
-                    <p className="listing-date small-text">
-                        {
-                        props.listing.date.toDateString().slice(3) + ' ' + 
-                        props.listing.date.toLocaleTimeString('en-US').slice(0, -6) + ' ' + 
-                        props.listing.date.toLocaleTimeString('en-US').slice(-2)
-                        }
-                    </p>
-                </div>
+            </div>
         </div>
     </li>;
 
-    function getTagItems(tagList, lid) {
+    function getTagElements(tagList, lid) {
         return tagList.length > 2 ?
         <>
             <p className="listing-tag small-text">{tagList[0]}</p>
@@ -115,6 +111,32 @@ function Listing(props) {
             <></>
         
     }
+
+    function monthsSince(date) {
+        let currentDate = new Date();
+        let yearOffset = (currentDate.getFullYear() - date.getFullYear()) * 12;
+        let monthOffset = currentDate.getMonth() - date.getMonth();
+        let dayOffset = currentDate.getDate() >= date.getDate() ? 0 : -1;
+
+        return yearOffset + monthOffset + dayOffset;
+    }
+
+    function getDateElement(date) {
+        let months = monthsSince(date);
+        let yearsAgo = Math.floor(months / 12);
+        return <p className="listing-date small-text">
+            {
+                months >= 12 ?
+                (yearsAgo !== 1 ? yearsAgo + ' years ago' : yearsAgo + ' year ago')
+                : months >= 1 ?
+                (months !== 1 ? months + ' months ago' : months + ' month ago')
+                :
+                date.toDateString().slice(3) + ' ' + 
+                date.toLocaleTimeString('en-US').slice(0, -6) + ' ' + 
+                date.toLocaleTimeString('en-US').slice(-2)
+            }
+        </p>
+    } 
 }
 
 
