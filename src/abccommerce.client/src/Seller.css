@@ -1,0 +1,150 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+#seller-wrapper {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+}
+
+.seller-listings {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    
+    
+}
+
+.listing-wrapper {
+    list-style: none;
+    position: relative;
+    height: 0;
+    width: 30%;
+    padding-bottom: max(30%, 300px);
+    min-width: 300px;
+    margin-right: 2.5%;
+    margin-bottom: 2.5%;
+    
+}
+
+
+
+.listing {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    border: 1px solid white;
+    /* padding: 5px; */
+    margin: 1px;
+    
+}
+
+.listing-image-wrapper {
+    height: 80%;
+    border-bottom: 1px solid white;
+    display: flex; /* temp */
+    align-items: center;
+    justify-content: center;
+
+}
+
+.listing-details-wrapper {
+    height: 20%;
+}
+
+.listing-price, .listing-quantity {
+    position: absolute;
+    border-bottom: 1px solid white;
+    top: 0;
+    padding: .2rem;
+}
+
+.listing-price {
+    left: 0;
+    border-right: 1px solid white;
+}
+
+.listing-quantity {
+    right: 0;
+    border-left: 1px solid white;
+}
+
+.listing-name {
+    width: 100%;
+    height: 50%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    white-space: nowrap;
+}
+
+.listing-tags {
+    width: 50%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.listing-tags-date-wrapper {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+
+.small-text {
+    font-size: .7rem;
+}
+
+.listing-tag {
+    max-width: 4rem;
+    margin: 0  .2rem;
+    padding: .2rem;
+    background-color: grey;
+    border-radius: 5px;
+}
+
+
+.listing-date {
+    width: 50%;
+    text-align: right;
+    padding-right: .4rem;
+}
+
+
+/* media queries */
+
+@media screen and (max-width: 1100px) and (min-width: 801px) {
+    .listing-wrapper {
+        width: 41%;
+        padding-bottom: max(40%, 300px);
+        min-width: 300px;
+        margin-right: 6%;        
+    }
+    
+    .listing-wrapper:nth-of-type(2n + 1) {
+        margin-left: 6%;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .listing-wrapper {
+        width: 60%;
+        padding-bottom: max(60%, 300px);
+        min-width: 300px;
+        margin-left: 20%; margin-right: 20%;
+        
+    }
+}
+
+@media screen and (min-width: 1101px) {
+    .listing-wrapper:nth-of-type(3n + 1) {
+        margin-left: 2.5%;
+    }
+}
