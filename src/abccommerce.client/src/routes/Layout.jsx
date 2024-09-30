@@ -15,6 +15,9 @@ export default function Layout() {
             <Link to="/registration">Registration</Link>
           </li>
           <li>
+            <Link to="/seller">Seller</Link>
+          </li>
+          <li>
             <Link to="/wronglink">wronglink</Link>
           </li>
         </ul>

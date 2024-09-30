@@ -5,6 +5,7 @@ import Layout from "./Layout";
 import Registration from "./Registration";
 import Home from "./Home";
 import WrongLink from "./WrongLink";
+import Seller from "./Seller";
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Route index element={<Home/>}/>
         <Route path="login" element={<Login/>}/>
         <Route path="registration" element={<Registration/>}/>
+        <Route path="seller" element={<Seller/>}/>
         <Route path="*" element={<WrongLink/>}/>
         <Route/>
       </Route>
