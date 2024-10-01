@@ -8,10 +8,10 @@ public static class ModelExtensions
     {
         return new BasicSellerDTO(seller.Id, seller.Name);
     }
-    //public static SellerDTO ToDto(this Seller seller)
-    //{
-    //    return new SellerDTO(seller.Id, seller.Name, seller.Items.SelectMany());
-    //}
+    public static SellerDTO ToDto(this Seller seller)
+    {
+        return new SellerDTO(seller.Id, seller.Name, seller.Image, seller.Items.SelectMany(l => l.Listings).Select(l => l.ToDto()));
+    }
     public static ItemDTO ToDto(this Item item)
     {
         return new ItemDTO(item.Id, item.Name, item.SKU);
@@ -24,7 +24,22 @@ public static class ModelExtensions
 
 public record BasicSellerDTO(int Id, string Name);
 public record ItemDTO(int Id, string Name, string Sku);
-public record SellerDTO(int Id, string Name, IEnumerable<ListingDTO> listings);
+public class SellerDTO
+{
+    public SellerDTO(int id, string name, string? image, IEnumerable<ListingDTO> listings)
+    {
+        Id = id;
+        Name = name;
+        Image = image;
+        Listings = listings;
+    }
+
+    public int Id { get; }
+    public string Name { get; }
+    [Image]
+    public string? Image { get; set; }
+    public IEnumerable<ListingDTO> Listings { get; }
+}
 public record ListingDTO(
     int Id, 
     string[] Tags, 

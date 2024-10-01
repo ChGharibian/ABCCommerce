@@ -4,6 +4,8 @@ using ABCCommerceDataAccess.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+
+namespace ABCCommerce.Server.Controllers;
 [ApiController]
 [Route("[controller]")]
 public class ListingController : Controller
