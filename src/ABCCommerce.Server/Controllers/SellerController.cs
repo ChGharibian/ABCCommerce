@@ -63,8 +63,7 @@ public class SellerCreateRequest
 internal class BasicSeller
 {
     public int Id { get; }
-    [Image]
-    public string? Image { get; set; }
+    public ImagePath? Image { get; set; }
     public string Name { get; }
 
     public BasicSeller(int id, string? image, string name)
@@ -91,8 +90,7 @@ internal class BasicSeller
 internal class ComplexSeller
 {
     public string Name { get; }
-    [Image]
-    public string? Image { get; set; }
+    public ImagePath? Image { get; set; }
     public int Id { get; }
     public IEnumerable<ListingDTO> Items { get; }
 

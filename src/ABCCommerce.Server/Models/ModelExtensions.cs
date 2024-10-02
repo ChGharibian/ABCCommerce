@@ -36,8 +36,7 @@ public class SellerDTO
 
     public int Id { get; }
     public string Name { get; }
-    [Image]
-    public string? Image { get; set; }
+    public ImagePath? Image { get; set; }
     public IEnumerable<ListingDTO> Listings { get; }
 }
 public record ListingDTO(

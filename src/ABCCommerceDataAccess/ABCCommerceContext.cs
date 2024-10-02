@@ -17,4 +17,5 @@ public class ABCCommerceContext : DbContext
     public DbSet<Seller> Sellers { get; set; }
     public DbSet<Item> Items { get; set; }
     public DbSet<Listing> Listings { get; set; }
+    public DbSet<ListingImage> ListingImages { get; set; }
 }

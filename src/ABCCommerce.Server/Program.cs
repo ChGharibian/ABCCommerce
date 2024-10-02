@@ -11,10 +11,9 @@ builder.Services.AddDbContext<ABCCommerceContext>(options => options.UseSqlServe
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<ImageService>();
 
-builder.Services.AddControllers(options =>
-{
-    options.Filters.Add<ImageFilter>();
-});
+builder.Services.AddControllers();
+builder.Services.ConfigureOptions<ConfigureJsonOptions>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

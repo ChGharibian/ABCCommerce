@@ -21,5 +21,6 @@ public class Listing
     public DateTime ListingDate { get; set; }
     public int ItemId { get; set; }
     public Item Item { get; set; } = null!;
+    public ICollection<ListingImage> Images { get; set; } = new List<ListingImage>();
 
 }
