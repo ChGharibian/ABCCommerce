@@ -5,9 +5,7 @@
 }
 
 #seller-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: relative;
     width: 100%;
     height: 100%;
     max-width: 100%;
@@ -19,6 +17,7 @@
 
 #seller-name {
     position: fixed;
+    
     width: 100%;
     padding: .5rem 0;
     height: 10%;
