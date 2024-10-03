@@ -6,6 +6,7 @@
 
 #seller-wrapper {
     position: relative;
+    top: 80px;
     width: 100%;
     height: 100%;
     max-width: 100%;
@@ -15,21 +16,26 @@
     background-color: #424040;
 }
 
-#seller-name {
+#seller-name-wrapper {
     position: fixed;
-    
+    display: flex;
+    align-items: center;
     width: 100%;
     padding: .5rem 0;
-    height: 10%;
+    height: 4rem;
     background-color: rgb(134, 133, 133);
     z-index: 2;
+}
+
+#seller-name {
+    width: 100%;
 }
 
 .seller-listings {
     position: absolute;
     width: 100%;
-    height: 90%;
-    top: 10%;
+    height: calc(100% - 4rem - 80px);
+    top: 4rem;
     padding-top: 1rem;
     display: flex;
     flex-wrap: wrap;

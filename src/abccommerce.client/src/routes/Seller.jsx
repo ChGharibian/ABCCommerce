@@ -89,7 +89,9 @@ function Seller() {
 
     let contents = seller ?
     <div id="seller-wrapper">
-        <h1 id="seller-name">{seller.name}</h1>
+        <div id="seller-name-wrapper">
+            <h1 id="seller-name">{seller.name}</h1>
+        </div>
         <ul className="seller-listings">
             {seller.listings.map(l => 
                 <Listing listing={l} key={l.id}/>
@@ -119,7 +121,7 @@ function Listing(props) {
         <div className="listing">
         {/* image would go first */}
         <div className="listing-image-wrapper">
-            <img class="listing-image" src="http://localhost:5147/images/calculator-fill.svg" />
+            <img className="listing-image" src="http://localhost:5147/images/calculator-fill.svg" />
         </div>
             <div className="listing-details-wrapper">
                 <p className="listing-price">{'$' + props.listing.pricePerUnit}</p>
