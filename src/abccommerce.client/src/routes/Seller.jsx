@@ -92,11 +92,13 @@ function Seller() {
         <div id="seller-name-wrapper">
             <h1 id="seller-name">{seller.name}</h1>
         </div>
-        <ul className="seller-listings">
-            {seller.listings.map(l => 
-                <Listing listing={l} key={l.id}/>
-            )}
-        </ul>
+        <div id="seller-listings-wrapper">
+            <ul className="seller-listings">
+                {seller.listings.map(l => 
+                    <Listing listing={l} key={l.id}/>
+                )}
+            </ul>
+        </div>
     </div>
     :
     <p>loading</p>
