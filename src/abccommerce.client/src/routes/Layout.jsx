@@ -1,9 +1,9 @@
 import { Outlet, Link } from "react-router-dom";
-
+import './Layout.css'
 export default function Layout() {
   return (
-    <div>
-      <nav>
+    <>
+      <nav className="navbar">
         <ul>
           <li>
             <Link to="/">Home</Link>
@@ -29,6 +29,6 @@ export default function Layout() {
           so you can think about this <Outlet> as a placeholder for
           the child routes we defined above. */}
       <Outlet />
-    </div>
+    </>
   )
 }

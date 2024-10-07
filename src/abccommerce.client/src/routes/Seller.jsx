@@ -17,7 +17,7 @@ function Seller() {
                 description: "basketball signed by {insert basketball player}",
                 pricePerUnit: 505.23,
                 quantity: 1,
-                tags: ["rare", "vintage"],
+                tags: ["rareeeeeeeeeeeeeee", "vintage"],
                 date: new Date(2024, 7, 27, 18, 24)
             },
             {
@@ -26,7 +26,7 @@ function Seller() {
                 description: "this item is random or something",
                 pricePerUnit: 12.69,
                 quantity: 7,
-                tags: ["unused", "real", "tag", "tag2", "tagggg"],
+                tags: ["unusedklllllllllllllll", "real", "tag", "tag2", "tagggg", "tagtest", "again"],
                 date: new Date(2023, 11, 2, 1, 3)
             },
             {
@@ -46,6 +46,42 @@ function Seller() {
                 quantity: 1,
                 tags: [],
                 date: new Date(2024, 7, 17, 12, 52)
+            },
+            {
+                id: 4,
+                name: "Rare signed basketball",
+                description: "basketball signed by {insert basketball player}",
+                pricePerUnit: 505.23,
+                quantity: 1,
+                tags: ["rare", "vintage"],
+                date: new Date(2024, 7, 27, 18, 24)
+            },
+            {
+                id: 5,
+                name: "random item",
+                description: "this item is random or something",
+                pricePerUnit: 12.69,
+                quantity: 7,
+                tags: ["unused", "real", "tag", "tag2", "tagggg"],
+                date: new Date(2023, 11, 2, 1, 3)
+            },
+            {
+                id: 6,
+                name: "more random item with a very long name",
+                description: "this item is even more random than the last",
+                pricePerUnit: 1.35,
+                quantity: 10,
+                tags: ["tag123", "tag321311"],
+                date: new Date(2023, 7, 17, 12, 52)
+            },
+            {
+                id: 7,
+                name: "no tags",
+                description: "tagsss",
+                pricePerUnit: 235235,
+                quantity: 1,
+                tags: [],
+                date: new Date(2024, 7, 17, 12, 52)
             }
         ]
     }
@@ -53,12 +89,16 @@ function Seller() {
 
     let contents = seller ?
     <div id="seller-wrapper">
-        <h1 id="seller-name">{seller.name}</h1>
-        <ul className="seller-listings">
-            {seller.listings.map(l => 
-                <Listing listing={l} key={l.id}/>
-            )}
-        </ul>
+        <div id="seller-name-wrapper">
+            <h1 id="seller-name">{seller.name}</h1>
+        </div>
+        <div id="seller-listings-wrapper">
+            <ul className="seller-listings">
+                {seller.listings.map(l => 
+                    <Listing listing={l} key={l.id}/>
+                )}
+            </ul>
+        </div>
     </div>
     :
     <p>loading</p>
@@ -82,7 +122,9 @@ function Listing(props) {
     return <li className="listing-wrapper" key={props.listing.id}>
         <div className="listing">
         {/* image would go first */}
-        <div className="listing-image-wrapper">image here</div>
+        <div className="listing-image-wrapper">
+            <img className="listing-image" src="http://localhost:5147/images/calculator-fill.svg" />
+        </div>
             <div className="listing-details-wrapper">
                 <p className="listing-price">{'$' + props.listing.pricePerUnit}</p>
                 <p className="listing-quantity">{props.listing.quantity}</p>
@@ -102,7 +144,7 @@ function Listing(props) {
         <>
             <p className="listing-tag small-text">{tagList[0]}</p>
             <p className="listing-tag small-text">{tagList[1]}</p>
-            <p className="small-text">{' + ' + (tagList.length - 2) + ' more'}</p>
+            <p className="small-text">{' + ' + (tagList.length - 2 > 4 ? '' : tagList.length - 2) + ' more'}</p>
             
         </>
         : tagList.length > 0 ?

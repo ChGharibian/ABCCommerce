@@ -6,6 +6,7 @@ import Registration from "./Registration";
 import Home from "./Home";
 import WrongLink from "./WrongLink";
 import Seller from "./Seller";
+import '../App.css'
 
 export default function App() {
   return (

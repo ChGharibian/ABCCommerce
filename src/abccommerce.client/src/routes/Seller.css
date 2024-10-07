@@ -5,17 +5,44 @@
 }
 
 #seller-wrapper {
+    position: relative;
+    top: 80px;
     width: 100%;
     height: 100%;
     max-width: 100%;
+    overflow: hidden;
+    text-align: center;
+    color: white;
+    background-color: #424040;
+}
+
+#seller-name-wrapper {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: .5rem 0;
+    height: 4rem;
+    background-color: rgb(134, 133, 133);
+    z-index: 2;
+}
+
+#seller-name {
+    width: 100%;
+}
+
+#seller-listings-wrapper {
+    height: calc(100% - 4rem - 80px);
+    position: absolute;
+    width: 100%;
+    top: 4rem;
+    padding-top: 1rem;
+    overflow-y: scroll;
 }
 
 .seller-listings {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
-    
-    
 }
 
 .listing-wrapper {
@@ -26,11 +53,9 @@
     padding-bottom: max(30%, 300px);
     min-width: 300px;
     margin-right: 2.5%;
-    margin-bottom: 2.5%;
+    margin-bottom: 1rem;
     
 }
-
-
 
 .listing {
     position: absolute;
@@ -49,7 +74,12 @@
     display: flex; /* temp */
     align-items: center;
     justify-content: center;
+}
 
+.listing-image {
+    margin: auto;
+    width: 50%;
+    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(152deg) brightness(105%) contrast(103%);
 }
 
 .listing-details-wrapper {
@@ -58,19 +88,21 @@
 
 .listing-price, .listing-quantity {
     position: absolute;
-    border-bottom: 1px solid white;
+    /* border-bottom: 1px solid white; */
+    background-color: inherit;
     top: 0;
-    padding: .2rem;
+    padding: 0.1rem 0.3rem;
 }
 
 .listing-price {
     left: 0;
-    border-right: 1px solid white;
+    /* border-right: 1px solid white; */
+    
 }
 
 .listing-quantity {
     right: 0;
-    border-left: 1px solid white;
+    /* border-left: 1px solid white; */
 }
 
 .listing-name {
@@ -108,6 +140,9 @@
     padding: .2rem;
     background-color: grey;
     border-radius: 5px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 
@@ -119,6 +154,21 @@
 
 
 /* media queries */
+
+@media screen and (max-width: 800px) {
+    .seller-listings {
+        justify-content: center;
+    }
+
+    .listing-wrapper {
+        width: 60%;
+        padding-bottom: max(60%, 300px);
+        min-width: 300px;
+        margin-right: 0;
+        /* margin-left: 20%; margin-right: 20%; */
+        
+    }
+}
 
 @media screen and (max-width: 1100px) and (min-width: 801px) {
     .listing-wrapper {
@@ -133,18 +183,37 @@
     }
 }
 
-@media screen and (max-width: 800px) {
-    .listing-wrapper {
-        width: 60%;
-        padding-bottom: max(60%, 300px);
-        min-width: 300px;
-        margin-left: 20%; margin-right: 20%;
-        
+@media screen and (min-width: 1101px) and (max-width: 1500px) {
+    .listing-wrapper:nth-of-type(3n + 1) {
+        margin-left: 2.5%;
     }
 }
 
-@media screen and (min-width: 1101px) {
-    .listing-wrapper:nth-of-type(3n + 1) {
-        margin-left: 2.5%;
+@media screen and (min-width: 1501px) and (max-width: 1650px) {
+    .listing-wrapper {
+        width: max(300px, 22.5%);
+        padding-bottom: max(300px, 22.5%);
+        margin-right: 2%;
+    }
+
+    .listing-wrapper:nth-of-type(4n + 1) {
+        margin-left: 2%;
+    }
+}
+
+@media screen and (min-width: 1651px) {
+    .seller-listings {
+        width: min(100%, 1680px);
+        margin: 0 auto;
+    }
+
+    .listing-wrapper {
+        width: clamp(300px, 22.5%, 378px);
+        padding-bottom: clamp(300px, 22.5%, 378px);
+        margin-right: 2%;
+    }
+
+    .listing-wrapper:nth-of-type(4n + 1) {
+        margin-left: 2%;
     }
 }
