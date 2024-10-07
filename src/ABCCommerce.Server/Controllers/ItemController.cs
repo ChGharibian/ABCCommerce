@@ -20,10 +20,11 @@ public class ItemController : Controller
     }
 
 
-    [HttpGet("{seller:int}")]
-    public ActionResult<IEnumerable<Item>> GetItems(int seller)
+
+    [HttpGet("{item:int}")]
+    public ActionResult<IEnumerable<Item>> GetItems(int item)
     {
-        return Ok(AbcDb.Items.Where(i => i.SellerId == seller).Include(i => i.Listings).Select(i => new {i.Id, i.Name, i.SKU, i.Listings}).ToArray());
+        return Ok(AbcDb.Items.Where(i => i.Id == item).Include(i => i.Listings).Select(i => new { i.Id, i.Name, i.SKU, i.Listings }).ToArray());
     }
     [HttpPost]
     public async Task<ActionResult<Item>> CreateItem([FromBody] CreateItemRequest createItem)

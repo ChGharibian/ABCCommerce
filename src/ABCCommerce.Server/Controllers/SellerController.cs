@@ -52,6 +52,18 @@ seller.Items.SelectMany(i => i.Listings.Select(l => l.ToDto()))
         await ABCDb.SaveChangesAsync();
         return Ok(seller);
     }
+
+    [HttpGet("{seller:int}/Items")]
+    public ActionResult<IEnumerable<Item>> GetItems(int seller)
+    {
+        return Ok(ABCDb.Items.Where(i => i.SellerId == seller).Include(i => i.Listings).Select(i => new { i.Id, i.Name, i.SKU, i.Listings }).ToArray());
+    }
+
+    [HttpGet("{seller:int}/Items/{item:int}")]
+    public ActionResult<IEnumerable<Item>> GetItems(int seller, int item)
+    {
+        return Ok(ABCDb.Items.Where(i => i.SellerId == seller && i.Id == item).Include(i => i.Listings).Select(i => new { i.Id, i.Name, i.SKU, i.Listings }).ToArray());
+    }
 }
 public class SellerCreateRequest
 {
