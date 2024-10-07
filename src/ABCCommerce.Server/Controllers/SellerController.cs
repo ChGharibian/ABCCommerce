@@ -94,7 +94,7 @@ internal class ComplexSeller
     public int Id { get; }
     public IEnumerable<ListingDTO> Items { get; }
 
-    public ComplexSeller(string name, string? image, int id, IEnumerable<ListingDTO> items)
+    public ComplexSeller(string name, ImagePath? image, int id, IEnumerable<ListingDTO> items)
     {
         Name = name;
         Image = image;

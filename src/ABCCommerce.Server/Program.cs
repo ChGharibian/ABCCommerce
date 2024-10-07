@@ -1,4 +1,3 @@
-using ABCCommerce.Server.Services;
 using ABCCommerceDataAccess;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,10 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ABCCommerceContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ABCDB"), b => b.MigrationsAssembly("ABCCommerce.Server")));
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddScoped<ImageService>();
 
 builder.Services.AddControllers();
-builder.Services.ConfigureOptions<ConfigureJsonOptions>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

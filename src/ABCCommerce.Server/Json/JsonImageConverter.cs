@@ -1,15 +1,16 @@
-﻿using ABCCommerce.Server.Services;
+﻿using Microsoft.AspNetCore.Http.Extensions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 class JsonImageConverter : JsonConverter<ImagePath>
 {
-    public JsonImageConverter(ImageService imageService)
+    IHttpContextAccessor HttpContextAccessor { get; }
+    public JsonImageConverter()
     {
-        ImageService = imageService;
+        HttpContextAccessor = new HttpContextAccessor();
     }
+    string Url => new Uri(HttpContextAccessor.HttpContext!.Request.GetEncodedUrl()).GetLeftPart(UriPartial.Authority) + "/images/";
 
-    public ImageService ImageService { get; }
 
     public override ImagePath? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
@@ -18,7 +19,7 @@ class JsonImageConverter : JsonConverter<ImagePath>
 
     public override void Write(Utf8JsonWriter writer, ImagePath value, JsonSerializerOptions options)
     {
-        var url = ImageService.GetImageUrl(value);
+        var url = Url + value.Path;
         writer.WriteStringValue(url);
     }
 }

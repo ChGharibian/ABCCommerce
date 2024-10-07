@@ -26,9 +26,10 @@ public class ListingController : Controller
         return Ok(
             await AbcDb.Listings
             .Include(l => l.Item)
+            .Include(l => l.Images)
             .Where(l => l.Item.SellerId == seller)
             .Where(l => l.Active)
-            .Select(l => new {l.Id, l.ListingDate, l.Item, l.Tags, l.PricePerUnit, l.Quantity, l.Active})
+            .Select(l => new {l.Id, l.ListingDate, l.Item, l.Tags, l.PricePerUnit, l.Quantity, l.Active, Image = l.Images.Select(i => new ImagePath(i.Image))})
             .ToArrayAsync());
     }
     [HttpPost()]
