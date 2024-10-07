@@ -3,6 +3,13 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(o =>
+{
+    o.AddDefaultPolicy(p =>
+    {
+        p.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod();
+    });
+});
 // Add services to the container.
 //builder.Services.AddDbContext<ABCCommerceContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ABCDB"), b => b.MigrationsAssembly("ABCCommerce.Server")));
 builder.Services.AddDbContext<ABCCommerceContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ABCDB"), b => b.MigrationsAssembly("ABCCommerce.Server")));
@@ -16,6 +23,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+app.UseCors();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
