@@ -14,5 +14,6 @@ public class Seller
     public string Name { get; set; } = "";
     [StringLength(100)]
     public string? Image { get; set; }
+    public ICollection<UserSeller> UserSellers { get; set; } = new List<UserSeller>();
     public ICollection<Item> Items { get; set; } = new List<Item>();
 }
