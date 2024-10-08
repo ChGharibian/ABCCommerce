@@ -1,19 +1,20 @@
-function Listing(props) {
-    return <li className="listing-wrapper" key={props.listing.id}>
+function Listing({listing}) {
+    const listingDate = new Date(listing.listingDate)
+    return <li className="listing-wrapper" key={listing.id}>
         <div className="listing">
         {/* image would go first */}
         <div className="listing-image-wrapper">
             <img className="listing-image" src="http://localhost:5147/images/calculator-fill.svg" />
         </div>
             <div className="listing-details-wrapper">
-                <p className="listing-price">{'$' + props.listing.pricePerUnit}</p>
-                <p className="listing-quantity">{props.listing.quantity}</p>
-                <p className="listing-name">{props.listing.name}</p>
+                <p className="listing-price">{'$' + listing.pricePerUnit}</p>
+                <p className="listing-quantity">{listing.quantity}</p>
+                <p className="listing-name">{listing.name}</p>
                     <div className="listing-tags-date-wrapper">
                         <div className="listing-tags">
-                            {getTagElements(props.listing.tags, props.listing.id)}
+                            {getTagElements(listing.tags, listing.id)}
                         </div>
-                        {getDateElement(props.listing.date)}
+                        {getDateElement(listingDate)}
                     </div>
             </div>
         </div>

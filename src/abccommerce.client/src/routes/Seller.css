@@ -20,6 +20,7 @@
     position: fixed;
     display: flex;
     align-items: center;
+    justify-content: center;
     width: 100%;
     padding: .5rem 0;
     height: 4rem;
