@@ -31,7 +31,7 @@
     width: 100%;
 }
 
-#seller-listings-wrapper {
+.seller-listings-wrapper {
     height: calc(100% - 4rem - 80px);
     position: absolute;
     width: 100%;
