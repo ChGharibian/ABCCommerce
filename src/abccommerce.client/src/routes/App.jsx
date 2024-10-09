@@ -16,7 +16,7 @@ export default function App() {
         <Route index element={<Home/>}/>
         <Route path="login" element={<Login/>}/>
         <Route path="registration" element={<Registration/>}/>
-        <Route path="seller" element={<Seller/>}/>
+        <Route path="seller/:sellerId" element={<Seller/>}/>
         <Route path="*" element={<WrongLink/>}/>
         <Route/>
       </Route>
