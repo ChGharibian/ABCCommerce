@@ -5,13 +5,11 @@
 }
 
 #seller-wrapper {
+    --nav-bar-height: 80px;
     position: relative;
-    top: 80px;
-    width: 100%;
-    height: 100%;
-    max-width: 100%;
+    top: var(--nav-bar-height);
+    height: calc(100% - var(--nav-bar-height));
     overflow: hidden;
-    text-align: center;
     color: white;
     background-color: #424040;
 }
@@ -32,8 +30,8 @@
     width: 100%;
 }
 
-.seller-listings-wrapper {
-    height: calc(100% - 4rem - 80px);
+.listings-wrapper {
+    height: calc(100% - 4rem);
     position: absolute;
     width: 100%;
     top: 4rem;
@@ -41,7 +39,7 @@
     overflow-y: scroll;
 }
 
-.seller-listings {
+.listings {
     display: flex;
     flex-wrap: wrap;
 }
@@ -55,7 +53,7 @@
     min-width: 300px;
     margin-right: 2.5%;
     margin-bottom: 1rem;
-    
+    text-align: center;
 }
 
 .listing {
@@ -157,7 +155,7 @@
 /* media queries */
 
 @media screen and (max-width: 800px) {
-    .seller-listings {
+    .listings {
         justify-content: center;
     }
 
@@ -203,7 +201,7 @@
 }
 
 @media screen and (min-width: 1651px) {
-    .seller-listings {
+    .listings {
         width: min(100%, 1680px);
         margin: 0 auto;
     }
