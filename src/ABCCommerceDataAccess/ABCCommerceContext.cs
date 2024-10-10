@@ -26,4 +26,6 @@ public class ABCCommerceContext : DbContext
 
     public DbSet<Transaction> Transactions { get; set; }
     public DbSet<TransactionItem> TransactionItems { get; set; }
+
+    public DbSet<Image> Images { get; set; }
 }

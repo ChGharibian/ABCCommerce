@@ -1,29 +1,36 @@
 
+using ABCCommerce.Server.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace ABCCommerce.Server.Controllers;
 [ApiController]
 [Route("[controller]")]
 public class ImageController : Controller
 {
-    public ImageController(IHostEnvironment hostEnvironment)
+    public IImageService ImageService { get; }
+    public FileExtensionContentTypeProvider ContentTypeProvider { get; }
+
+    public ImageController(IImageService imageService, FileExtensionContentTypeProvider contentTypeProvider)
     {
-        HostEnvironment = hostEnvironment;
+        ImageService = imageService;
+        ContentTypeProvider = contentTypeProvider;
     }
 
-    public IHostEnvironment HostEnvironment { get; }
 
     [HttpGet("{**path}")]
     public ActionResult GetImage(string path)
     {
         path = path.Replace("%2F", "\\");
-        string pathstart = Path.Combine(HostEnvironment.ContentRootPath, "images");
-        string fullPath = Path.GetFullPath(Path.Combine(pathstart, path));
-        if (!fullPath.StartsWith(pathstart) || !Path.Exists(fullPath))
+        var image = ImageService.GetImage(path);
+        if(image is null)
         {
             return NotFound("Image not found");
         }
-        var bytes = System.IO.File.ReadAllBytes(fullPath);
-        return File(bytes, $"image/{Path.GetExtension(path)}");
+        if(!ContentTypeProvider.TryGetContentType(image.Extension, out var contentType))
+        {
+            contentType = "application/octet-stream";
+        }
+        return File(image.Bytes, contentType);
     }
 }

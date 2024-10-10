@@ -1,3 +1,4 @@
+using ABCCommerce.Server.Services;
 using ABCCommerceDataAccess;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,7 @@ builder.Services.AddCors(o =>
 builder.Services.AddDbContext<ABCCommerceContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ABCDB"), b => b.MigrationsAssembly("ABCCommerce.Server")));
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped<IImageService, DbImageService>();
 
 builder.Services.AddControllers();
 
