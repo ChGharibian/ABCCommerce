@@ -20,6 +20,7 @@
     position: fixed;
     display: flex;
     align-items: center;
+    justify-content: center;
     width: 100%;
     padding: .5rem 0;
     height: 4rem;
@@ -31,7 +32,7 @@
     width: 100%;
 }
 
-#seller-listings-wrapper {
+.seller-listings-wrapper {
     height: calc(100% - 4rem - 80px);
     position: absolute;
     width: 100%;
