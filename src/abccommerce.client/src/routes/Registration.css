@@ -1,0 +1,78 @@
+#registration-wrapper {
+    --navbar-height: 80px;
+    position: relative;
+    top: var(--navbar-height);
+    height: calc(100% - 80px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #424040;
+    text-align: center;
+}
+
+#registration-form {
+    color: white;
+    position: relative;
+    bottom: calc(var(--navbar-height) / 2);
+    width: max(60%, 500px);
+    height: 80%;
+    padding: 10px;
+    background-color: #3c3a3a;
+    border: 1px solid rgb(234, 228, 228);
+}
+
+#registration-form h1 {
+    height: 10%;
+}
+
+#registration-form input {
+    outline: none;
+    background-color: rgb(120, 120, 120);
+    border: none;
+    border: 1px solid rgb(234, 228, 228);
+    padding: 2px;
+    color: white;
+}
+
+.registration-field {
+    width: 100%;
+}
+
+#registration-form input:not(.register-button) {
+    width: 40%;
+}
+
+.registration-field label:has(+ input:required)::after {
+    content: "*";
+    color: red;
+    position: absolute;
+    width: 40%;
+    text-align: right;
+    height: 0;
+}
+
+#registration-form ::placeholder {
+    color: rgb(234, 228, 228);
+}
+
+#registration-form input[type="submit"] {
+    color: rgb(234, 228, 228);
+}
+
+#registration-fields {
+    height: 90%;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+input:not(.register-button) {
+    border-bottom: 1px solid grey;
+}
+
+.register-button:hover {
+    background-color: #5f5c5c !important;
+}
+
