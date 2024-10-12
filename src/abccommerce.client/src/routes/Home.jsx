@@ -4,7 +4,9 @@ import Listing from '../components/Listing';
 const fakeListings = [
       {
           id: 0,
-          name: "Rare signed basketball",
+          item: {
+            name: "Rare signed basketball",
+          },
           description: "basketball signed by {insert basketball player}",
           pricePerUnit: 505.23,
           quantity: 1,
@@ -13,7 +15,9 @@ const fakeListings = [
       },
       {
           id: 1,
-          name: "random item",
+          item: {
+            name: "random item",
+          },
           description: "this item is random or something",
           pricePerUnit: 12.69,
           quantity: 7,
@@ -22,7 +26,9 @@ const fakeListings = [
       },
       {
           id: 2,
-          name: "more random item with a very long name",
+          item: {
+            name: "more random item with a very long name",
+          },
           description: "this item is even more random than the last",
           pricePerUnit: 1.35,
           quantity: 10,
@@ -31,7 +37,9 @@ const fakeListings = [
       },
       {
           id: 3,
-          name: "no tags",
+          item: {
+            name: "no tags",
+          },
           description: "tagsss",
           pricePerUnit: 235235,
           quantity: 1,
@@ -40,7 +48,9 @@ const fakeListings = [
       },
       {
           id: 4,
-          name: "Rare signed basketball",
+          item: {
+            name: "Rare signed basketball",
+          },
           description: "basketball signed by {insert basketball player}",
           pricePerUnit: 505.23,
           quantity: 1,
@@ -49,7 +59,9 @@ const fakeListings = [
       },
       {
           id: 5,
-          name: "random item",
+          item: {
+            name: "random item",
+          },
           description: "this item is random or something",
           pricePerUnit: 12.69,
           quantity: 7,
@@ -58,7 +70,9 @@ const fakeListings = [
       },
       {
           id: 6,
-          name: "more random item with a very long name",
+          item: {
+            name: "more random item with a very long name",
+          },
           description: "this item is even more random than the last",
           pricePerUnit: 1.35,
           quantity: 10,
@@ -67,7 +81,9 @@ const fakeListings = [
       },
       {
           id: 7,
-          name: "no tags",
+          item: {
+            name: "no tags",
+          },
           description: "tagsss",
           pricePerUnit: 235235,
           quantity: 1,
@@ -80,15 +96,20 @@ const fakeListings = [
 export default function Home() {
     const [listings, setListings] = useState([]);
 
-    useEffect(() => {
-        search();
-    })
+    // useEffect(() => {
+    //     search();
+    // })
+    const handleKeyDown = (e) => {
+        if(e.key === "Enter") {
+            search();
+        }
+    }
   return (
     <div id="home-page-wrapper">
         <div id="search-controls-wrapper">
             <div id="search-controls">
-                <input id="search-bar" placeholder="Search" />
-                <button id="search-button">S</button>
+                <input onKeyDown={handleKeyDown} id="search-bar" placeholder="Search" />
+                <button onClick={search} id="search-button">S</button>
             </div>
         </div>
         <div className="listings-wrapper">  

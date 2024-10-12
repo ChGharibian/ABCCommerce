@@ -1,3 +1,4 @@
+import './Listing.css';
 function Listing({listing}) {
     const listingDate = new Date(listing.listingDate)
     return <li className="listing-wrapper" key={listing.id}>
@@ -9,8 +10,12 @@ function Listing({listing}) {
             <div className="listing-details-wrapper">
                 <p className="listing-price">{'$' + listing.pricePerUnit}</p>
                 <p className="listing-quantity">{listing.quantity}</p>
-                <p className="listing-name">{listing.name}</p>
-                    <div className="listing-tags-date-wrapper">
+                <div className="listing-top-info">
+                    <p className="listing-name">{listing.item.name}</p>
+                    <a className="listing-seller-name" href={listing.item.sellerId ? `/seller/${listing.item.sellerId}` : ""}>{listing.item.seller ? listing.item.seller.name : "Unkown Seller"}</a>
+                </div>
+                
+                    <div className="listing-bottom-info">
                         <div className="listing-tags">
                             {getTagElements(listing.tags, listing.id)}
                         </div>
