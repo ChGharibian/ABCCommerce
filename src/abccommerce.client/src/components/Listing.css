@@ -43,6 +43,42 @@
     justify-content: center;
 }
 
+.arrow-control {
+    width: calc(1rem + 5px);
+    height: calc(1rem + 5px);
+    position: relative;
+    top: -2.5px;
+    display: contents;
+}
+
+.arrow:hover {
+    border-top: 5px solid rgb(130, 130, 130);
+    border-left: 5px solid rgb(130, 130, 130);
+}
+
+.arrow {
+    border-top: 5px solid white;
+    border-left: 5px solid white;
+    width: 1rem;
+    height: 1rem;
+}
+
+.left {
+    transform: rotate(-45deg);
+}
+
+.right {
+    transform: rotate(135deg);
+}
+
+.listing-left-controls, .listing-right-controls {
+    width: 25%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .listing-image {
     margin: auto;
     width: 50%;

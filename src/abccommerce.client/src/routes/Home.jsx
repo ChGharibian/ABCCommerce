@@ -11,7 +11,8 @@ const fakeListings = [
           pricePerUnit: 505.23,
           quantity: 1,
           tags: ["rareeeeeeeeeeeeeee", "vintage"],
-          listingDate: new Date(2024, 7, 27, 18, 24).toDateString()
+          listingDate: new Date(2024, 7, 27, 18, 24).toDateString(),
+          image: []
       },
       {
           id: 1,
@@ -22,7 +23,8 @@ const fakeListings = [
           pricePerUnit: 12.69,
           quantity: 7,
           tags: ["unusedklllllllllllllll", "real", "tag", "tag2", "tagggg", "tagtest", "again"],
-          listingDate: new Date(2023, 11, 2, 1, 3).toDateString()
+          listingDate: new Date(2023, 11, 2, 1, 3).toDateString(),
+          image: ["http://localhost:5147/images/calculator-fill.svg", "http://localhost:5147/images/airplane.svg", "http://localhost:5147/images/boombox-fill.svg"]
       },
       {
           id: 2,
@@ -33,7 +35,8 @@ const fakeListings = [
           pricePerUnit: 1.35,
           quantity: 10,
           tags: ["tag123", "tag321311"],
-          listingDate: new Date(2023, 7, 17, 12, 52).toDateString()
+          listingDate: new Date(2023, 7, 17, 12, 52).toDateString(),
+          image: ["http://localhost:5147/images/calculator-fill.svg"]
       },
       {
           id: 3,
@@ -44,7 +47,8 @@ const fakeListings = [
           pricePerUnit: 235235,
           quantity: 1,
           tags: [],
-          listingDate: new Date(2024, 7, 17, 12, 52).toDateString()
+          listingDate: new Date(2024, 7, 17, 12, 52).toDateString(),
+          image: ["http://localhost:5147/images/calculator-fill.svg"]
       },
       {
           id: 4,
@@ -55,7 +59,8 @@ const fakeListings = [
           pricePerUnit: 505.23,
           quantity: 1,
           tags: ["rare", "vintage"],
-          listingDate: new Date(2024, 7, 27, 18, 24).toDateString()
+          listingDate: new Date(2024, 7, 27, 18, 24).toDateString(),
+          image: ["http://localhost:5147/images/calculator-fill.svg"]
       },
       {
           id: 5,
@@ -66,7 +71,8 @@ const fakeListings = [
           pricePerUnit: 12.69,
           quantity: 7,
           tags: ["unused", "real", "tag", "tag2", "tagggg"],
-          listingDate: new Date(2023, 11, 2, 1, 3).toDateString()
+          listingDate: new Date(2023, 11, 2, 1, 3).toDateString(),
+          image: ["http://localhost:5147/images/calculator-fill.svg"]
       },
       {
           id: 6,
@@ -77,7 +83,8 @@ const fakeListings = [
           pricePerUnit: 1.35,
           quantity: 10,
           tags: ["tag123", "tag321311"],
-          listingDate: new Date(2023, 7, 17, 12, 52).toDateString()
+          listingDate: new Date(2023, 7, 17, 12, 52).toDateString(),
+          image: ["http://localhost:5147/images/calculator-fill.svg"]
       },
       {
           id: 7,
@@ -88,7 +95,8 @@ const fakeListings = [
           pricePerUnit: 235235,
           quantity: 1,
           tags: [],
-          listingDate: new Date(2024, 7, 17, 12, 52).toDateString()
+          listingDate: new Date(2024, 7, 17, 12, 52).toDateString(),
+          image: ["http://localhost:5147/images/calculator-fill.svg"]
       }
   ]
 
