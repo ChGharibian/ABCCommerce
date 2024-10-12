@@ -45,15 +45,7 @@ function Seller() {
     async function getSellerData() {
         if(sellerId) {
             try {
-                let response = await fetch(`http://localhost:5147/listing/${sellerId}`);
-                if(!response.ok) {
-                    setSeller({
-                        exists: false
-                    })
-                    return;
-                }
-                let listingData = await response.json();
-                response = await fetch(`http://localhost:5147/seller/${sellerId}`);
+                let response = await fetch(`http://localhost:5147/seller/${sellerId}`);
                 if(!response.ok) {
                     setSeller({
                         exists: false
@@ -61,6 +53,20 @@ function Seller() {
                     return;
                 }
                 let sellerData = await response.json();
+                
+                response = await fetch(`http://localhost:5147/listing/${sellerId}`);
+                if(!response.ok) {
+                    setSeller({
+                        exists: false
+                    })
+                    return;
+                }
+                let listingData = await response.json();
+                listingData = listingData.map(l => ({
+                    ...l,
+                    sellerName: sellerData.name 
+                }))
+                
         
                 // console.log(sellerData,listingData);
                 

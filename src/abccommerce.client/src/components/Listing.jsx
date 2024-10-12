@@ -52,7 +52,7 @@ function Listing({listing}) {
                     <a className="listing-seller-name" 
                         href={listing.item.sellerId ? 
                         `/seller/${listing.item.sellerId}` : "#"}>
-                        {listing.item.seller ? listing.item.seller.name : "Unkown Seller"}
+                        {listing.sellerName ?? "Unknown Seller"}
                     </a>
                 </div>
                 
