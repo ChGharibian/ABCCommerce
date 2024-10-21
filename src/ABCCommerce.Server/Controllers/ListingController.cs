@@ -1,6 +1,7 @@
 
 using ABCCommerceDataAccess;
 using ABCCommerceDataAccess.Models;
+using Examine;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
@@ -15,12 +16,14 @@ public class ListingController : Controller
 {
     public ILogger<ListingController> Logger { get; }
     public ABCCommerceContext AbcDb { get; }
+    public IExamineManager ExamineManager { get; }
     public IHostEnvironment HostEnvironment { get; }
 
-    public ListingController(ILogger<ListingController> logger, ABCCommerceContext abcDb, IHostEnvironment hostEnvironment)
+    public ListingController(ILogger<ListingController> logger, ABCCommerceContext abcDb, IExamineManager examineManager, IHostEnvironment hostEnvironment)
     {
         Logger = logger;
         AbcDb = abcDb;
+        ExamineManager = examineManager;
         HostEnvironment = hostEnvironment;
     }
     [HttpPost("{listing:int}/Image")]
@@ -59,6 +62,7 @@ public class ListingController : Controller
         }
         var listing = new Listing
         {
+            Name = createListing.Name,
             Active = createListing.Active,
             ListingDate = DateTime.UtcNow,
             Description = createListing.Description,
@@ -68,7 +72,8 @@ public class ListingController : Controller
         };
         item.Listings.Add(listing);
         await AbcDb.SaveChangesAsync();
-        return Ok(new { listing.Id, listing.Active, listing.Description, listing.ListingDate, listing.PricePerUnit, listing.Quantity, listing.Tags });
+        ExamineManager.GetIndex("MyIndex").Index(listing);
+        return Ok(new { listing.Id, listing.Name, listing.Active, listing.Description, listing.ListingDate, listing.PricePerUnit, listing.Quantity, listing.Tags });
     }
     [HttpPatch("{listing:int}")]
     public async Task<ActionResult<Listing>> UpdateListing([FromQuery] int listing, [FromBody] UpdateListingRequest updateRequest)
@@ -101,6 +106,9 @@ public class ListingController : Controller
 }
 public class CreateListingRequest
 {
+    [Required]
+    [StringLength(50)]
+    public string Name { get; set; } = "";
     public int Item { get; set; }
     public int Quantity { get; set; }
     [StringLength(200)]

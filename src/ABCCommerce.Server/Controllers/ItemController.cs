@@ -18,8 +18,13 @@ public class ItemController : Controller
         Logger = logger;
         AbcDb = abcDb;
     }
+    [HttpGet]
 
+    public ActionResult<IEnumerable<Item>> GetItemQuery([FromQuery] string sku)
+    {
+        return Ok(AbcDb.Items.Where(i => i.SKU == sku).Include(i => i.Listings).Select(i => new { i.Id, i.Name, i.SKU, i.Listings }).ToArray());
 
+    }
 
     [HttpGet("{item:int}")]
     public ActionResult<IEnumerable<Item>> GetItems(int item)

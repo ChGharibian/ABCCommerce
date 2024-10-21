@@ -28,6 +28,7 @@ public class TokenService
         var claims = new List<Claim>
         {
             new("userid", user.Id.ToString()),
+            new(ClaimTypes.Role, user.Roles),
             new(JwtRegisteredClaimNames.Email, user.Email),
         };
         DateTime expiresAt = DateTime.UtcNow.AddMinutes(120);
@@ -40,10 +41,15 @@ public class TokenService
         var token = tokenHandler.CreateToken(tokenDescriptor);
         var tokenText = tokenHandler.WriteToken(token);
 
-        claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
+        var refreshClaims = new List<Claim>
+        {
+            new("userid", user.Id.ToString()),
+            new(JwtRegisteredClaimNames.Email, user.Email),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        };
         var refreshTokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(claims),
+            Subject = new ClaimsIdentity(refreshClaims),
             Expires = DateTime.UtcNow.AddDays(100),
             SigningCredentials = credentials
         };

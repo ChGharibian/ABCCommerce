@@ -18,7 +18,7 @@ public static class ModelExtensions
     }
     public static ListingDTO ToDto(this Listing listing)
     {
-        return new ListingDTO(listing.Id, listing.Tags, listing.Item.ToDto(), listing.Description, listing.PricePerUnit, listing.Quantity, listing.ListingDate, listing.Active);
+        return new ListingDTO(listing.Id, listing.Tags, listing.Item.ToDto(), listing.Images.Select(i => (ImagePath)i.Image).ToArray(), listing.Description, listing.PricePerUnit, listing.Quantity, listing.ListingDate, listing.Active);
     }
 }
 
@@ -42,7 +42,8 @@ public class SellerDTO
 public record ListingDTO(
     int Id, 
     string[] Tags, 
-    ItemDTO ItemDTO, 
+    ItemDTO Item, 
+    ImagePath[] Images,
     string? Description, 
     decimal PricePerUnit, 
     int Quantity, 

@@ -46,6 +46,7 @@ public class UserController : Controller
         var user = new User
         {
             Email = registerUserRequest.Email,
+            Username = registerUserRequest.Username ?? "",
             Password = PasswordHasher.HashPassword(null, registerUserRequest.Password),
             Street = registerUserRequest.Street,
             StreetPlus = registerUserRequest.StreetPlus,

@@ -8,14 +8,18 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ABCCommerceDataAccess.Models;
+
 public class Listing
 {
     public int Id { get; set; }
     [Precision(14,2)]
     public decimal PricePerUnit { get; set; }
     public int Quantity { get; set; }
+    
     [StringLength(200)]
     public string? Description { get; set; }
+    [StringLength(50)]
+    public string Name { get; set; } = "";
     public string[] Tags { get; set; } = Array.Empty<string>();
     public bool Active { get; set; }
     public DateTime ListingDate { get; set; }
