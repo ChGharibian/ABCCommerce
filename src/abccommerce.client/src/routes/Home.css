@@ -47,6 +47,11 @@
     color: white;
 }
 
+#search-img {
+    width: 100%;
+    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(152deg) brightness(105%) contrast(103%);
+}
+
 #search-bar::placeholder {
     color: white;
 }

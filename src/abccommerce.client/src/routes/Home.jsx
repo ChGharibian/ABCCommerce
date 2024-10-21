@@ -1,6 +1,7 @@
 import './Home.css';
 import { useEffect, useState } from 'react';
 import Listing from '../components/Listing';
+import searchImg from '../assets/search.svg';
 const fakeListings = [
       {
           id: 0,
@@ -117,7 +118,9 @@ export default function Home() {
         <div id="search-controls-wrapper">
             <div id="search-controls">
                 <input onKeyDown={handleKeyDown} id="search-bar" placeholder="Search" />
-                <button onClick={search} id="search-button">S</button>
+                <button onClick={search} id="search-button">
+                  <img id="search-img" src={searchImg} />
+                </button>
             </div>
         </div>
         <div className="listings-wrapper">  
