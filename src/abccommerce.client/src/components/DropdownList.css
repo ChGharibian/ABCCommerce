@@ -1,0 +1,34 @@
+.dropdown-list-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.required-mark {
+    height: 0;
+    color: red;
+    text-align: right;
+    position: absolute;
+}
+
+.dropdown-list {
+    position: absolute;
+    display: block;
+    outline: none;
+    top: 1.4rem;
+    z-index: 1000;
+    overflow-y: scroll;
+    text-align: left;
+    background-color: rgb(120, 120, 120);
+    color: white;
+}
+
+.dropdown-item {
+    padding: 2px;
+    border: none;
+    outline: none;
+}
+
+.dropdown-item:hover {
+    background-color: #424040;
+}

@@ -1,3 +1,7 @@
+.hidden {
+    visibility: hidden;
+}
+
 #registration-wrapper {
     --navbar-height: 80px;
     position: relative;
@@ -36,10 +40,12 @@
 
 .registration-field {
     width: 100%;
+    position: relative;
 }
 
-#registration-form input:not(.register-button) {
+#registration-form .registration-field-input {
     width: 40%;
+    height: 1.4rem;
 }
 
 .registration-field label:has(+ input:required)::after {
@@ -47,6 +53,7 @@
     color: red;
     position: absolute;
     width: 40%;
+    left: calc(30% + 0.7rem);
     text-align: right;
     height: 0;
 }
@@ -55,7 +62,7 @@
     color: rgb(234, 228, 228);
 }
 
-#registration-form input[type="submit"] {
+.register-button {
     color: rgb(234, 228, 228);
 }
 
