@@ -1,16 +1,62 @@
+import { useState } from 'react';
+import './Listing.css';
 function Listing({listing}) {
     const listingDate = new Date(listing.listingDate)
+    const [currentImage, setCurrentImage] = useState(0);
+
+    const scrollLeft = () => {
+        if(currentImage === 0) {
+            setCurrentImage(listing.image.length - 1);
+        } else {
+            setCurrentImage(currentImage - 1);
+        }
+    }
+
+    const scrollRight = () => {
+        if(currentImage === listing.image.length - 1) {
+            setCurrentImage(0);
+        } else {
+            setCurrentImage(currentImage + 1);
+        }
+    }
+
     return <li className="listing-wrapper" key={listing.id}>
         <div className="listing">
         {/* image would go first */}
         <div className="listing-image-wrapper">
-            <img className="listing-image" src="http://localhost:5147/images/calculator-fill.svg" />
+            {listing.image.length > 1 ?
+                <div className="listing-left-controls">
+                    <div onClick={scrollLeft} className="arrow left"></div>
+                </div>
+            :
+                <></>
+            }
+            {listing.image.length > 0 ?
+                <img className="listing-image" src={listing.image[currentImage]} />
+            :
+                "No images"
+            }
+            {listing.image.length > 1 ?
+                <div className="listing-right-controls">
+                    <div onClick={scrollRight} className="arrow right"></div>
+                </div>
+            :
+                <></>
+            }
         </div>
             <div className="listing-details-wrapper">
                 <p className="listing-price">{'$' + listing.pricePerUnit}</p>
                 <p className="listing-quantity">{listing.quantity}</p>
-                <p className="listing-name">{listing.name}</p>
-                    <div className="listing-tags-date-wrapper">
+                <div className="listing-top-info">
+                    <p className="listing-name">{listing.item.name}</p>
+                    <a className="listing-seller-name" 
+                        href={listing.item.sellerId ? 
+                        `/seller/${listing.item.sellerId}` : "#"}>
+                        {listing.sellerName ?? "Unknown Seller"}
+                    </a>
+                </div>
+                
+                    <div className="listing-bottom-info">
                         <div className="listing-tags">
                             {getTagElements(listing.tags, listing.id)}
                         </div>
