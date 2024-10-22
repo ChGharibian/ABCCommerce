@@ -1,5 +1,6 @@
 using ABCCommerceDataAccess;
 using Examine;
+using Examine.Search;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SharedModels.Models;
@@ -20,10 +21,10 @@ public class SearchController : Controller
 
 
     [HttpGet]
-    public ActionResult<IEnumerable<Listing>> Search([FromQuery] string q)
+    public ActionResult<IEnumerable<Listing>> Search([FromQuery] string q, [FromQuery] int? skip, [FromQuery] int? count)
     {
         var searchResults = ExamineManager.GetIndex("MyIndex").Searcher.CreateQuery()
-            .ManagedQuery(q).Execute();
+            .ManagedQuery(q).Execute(QueryOptions.SkipTake(skip ?? 0, Math.Min(50, count ?? 50)));
 
         var ids = searchResults.Select(s => int.Parse(s.Id)).ToList();
 
