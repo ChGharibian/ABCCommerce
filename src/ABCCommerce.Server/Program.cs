@@ -10,6 +10,7 @@ using Examine;
 using ABCCommerceDataAccess.Models;
 using Examine.Lucene;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,11 +54,17 @@ builder.Services.AddScoped<IImageService, DbImageService>();
 
 builder.Services.AddHostedService<InitializeSearchIndex>();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(o =>
+{
+    o.JsonSerializerOptions.Converters.Add(new JsonImageConverter());
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(o =>
+{
+    o.SchemaGeneratorOptions.CustomTypeMappings.Add(typeof(ImagePath), () => new OpenApiSchema() { Type = "string" });
+});
 
 var app = builder.Build();
 app.UseCors();
@@ -67,7 +74,10 @@ app.UseStaticFiles();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
+    app.UseSwagger(o =>
+    {
+        
+    });
     app.UseSwaggerUI();
 }
 

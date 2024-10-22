@@ -28,6 +28,7 @@
     <ProjectReference Include="..\abccommerce.client\abccommerce.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+    <ProjectReference Include="..\SharedModels\SharedModels.csproj" />
   </ItemGroup>
 
   <ItemGroup>

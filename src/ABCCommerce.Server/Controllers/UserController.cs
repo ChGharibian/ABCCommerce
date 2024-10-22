@@ -5,7 +5,8 @@ using ABCCommerceDataAccess.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
+using SharedModels.Models.Requests;
+using SharedModels.Models.Response;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -102,59 +103,4 @@ public class UserController : Controller
 
         return Ok(TokenService.CreateToken(user));
     }
-}
-public class RefreshTokenRequest
-{
-    [Required]
-    public string RefreshToken { get; set; } = "";
-}
-public class TokenResponse
-{
-
-    public string Token { get; set; }
-    public string RefreshToken { get; set; }
-    public string TokenType { get; set; }
-    public DateTime ExpirationDate { get; set; }
-    public TokenResponse(string token, string refreshToken, string tokenType, DateTime expirationDate)
-    {
-        Token = token;
-        RefreshToken = refreshToken;
-        TokenType = tokenType;
-        ExpirationDate = expirationDate;
-    }
-}
-public class LoginRequest
-{
-    [StringLength(50)]
-    public string Username { get; set; } = "";
-    [Required]
-    [StringLength(50)]
-    public string Password { get; set; } = "";
-}
-public class RegisterUserRequest
-{
-    [EmailAddress]
-    [Required]
-    [StringLength(50)]
-    public string Email { get; set; } = "";
-    [StringLength(50)]
-    public string? Username { get; set; }
-    [Required]
-    [StringLength(50)]
-    public string Password { get; set; } = "";
-    [Required]
-    [StringLength(50)]
-    public string Street { get; set; } = "";
-    [StringLength(50)]
-    public string? StreetPlus { get; set; }
-    [Required]
-    [StringLength(50)]
-    public string City { get; set; } = "";
-    [Required]
-    [StringLength(50)]
-    public string State { get; set; } = "";
-    [Required]
-    [StringLength(50)]
-    public string Zip { get; set; } = "";
-    
 }

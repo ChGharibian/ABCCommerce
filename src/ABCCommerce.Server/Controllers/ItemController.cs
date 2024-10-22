@@ -1,8 +1,8 @@
 using ABCCommerceDataAccess;
-using ABCCommerceDataAccess.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+using SharedModels.Models;
+using SharedModels.Models.Requests;
 using System.Data;
 
 namespace ABCCommerce.Server.Controllers;
@@ -22,14 +22,14 @@ public class ItemController : Controller
 
     public ActionResult<IEnumerable<Item>> GetItemQuery([FromQuery] string sku)
     {
-        return Ok(AbcDb.Items.Where(i => i.SKU == sku).Include(i => i.Listings).Select(i => new { i.Id, i.Name, i.SKU, i.Listings }).ToArray());
+        return Ok(AbcDb.Items.Where(i => i.SKU == sku).Include(i => i.Listings).Select(i => i.ToDto()).ToArray());
 
     }
 
     [HttpGet("{item:int}")]
     public ActionResult<IEnumerable<Item>> GetItems(int item)
     {
-        return Ok(AbcDb.Items.Where(i => i.Id == item).Include(i => i.Listings).Select(i => new { i.Id, i.Name, i.SKU, i.Listings }).ToArray());
+        return Ok(AbcDb.Items.Where(i => i.Id == item).Include(i => i.Listings).Select(i => i.ToDto()).ToArray());
     }
     [HttpPost]
     public async Task<ActionResult<Item>> CreateItem([FromBody] CreateItemRequest createItem)
@@ -42,23 +42,13 @@ public class ItemController : Controller
                 Error = "Seller Not Found"
             });
         }
-        var item = new Item
+        var item = new ABCCommerceDataAccess.Models.Item
         {
             SKU = createItem.Sku,
             Name = createItem.Name,
         };
         seller.Items.Add(item);
         await AbcDb.SaveChangesAsync();
-        return Ok(new { item.Id, item.Name, item.SKU });
+        return Ok(item.ToDto());
     }
-}
-public class CreateItemRequest
-{
-    public int Seller { get; set; }
-    [Required]
-    [StringLength(50)]
-    public string Sku { get; set; } = "";
-    [Required]
-    [StringLength(50)]
-    public string Name { get; set; } = "";
 }

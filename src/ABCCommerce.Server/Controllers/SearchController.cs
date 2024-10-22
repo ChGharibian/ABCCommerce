@@ -1,11 +1,8 @@
-
-using ABCCommerce.Server.Services;
 using ABCCommerceDataAccess;
-using ABCCommerceDataAccess.Models;
 using Examine;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
+using SharedModels.Models;
 
 namespace ABCCommerce.Server.Controllers;
 [ApiController]
@@ -23,7 +20,7 @@ public class SearchController : Controller
 
 
     [HttpGet]
-    public ActionResult Search([FromQuery] string q)
+    public ActionResult<IEnumerable<Listing>> Search([FromQuery] string q)
     {
         var searchResults = ExamineManager.GetIndex("MyIndex").Searcher.CreateQuery()
             .ManagedQuery(q).Execute();

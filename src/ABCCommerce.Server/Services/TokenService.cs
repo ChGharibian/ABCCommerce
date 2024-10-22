@@ -1,7 +1,7 @@
-using ABCCommerce.Server.Controllers;
 using ABCCommerceDataAccess.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using SharedModels.Models.Response;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;

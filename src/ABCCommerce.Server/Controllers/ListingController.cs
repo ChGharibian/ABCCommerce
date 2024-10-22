@@ -1,13 +1,10 @@
 
 using ABCCommerceDataAccess;
-using ABCCommerceDataAccess.Models;
 using Examine;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
-using System.Buffers.Text;
-using System.ComponentModel.DataAnnotations;
-using System.Reflection;
+using SharedModels.Models;
+using SharedModels.Models.Requests;
 
 namespace ABCCommerce.Server.Controllers;
 [ApiController]
@@ -35,7 +32,7 @@ public class ListingController : Controller
         string name = Path.Combine("listings", $"{DateTime.Now:O}.{imageRequest.FileType}");
         string pathstart = Path.Combine(HostEnvironment.ContentRootPath, "images");
         System.IO.File.WriteAllBytes(Path.Combine(pathstart, name), bytes);
-        editListing.Images.Add(new ListingImage() { Image = name });
+        editListing.Images.Add(new ABCCommerceDataAccess.Models.ListingImage() { Image = name });
         AbcDb.SaveChanges();
         return Ok(new ImagePath(name));
     }
@@ -60,7 +57,7 @@ public class ListingController : Controller
         {
             return NotFound();
         }
-        var listing = new Listing
+        var listing = new ABCCommerceDataAccess.Models.Listing
         {
             Name = createListing.Name,
             Active = createListing.Active,
@@ -73,7 +70,7 @@ public class ListingController : Controller
         item.Listings.Add(listing);
         await AbcDb.SaveChangesAsync();
         ExamineManager.GetIndex("MyIndex").Index(listing);
-        return Ok(new { listing.Id, listing.Name, listing.Active, listing.Description, listing.ListingDate, listing.PricePerUnit, listing.Quantity, listing.Tags });
+        return Ok(listing.ToDto());
     }
     [HttpPatch("{listing:int}")]
     public async Task<ActionResult<Listing>> UpdateListing([FromQuery] int listing, [FromBody] UpdateListingRequest updateRequest)
@@ -101,37 +98,6 @@ public class ListingController : Controller
             editListing.Tags = editListing.Tags.Except(updateRequest.RemoveTags ?? Array.Empty<string>()).Concat(updateRequest.AddTags ?? Array.Empty<string>()).ToArray();
         }
         AbcDb.SaveChanges();
-        return editListing;
+        return editListing.ToDto();
     }
-}
-public class CreateListingRequest
-{
-    [Required]
-    [StringLength(50)]
-    public string Name { get; set; } = "";
-    public int Item { get; set; }
-    public int Quantity { get; set; }
-    [StringLength(200)]
-    public string? Description { get; set; }
-    public bool Active { get; set; } = true;
-    public decimal Price { get; set; }
-    public IEnumerable<string> Tags { get; set; } = [];
-}
-public class UpdateListingRequest
-{
-    public int? Quantity { get; set; }
-    [StringLength(200)]
-    public string? Description { get; set; }
-    public bool? Active { get; set; }
-    public decimal? Price { get; set; }
-    public string[]? AddTags { get; set; }
-    public string[]? RemoveTags { get; set; }
-}
-public class AddImageRequest
-{
-    [Required]
-    public string Image { get; set; } = "";
-    [Required]
-    [MaxLength(10)]
-    public string FileType { get; set; } = "";
 }
