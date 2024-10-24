@@ -2,123 +2,30 @@ import './Home.css';
 import { useEffect, useState } from 'react';
 import Listing from '../components/Listing';
 import searchImg from '../assets/search.svg';
-const fakeListings = [
-      {
-          id: 0,
-          item: {
-            name: "Rare signed basketball",
-          },
-          description: "basketball signed by {insert basketball player}",
-          pricePerUnit: 505.23,
-          quantity: 1,
-          tags: ["rareeeeeeeeeeeeeee", "vintage"],
-          listingDate: new Date(2024, 7, 27, 18, 24).toDateString(),
-          image: []
-      },
-      {
-          id: 1,
-          item: {
-            name: "random item",
-          },
-          description: "this item is random or something",
-          pricePerUnit: 12.69,
-          quantity: 7,
-          tags: ["unusedklllllllllllllll", "real", "tag", "tag2", "tagggg", "tagtest", "again"],
-          listingDate: new Date(2023, 11, 2, 1, 3).toDateString(),
-          image: ["http://localhost:5147/images/calculator-fill.svg", "http://localhost:5147/images/airplane.svg", "http://localhost:5147/images/boombox-fill.svg"]
-      },
-      {
-          id: 2,
-          item: {
-            name: "more random item with a very long name",
-          },
-          description: "this item is even more random than the last",
-          pricePerUnit: 1.35,
-          quantity: 10,
-          tags: ["tag123", "tag321311"],
-          listingDate: new Date(2023, 7, 17, 12, 52).toDateString(),
-          image: ["http://localhost:5147/images/calculator-fill.svg"]
-      },
-      {
-          id: 3,
-          item: {
-            name: "no tags",
-          },
-          description: "tagsss",
-          pricePerUnit: 235235,
-          quantity: 1,
-          tags: [],
-          listingDate: new Date(2024, 7, 17, 12, 52).toDateString(),
-          image: ["http://localhost:5147/images/calculator-fill.svg"]
-      },
-      {
-          id: 4,
-          item: {
-            name: "Rare signed basketball",
-          },
-          description: "basketball signed by {insert basketball player}",
-          pricePerUnit: 505.23,
-          quantity: 1,
-          tags: ["rare", "vintage"],
-          listingDate: new Date(2024, 7, 27, 18, 24).toDateString(),
-          image: ["http://localhost:5147/images/calculator-fill.svg"]
-      },
-      {
-          id: 5,
-          item: {
-            name: "random item",
-          },
-          description: "this item is random or something",
-          pricePerUnit: 12.69,
-          quantity: 7,
-          tags: ["unused", "real", "tag", "tag2", "tagggg"],
-          listingDate: new Date(2023, 11, 2, 1, 3).toDateString(),
-          image: ["http://localhost:5147/images/calculator-fill.svg"]
-      },
-      {
-          id: 6,
-          item: {
-            name: "more random item with a very long name",
-          },
-          description: "this item is even more random than the last",
-          pricePerUnit: 1.35,
-          quantity: 10,
-          tags: ["tag123", "tag321311"],
-          listingDate: new Date(2023, 7, 17, 12, 52).toDateString(),
-          image: ["http://localhost:5147/images/calculator-fill.svg"]
-      },
-      {
-          id: 7,
-          item: {
-            name: "no tags",
-          },
-          description: "tagsss",
-          pricePerUnit: 235235,
-          quantity: 1,
-          tags: [],
-          listingDate: new Date(2024, 7, 17, 12, 52).toDateString(),
-          image: ["http://localhost:5147/images/calculator-fill.svg"]
-      }
-  ]
 
 
 export default function Home() {
     const [listings, setListings] = useState([]);
+    const [query, setQuery] = useState('');
+    const [searchInput, setSearchInput] = useState('')
+    const [pageNumber, setPageNumber] = useState(1);
 
-    // useEffect(() => {
-    //     search();
-    // })
+    // max 50
+    const listingsPerPage = 24;
+    useEffect(() => {
+        search(query, pageNumber - 1, listingsPerPage);
+    }, [query, pageNumber])
     const handleKeyDown = (e) => {
         if(e.key === "Enter") {
-            search();
+            setQuery(searchInput);
         }
     }
   return (
     <div id="home-page-wrapper">
         <div id="search-controls-wrapper">
             <div id="search-controls">
-                <input onKeyDown={handleKeyDown} id="search-bar" placeholder="Search" />
-                <button onClick={search} id="search-button">
+                <input onKeyDown={handleKeyDown} id="search-bar" placeholder="Search" onChange={e => setSearchInput(e.target.value)}/>
+                <button onClick={() => setQuery(searchInput)} id="search-button">
                   <img id="search-img" src={searchImg} />
                 </button>
             </div>
@@ -136,10 +43,14 @@ export default function Home() {
     )
 
 
-  async function search() {
-    // implement backend call later
-
-    // fake search
-    setListings(fakeListings)
+  async function search(query, step, count) {
+    if(query === '' || typeof query === undefined) return;
+    try {
+      let response = await fetch(`http://localhost:5147/search?q=${query}&skip=${(step) * count}&count=${count}`);
+      setListings(await response.json());
+    } catch(error) {
+      console.error(error);
+    }
+    
   }
 }

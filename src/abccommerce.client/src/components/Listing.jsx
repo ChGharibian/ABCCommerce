@@ -3,17 +3,17 @@ import './Listing.css';
 function Listing({listing}) {
     const listingDate = new Date(listing.listingDate)
     const [currentImage, setCurrentImage] = useState(0);
-
+    
     const scrollLeft = () => {
         if(currentImage === 0) {
-            setCurrentImage(listing.image.length - 1);
+            setCurrentImage(listing.images.length - 1);
         } else {
             setCurrentImage(currentImage - 1);
         }
     }
 
     const scrollRight = () => {
-        if(currentImage === listing.image.length - 1) {
+        if(currentImage === listing.images.length - 1) {
             setCurrentImage(0);
         } else {
             setCurrentImage(currentImage + 1);
@@ -24,19 +24,19 @@ function Listing({listing}) {
         <div className="listing">
         {/* image would go first */}
         <div className="listing-image-wrapper">
-            {listing.image.length > 1 ?
+            {listing.images.length > 1 ?
                 <div className="listing-left-controls">
                     <div onClick={scrollLeft} className="arrow left"></div>
                 </div>
             :
                 <></>
             }
-            {listing.image.length > 0 ?
-                <img className="listing-image" src={listing.image[currentImage]} />
+            {listing.images.length > 0 ?
+                <img className="listing-image" src={listing.images[currentImage]} />
             :
                 "No images"
             }
-            {listing.image.length > 1 ?
+            {listing.images.length > 1 ?
                 <div className="listing-right-controls">
                     <div onClick={scrollRight} className="arrow right"></div>
                 </div>
@@ -50,9 +50,9 @@ function Listing({listing}) {
                 <div className="listing-top-info">
                     <p className="listing-name">{listing.item.name}</p>
                     <a className="listing-seller-name" 
-                        href={listing.item.sellerId ? 
-                        `/seller/${listing.item.sellerId}` : "#"}>
-                        {listing.sellerName ?? "Unknown Seller"}
+                        href={listing.item.seller.id ? 
+                        `/seller/${listing.item.seller.id}` : "#"}>
+                        {listing.item.seller.name ?? "Unknown Seller"}
                     </a>
                 </div>
                 

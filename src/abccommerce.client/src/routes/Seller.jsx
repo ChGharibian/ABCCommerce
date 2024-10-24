@@ -63,8 +63,22 @@ function Seller() {
                 }
                 let listingData = await response.json();
                 listingData = listingData.map(l => ({
-                    ...l,
-                    sellerName: sellerData.name 
+                    id: l.id,
+                    listingDate: l.listingDate,
+                    item: {
+                        id: l.item.id,
+                        sku: l.item.sku,
+                        name: l.item.name,
+                        seller: {
+                            name: sellerData.name,
+                            id: sellerData.id
+                        }
+                    },
+                    tags: l.tags,
+                    pricePerUnit: l.pricePerUnit,
+                    quantity: l.quantity,
+                    active: l.active,
+                    images: l.image
                 }))
                 
         
