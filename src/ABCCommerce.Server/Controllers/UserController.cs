@@ -3,8 +3,10 @@ using ABCCommerce.Server.Services;
 using ABCCommerceDataAccess;
 using ABCCommerceDataAccess.Models;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SharedModels.Models.Requests;
 using SharedModels.Models.Response;
 using System.IdentityModel.Tokens.Jwt;
@@ -27,6 +29,29 @@ public class UserController : Controller
         ABCDb = abcDb;
         TokenService = tokenService;
         PasswordHasher = passwordHasher;
+    }
+    [Authorize]
+    [HttpGet("Cart")]
+    public ActionResult GetCart()
+    {
+        if(!int.TryParse(User.FindFirstValue("userid"), out int id))
+        {
+            return Unauthorized();
+        }
+        var cartItems = ABCDb.CartItems
+            .Where(c => c.UserId == id)
+            .Include(c => c.Listing)
+            .ThenInclude(l => l.Item)
+            .ThenInclude(i => i.Seller)
+            .Select(c => new
+            {
+                c.Id,
+                Listing = c.Listing.ToDto(),
+                c.AddDate,
+                c.Quantity,
+            })
+            .ToArray();
+        return Ok(cartItems);
     }
     [HttpPost("Refresh")]
     public ActionResult<TokenResponse> RefreshUserToken([FromBody] RefreshTokenRequest refreshRequest)

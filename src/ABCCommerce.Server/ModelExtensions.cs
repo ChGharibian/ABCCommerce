@@ -2,6 +2,7 @@ using System.Runtime.InteropServices;
 using ListingDTO = SharedModels.Models.Listing;
 using ItemDTO = SharedModels.Models.Item;
 using SellerDTO = SharedModels.Models.Seller;
+using CartItemDTO = SharedModels.Models.CartItem;
 using ABCCommerceDataAccess.Models;
 
 namespace ABCCommerce.Server;
@@ -41,6 +42,16 @@ public static class ModelExtensions
             Id = seller.Id,
             Name = seller.Name,
             Image = seller.Image,
+        };
+    }
+    public static CartItemDTO ToDto(this CartItem cartItem)
+    {
+        return new CartItemDTO
+        {
+            Id = cartItem.Id,
+            AddDate = cartItem.AddDate,
+            Quantity = cartItem.Quantity,
+            Listing = cartItem.Listing?.ToDto(),
         };
     }
 }

@@ -3,6 +3,7 @@ using ABCCommerceDataAccess;
 using Examine;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using SharedModels.Models;
 using SharedModels.Models.Requests;
 
@@ -73,7 +74,7 @@ public class ListingController : Controller
         return Ok(listing.ToDto());
     }
     [HttpPatch("{listing:int}")]
-    public async Task<ActionResult<Listing>> UpdateListing([FromQuery] int listing, [FromBody] UpdateListingRequest updateRequest)
+    public async Task<ActionResult<Listing>> UpdateListing(int listing, [FromBody] UpdateListingRequest updateRequest)
     {
         var editListing = AbcDb.Listings.Where(l => l.Id == listing).Include(l => l.Images).FirstOrDefault();
         if (editListing is null) return NotFound();
@@ -99,5 +100,28 @@ public class ListingController : Controller
         }
         AbcDb.SaveChanges();
         return editListing.ToDto();
+    }
+    [HttpGet("{listing:int}/Availability")]
+    public async Task<ActionResult<Listing>> Availability(int listing)
+    {
+        var quantity = AbcDb.Listings.Where(l => l.Id == listing).Select(l => new { l.Quantity }).FirstOrDefault()?.Quantity ?? -1;
+        if (quantity == -1) return NotFound();
+
+        var requested = AbcDb.CartItems.Where(i => i.ListingId == listing).Sum(i => i.Quantity);
+        quantity -= requested;
+        DateTime availabilityDate = DateTime.Now;
+        if(quantity <= 0)
+        {
+            var overdraw = -quantity;
+            ABCCommerceDataAccess.Models.CartItem[] fromDbCartItems = AbcDb.CartItems.Where(i => i.ListingId == listing).OrderBy(i => i.AddDate).Take(overdraw+1).ToArray();
+            var openDate = fromDbCartItems.SkipWhile(i => (overdraw -= i.Quantity) > 0).Select(i => i.AddDate).First();
+            availabilityDate = openDate.AddDays(5);
+        }
+
+        return Ok(new
+        {
+            Quantity = Math.Max(quantity, 0),
+            Avaliability = availabilityDate,
+        });
     }
 }
