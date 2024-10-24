@@ -1,0 +1,12 @@
+.page-selector-wrapper {
+    display: flex;  
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    background-color: rgb(120, 120, 120);
+    
+}
+
+.page-selector-wrapper .arrow {
+    margin: 0 1rem;
+}

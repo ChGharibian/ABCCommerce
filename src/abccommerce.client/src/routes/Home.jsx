@@ -2,7 +2,7 @@ import './Home.css';
 import { useEffect, useState } from 'react';
 import Listing from '../components/Listing';
 import searchImg from '../assets/search.svg';
-
+import PageSelector from '../components/PageSelector';
 
 export default function Home() {
     const [listings, setListings] = useState([]);
@@ -39,6 +39,7 @@ export default function Home() {
             }
             </div>
         </div>
+        <PageSelector width={200} height={50} handlePageChange={(page) => setPageNumber(page)}/>
     </div>
     )
 

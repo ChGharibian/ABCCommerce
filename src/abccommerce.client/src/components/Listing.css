@@ -43,6 +43,11 @@
     justify-content: center;
 }
 
+.listing-image-wrapper .arrow {
+    width: 1rem;
+    height: 1rem;
+}
+
 .arrow-control {
     width: calc(1rem + 5px);
     height: calc(1rem + 5px);
@@ -59,8 +64,6 @@
 .arrow {
     border-top: 5px solid white;
     border-left: 5px solid white;
-    width: 1rem;
-    height: 1rem;
 }
 
 .left {
