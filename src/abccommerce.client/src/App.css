@@ -1,10 +1,11 @@
-﻿#root {
-    width: 100vw;
-    height: 100vh;
-        overflow: hidden;
+﻿* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
 }
 
-th, td {
-    padding-left: 1rem;
-    padding-right: 1rem;
+#root {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
 }

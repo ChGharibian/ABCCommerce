@@ -6,7 +6,7 @@
 
 .required-mark {
     height: 0;
-    color: red;
+    color: var(--c-red-300);
     text-align: right;
     position: absolute;
 }
@@ -19,8 +19,8 @@
     z-index: 1000;
     overflow-y: scroll;
     text-align: left;
-    background-color: rgb(120, 120, 120);
-    color: white;
+    background-color: var(--c-grey-200);
+    color: var(--main-text-color);
 }
 
 .dropdown-item {
@@ -30,5 +30,5 @@
 }
 
 .dropdown-item:hover {
-    background-color: #424040;
+    background-color: var(--c-grey-500);
 }

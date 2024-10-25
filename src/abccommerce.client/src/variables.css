@@ -1,3 +1,29 @@
 :root {
     --nav-bar-height: 80px;
+
+    --c-yellow-100: rgb(221, 220, 192);
+
+    --c-white-100: #f4f4f4;
+    --c-white-300: rgb(234, 228, 228);
+    --c-white-500: rgb(222, 215, 215);
+    --c-white-700: rgb(200, 200, 200);
+
+    --c-grey-100: rgb(165, 165, 165);
+    --c-grey-200: #808080;
+    --c-grey-500: #5f5c5c;
+    --c-grey-600: #424040;
+    --c-grey-700: #3c3a3a;
+
+    --c-red-300: #e81212;
+
+    --main-bg-color: var(--c-grey-600);
+    --main-input-bg-color: var(--c-grey-200);
+    --main-input-border-color: var(--c-white-300);
+    --main-input-placeholder-color: var(--c-white-300);
+    --main-text-color: var(--c-white-100);
+    --main-svg-color: invert(100%) sepia(0%) saturate(0%) hue-rotate(152deg) brightness(105%) contrast(103%);
+
+    --secondary-bg-color: var(--c-grey-700);
+
+    --error-text-color: var(--c-red-300);
 }

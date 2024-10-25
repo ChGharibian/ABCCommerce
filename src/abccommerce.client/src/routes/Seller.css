@@ -1,9 +1,3 @@
-* {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-}
-
 .small-text {
     font-size: .7rem;
 }
@@ -13,8 +7,8 @@
     top: var(--nav-bar-height);
     height: calc(100% - var(--nav-bar-height));
     overflow: hidden;
-    color: white;
-    background-color: #424040;
+    color: var(--main-text-color);
+    background-color: var(--main-bg-color);
     text-align: center;
 }
 
@@ -26,7 +20,7 @@
     width: 100%;
     padding: .5rem 0;
     height: 4rem;
-    background-color: rgb(134, 133, 133);
+    background-color: var(--c-grey-200);
     z-index: 2;
 }
 
