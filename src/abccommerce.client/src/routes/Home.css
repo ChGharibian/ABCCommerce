@@ -1,5 +1,4 @@
 #home-page-wrapper {
-    --nav-bar-height: 80px;
     position: relative;
     top: var(--nav-bar-height);
     height: calc(100% - var(--nav-bar-height));

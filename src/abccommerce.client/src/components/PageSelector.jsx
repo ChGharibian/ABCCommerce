@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import './PageSelector.css';
 export default function PageSelector({width, height, handlePageChange, page}) {
     // width and height passed in as integers representing pixels

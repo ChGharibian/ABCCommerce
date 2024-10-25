@@ -7,12 +7,11 @@ export default function DropdownList({placeholder, list, name, width, required})
     const dropdown = useRef(null)
     return (
     <div className="dropdown-list-wrapper">
-    {required ? 
+    {required && 
     <div className="required-mark" style={{
         width,
         left: "calc((100% - " + width + ") / 2 + 0.7rem)"
-        }}>*</div> 
-    : <></>}
+        }}>*</div> }
     <input style={{width}} required={required} placeholder={placeholder} name={name} value={userInput} 
         onChange={e => {
         if(!listShown) setListShown(true);

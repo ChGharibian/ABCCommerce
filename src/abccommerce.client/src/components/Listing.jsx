@@ -66,6 +66,7 @@ function Listing({listing}) {
     }
     
     return <li className="listing-wrapper" key={listing.id}>
+        <a href={`/seller/${listing.item.seller.id}/items/${listing.item.id}`} className="listing-redirect"></a>
         <div className="listing">
         {/* image would go first */}
         <div className="listing-image-wrapper">

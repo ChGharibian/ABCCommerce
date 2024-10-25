@@ -6,7 +6,9 @@ import Registration from "./Registration";
 import Home from "./Home";
 import WrongLink from "./WrongLink";
 import Seller from "./Seller";
+import Item from "./Item";
 import '../App.css'
+import '../variables.css';
 
 export default function App() {
   return (
@@ -17,6 +19,7 @@ export default function App() {
         <Route path="login" element={<Login/>}/>
         <Route path="registration" element={<Registration/>}/>
         <Route path="seller/:sellerId" element={<Seller/>}/>
+        <Route path="seller/:sellerId/items/:itemId" element={<Item />} />
         <Route path="*" element={<WrongLink/>}/>
         <Route/>
       </Route>
