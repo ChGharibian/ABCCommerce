@@ -55,3 +55,8 @@
 #search-bar::placeholder {
     color: white;
 }
+
+.no-listings {
+    text-align: center;
+    width: 100%;
+}

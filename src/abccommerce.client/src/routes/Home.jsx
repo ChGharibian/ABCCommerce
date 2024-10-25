@@ -9,49 +9,81 @@ export default function Home() {
     const [query, setQuery] = useState('');
     const [searchInput, setSearchInput] = useState('')
     const [pageNumber, setPageNumber] = useState(1);
+    const [loading, setLoading] = useState(false);
+    const [searched, setSearched] = useState(false);
+    // const [prevSearch, setPrevSearch] = useState('');
 
     // max 50
     const listingsPerPage = 24;
+
     useEffect(() => {
         search(query, pageNumber - 1, listingsPerPage);
     }, [query, pageNumber])
+
     const handleKeyDown = (e) => {
         if(e.key === "Enter") {
-            setQuery(searchInput);
+            handleSearchSubmit();
         }
     }
+
+    const handleSearchSubmit = () => {
+      setQuery(searchInput.trim());
+      setPageNumber(1);
+    }
+
+    const handlePageChange = page => {
+      if(listings?.length === 0 && page > pageNumber) return;
+      setPageNumber(page);
+    }
+
+    async function search(query, step, count) {
+      if(query === '' || typeof query === undefined) return;
+      if(!searched) setSearched(true);
+      try {
+        setLoading(true);
+        let response = await fetch(`http://localhost:5147/search?q=${query}&skip=${(step) * count}&count=${count}`);
+        setListings(await response.json());
+        setLoading(false);
+      } catch(error) {
+        console.error(error);
+      }
+      
+    }
+
   return (
     <div id="home-page-wrapper">
         <div id="search-controls-wrapper">
             <div id="search-controls">
                 <input onKeyDown={handleKeyDown} id="search-bar" placeholder="Search" onChange={e => setSearchInput(e.target.value)}/>
-                <button onClick={() => setQuery(searchInput)} id="search-button">
+                <button onClick={handleSearchSubmit} id="search-button">
                   <img id="search-img" src={searchImg} />
                 </button>
             </div>
         </div>
         <div className="listings-wrapper">  
             <div className="listings">
-            {listings ?
+            {
+              loading ?
+                <p className="no-listings">Loading</p>
+              :
+              listings?.length > 0 ?
                 listings.map(l => <Listing listing={l} key={l.id} />)
-            :
+              : 
+              listings?.length === 0 && searched ?
+                pageNumber > 1 ?
+                  <p className="no-listings">No items on this page</p>
+                :
+                  <p className="no-listings">No results for {query}</p>
+              :  
                 <></>
             }
             </div>
         </div>
-        <PageSelector width={200} height={50} handlePageChange={(page) => setPageNumber(page)}/>
+        {
+        (listings?.length > 0 || listings?.length === 0 && searched && pageNumber > 1) &&
+          <PageSelector width={160} height={40} handlePageChange={handlePageChange} page={pageNumber}/>
+        }
     </div>
     )
 
-
-  async function search(query, step, count) {
-    if(query === '' || typeof query === undefined) return;
-    try {
-      let response = await fetch(`http://localhost:5147/search?q=${query}&skip=${(step) * count}&count=${count}`);
-      setListings(await response.json());
-    } catch(error) {
-      console.error(error);
-    }
-    
-  }
 }

@@ -1,26 +1,21 @@
 import { useEffect, useState } from "react";
 import './PageSelector.css';
-export default function PageSelector({width, height, handlePageChange}) {
+export default function PageSelector({width, height, handlePageChange, page}) {
     // width and height passed in as integers representing pixels
-    const [pageNumber, setPageNumber] = useState(1);
 
     const downPage = () => {
-        if(pageNumber > 1) setPageNumber(pageNumber - 1);
+        if(page > 1) handlePageChange(page - 1)
     }
 
     const upPage = () => {
-        setPageNumber(pageNumber + 1);
+        handlePageChange(page + 1)
     }
-
-    useEffect(() => {
-        handlePageChange(pageNumber);
-    }, [pageNumber])
 
     return (
         <div className="page-selector-wrapper" style={{
             width,
             height,
-            top: "calc(95% - " + height + "px)",
+            top: "calc(97.5% - " + height + "px)",
             left: "calc(50% - " + (width / 2) + "px)" 
         }}>
             <div className="arrow left" style={{
@@ -29,7 +24,7 @@ export default function PageSelector({width, height, handlePageChange}) {
             }} onClick={downPage}></div>
             <div className="page-number" style={{
                 fontSize: (height / 2) + "px"
-            }}>{pageNumber}</div>
+            }}>{page}</div>
             <div className="arrow right" style={{
                 width: (height / 4) + "px",
                 height: (height / 4) + "px"
