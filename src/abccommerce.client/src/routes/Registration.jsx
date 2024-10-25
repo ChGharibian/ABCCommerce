@@ -3,7 +3,7 @@ import { useCookies } from 'react-cookie';
 import './Registration.css';
 import DropdownList from '../components/DropdownList';
 export default function Registration() {
-  const [cookies, setCookie, removeCookie] = useCookies(['token', 'refresh-token']);
+  const [cookies, setCookie, removeCookie] = useCookies(['token', 'refreshToken']);
   const [states, setStates] = useState([]);
   useEffect(() => {
     getStateData();
@@ -14,20 +14,25 @@ export default function Registration() {
     const formData = new FormData(e.currentTarget);
     let formObject = {};
     formData.forEach((value, key) => formObject[key] = value)
-    console.log(formObject);
 
-    // let response = await fetch("http://localhost:5147/user/register", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json"
-    //   },
-    //   body: JSON.stringify(formObject)
-    // });
-
-    // let data = await response.json();
-    // console.log(data);
-    // setCookie('token', data.token, {path: "/", expires: data.expirationDate});
-    // setCookie('refresh-token', data.refreshToken, {path: "/"});
+    try {
+      let response = await fetch("http://localhost:5147/user/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formObject)
+      });
+  
+      let data = await response.json();
+  
+      let expDate = new Date(data.expirationDate);
+      setCookie('token', data.token, {path: "/", expires: expDate});
+      setCookie('refreshToken', data.refreshToken, {path: "/"});
+    } catch(error) {
+      console.error(error);
+    }
+    
   }
 
   return(
