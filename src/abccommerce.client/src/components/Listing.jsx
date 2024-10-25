@@ -20,52 +20,6 @@ function Listing({listing}) {
         }
     }
 
-    return <li className="listing-wrapper" key={listing.id}>
-        <div className="listing">
-        {/* image would go first */}
-        <div className="listing-image-wrapper">
-            {listing.images.length > 1 ?
-                <div className="listing-left-controls">
-                    <div onClick={scrollLeft} className="arrow left"></div>
-                </div>
-            :
-                <></>
-            }
-            {listing.images.length > 0 ?
-                <img className="listing-image" src={listing.images[currentImage]} />
-            :
-                "No images"
-            }
-            {listing.images.length > 1 ?
-                <div className="listing-right-controls">
-                    <div onClick={scrollRight} className="arrow right"></div>
-                </div>
-            :
-                <></>
-            }
-        </div>
-            <div className="listing-details-wrapper">
-                <p className="listing-price">{'$' + listing.pricePerUnit}</p>
-                <p className="listing-quantity">{listing.quantity}</p>
-                <div className="listing-top-info">
-                    <p className="listing-name">{listing.item.name}</p>
-                    <a className="listing-seller-name" 
-                        href={listing.item.seller.id ? 
-                        `/seller/${listing.item.seller.id}` : "#"}>
-                        {listing.item.seller.name ?? "Unknown Seller"}
-                    </a>
-                </div>
-                
-                    <div className="listing-bottom-info">
-                        <div className="listing-tags">
-                            {getTagElements(listing.tags, listing.id)}
-                        </div>
-                        {getDateElement(listingDate)}
-                    </div>
-            </div>
-        </div>
-    </li>;
-
     function getTagElements(tagList, lid) {
         return tagList.length > 2 ?
         <>
@@ -105,7 +59,57 @@ function Listing({listing}) {
                 date.toLocaleTimeString('en-US').slice(-2)
             }
         </p>
-    } 
+    }
+
+    function getDollarString(price) {
+        return '$' + Number.parseFloat(price).toFixed(2);
+    }
+    
+    return <li className="listing-wrapper" key={listing.id}>
+        <div className="listing">
+        {/* image would go first */}
+        <div className="listing-image-wrapper">
+            {listing.images.length > 1 ?
+                <div className="listing-left-controls">
+                    <div onClick={scrollLeft} className="arrow left"></div>
+                </div>
+            :
+                <></>
+            }
+            {listing.images.length > 0 ?
+                <img className="listing-image" src={listing.images[currentImage]} />
+            :
+                "No images"
+            }
+            {listing.images.length > 1 ?
+                <div className="listing-right-controls">
+                    <div onClick={scrollRight} className="arrow right"></div>
+                </div>
+            :
+                <></>
+            }
+        </div>
+            <div className="listing-details-wrapper">
+                <p className="listing-price">{getDollarString(listing.pricePerUnit)}</p>
+                <p className="listing-quantity">{listing.quantity.toLocaleString()}</p>
+                <div className="listing-top-info">
+                    <p className="listing-name">{listing.item.name}</p>
+                    <a className="listing-seller-name" 
+                        href={listing.item.seller.id ? 
+                        `/seller/${listing.item.seller.id}` : "#"}>
+                        {listing.item.seller.name ?? "Unknown Seller"}
+                    </a>
+                </div>
+                
+                    <div className="listing-bottom-info">
+                        <div className="listing-tags">
+                            {getTagElements(listing.tags, listing.id)}
+                        </div>
+                        {getDateElement(listingDate)}
+                    </div>
+            </div>
+        </div>
+    </li>;
 }
 
 export default Listing;
