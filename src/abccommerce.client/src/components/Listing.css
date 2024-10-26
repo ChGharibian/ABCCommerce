@@ -172,25 +172,8 @@
 }
 
 .listing-tags {
-    /* width: 50%; */
     flex-grow: 2;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
 }
-
-
-.listing-tag {
-    max-width: 4rem;
-    margin-right: .4rem;
-    padding: .2rem;
-    background-color: var(--c-grey-200);
-    border-radius: 5px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-
 
 .listing-date {
     /* width: 50%; */

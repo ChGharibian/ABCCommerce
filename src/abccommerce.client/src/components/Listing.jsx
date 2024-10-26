@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './Listing.css';
+import { TagList } from './TagList';
 function Listing({listing}) {
     const listingDate = new Date(listing.listingDate)
     const [currentImage, setCurrentImage] = useState(0);
@@ -18,21 +19,6 @@ function Listing({listing}) {
         } else {
             setCurrentImage(currentImage + 1);
         }
-    }
-
-    function getTagElements(tagList, lid) {
-        return tagList.length > 2 ?
-        <>
-            <p className="listing-tag small-text">{tagList[0]}</p>
-            <p className="listing-tag small-text">{tagList[1]}</p>
-            <p className="small-text">{' + ' + (tagList.length - 2 > 4 ? '' : tagList.length - 2) + ' more'}</p>
-            
-        </>
-        : tagList.length > 0 ?
-            tagList.map(t => <p key={t + lid} className="listing-tag small-text">{t}</p>) 
-        :
-            <></>
-        
     }
 
     function monthsSince(date) {
@@ -104,7 +90,7 @@ function Listing({listing}) {
                 
                     <div className="listing-bottom-info">
                         <div className="listing-tags">
-                            {getTagElements(listing.tags, listing.id)}
+                            <TagList tags={listing.tags} maxTags={2} maxTagWidth="4rem" />
                         </div>
                         {getDateElement(listingDate)}
                     </div>
