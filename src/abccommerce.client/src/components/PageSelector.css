@@ -8,12 +8,3 @@
     position: fixed;
     z-index: 2000;
 }
-
-.page-selector-wrapper .arrow {
-    margin: 0 1rem;
-}
-
-.page-selector-wrapper .arrow:hover {
-    border-top: 5px solid var(--c-grey-100);
-    border-left: 5px solid var(--c-grey-100);
-}

@@ -1,26 +1,10 @@
-import { useState } from 'react';
 import './Listing.css';
 import { TagList } from './TagList';
+import Arrow from './Arrow';
+import ImageScroller from './ImageScroller';
 function Listing({listing}) {
     const listingDate = new Date(listing.listingDate)
-    const [currentImage, setCurrentImage] = useState(0);
     
-    const scrollLeft = () => {
-        if(currentImage === 0) {
-            setCurrentImage(listing.images.length - 1);
-        } else {
-            setCurrentImage(currentImage - 1);
-        }
-    }
-
-    const scrollRight = () => {
-        if(currentImage === listing.images.length - 1) {
-            setCurrentImage(0);
-        } else {
-            setCurrentImage(currentImage + 1);
-        }
-    }
-
     function monthsSince(date) {
         let currentDate = new Date();
         let yearOffset = (currentDate.getFullYear() - date.getFullYear()) * 12;
@@ -56,25 +40,7 @@ function Listing({listing}) {
         <div className="listing">
         {/* image would go first */}
         <div className="listing-image-wrapper">
-            {listing.images.length > 1 ?
-                <div className="listing-left-controls">
-                    <div onClick={scrollLeft} className="arrow left"></div>
-                </div>
-            :
-                <></>
-            }
-            {listing.images.length > 0 ?
-                <img className="listing-image" src={listing.images[currentImage]} />
-            :
-                "No images"
-            }
-            {listing.images.length > 1 ?
-                <div className="listing-right-controls">
-                    <div onClick={scrollRight} className="arrow right"></div>
-                </div>
-            :
-                <></>
-            }
+            <ImageScroller images={listing.images} />
         </div>
             <div className="listing-details-wrapper">
                 <p className="listing-price">{getDollarString(listing.pricePerUnit)}</p>

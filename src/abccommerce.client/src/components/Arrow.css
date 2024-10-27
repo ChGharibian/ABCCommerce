@@ -1,0 +1,15 @@
+.left {
+    transform: rotate(-45deg);
+}
+
+.right {
+    transform: rotate(135deg);
+}
+
+.down {
+    transform: rotate(-135deg);
+}
+
+.up {
+    transform: rotate(45deg);
+}
