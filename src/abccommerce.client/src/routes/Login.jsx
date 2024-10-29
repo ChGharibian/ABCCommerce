@@ -15,7 +15,36 @@ export default function Login(){
     username:'',
     password:'',
   })
+  const [serverMessage, setServerMessage] = useState ('');
 
+  const handleSubmit = async e => {
+    e.preventDefault();
+
+    try {
+      let response = await fetch("http://localhost:5147/user/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON. stringify(formData)
+    });
+
+    const data = await response.json();
+
+    if(response.ok) {
+      setServerMessage('We in boys');
+      console.log('dab on the haters', data);
+      //redirect them to their user profile or listings page
+    } else{
+      setServerMessage(data.error || "Authentication failed");
+      console.log('What did we do wrong when sending a request?')
+    }
+      
+    } catch(error) {
+      console.error('Fetch error',error);
+    }
+
+  }
   //validation
   const validateUsername = (username) => {
     let error = '';
@@ -57,21 +86,6 @@ export default function Login(){
     setErrors({...errors, [name]: error});
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const usernameError = validateUsername(formData.username);
-    const passwordError = validatePassword(formData.password);
-    setErrors({
-      username: usernameError,
-      password: passwordError,
-    });
-
-    if(!usernameError && !passwordError) {
-
-      console.log('Form submitteed! this is the data', formData);
-    }
-  }
 
 
 
