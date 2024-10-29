@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SharedModels.Models;
 using SharedModels.Models.Requests;
+using System.Security.Claims;
 
 namespace ABCCommerce.Server.Controllers;
 [ApiController]
@@ -46,15 +47,24 @@ public class SellerController : ControllerBase
         return Ok(seller);
     }
 
+    [HttpGet("{seller:int}/Listings")]
+    public async Task<ActionResult<Listing>> GetListings(int seller, [FromQuery] int? skip, [FromQuery] int? count)
+    {
+        return Ok(
+            await ABCDb.Listings
+            .Include(l => l.Item)
+            .Include(l => l.Images)
+            .Where(l => l.Item.SellerId == seller)
+            .Where(l => l.Active)
+            .Skip(skip ?? 0)
+            .Take(Math.Min(50, count ?? 50))
+            .Select(l => l.ToDto())
+            .ToArrayAsync());
+    }
+
     [HttpGet("{seller:int}/Items")]
     public ActionResult<IEnumerable<Item>> GetItems(int seller)
     {
         return Ok(ABCDb.Items.Where(i => i.SellerId == seller).Include(i => i.Listings).Select(i => i.ToDto()).ToArray());
-    }
-
-    [HttpGet("{seller:int}/Items/{item:int}")]
-    public ActionResult<IEnumerable<Item>> GetItems(int seller, int item)
-    {
-        return Ok(ABCDb.Items.Where(i => i.SellerId == seller && i.Id == item).Include(i => i.Listings).Select(i => i.ToDto()).ToArray());
     }
 }
