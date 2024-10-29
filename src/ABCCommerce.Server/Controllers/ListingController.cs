@@ -25,7 +25,7 @@ public class ListingController : Controller
         HostEnvironment = hostEnvironment;
     }
     [HttpPost("{listing:int}/Image")]
-    public ActionResult<string> AddImageToListing([FromQuery] int listing, [FromBody] AddImageRequest imageRequest)
+    public ActionResult<ImagePath> AddImageToListing([FromQuery] int listing, [FromBody] AddImageRequest imageRequest)
     {
         var editListing = AbcDb.Listings.Where(l => l.Id == listing).Include(l => l.Images).FirstOrDefault();
         if (editListing is null) return NotFound();
@@ -38,17 +38,18 @@ public class ListingController : Controller
         return Ok(new ImagePath(name));
     }
 
-    [HttpGet("{seller:int}")]
-    public async Task<ActionResult<Listing>> GetListings(int seller)
+    [HttpGet("{listingId:int}")]
+    public async Task<ActionResult<Listing>> GetListings(int listingId, [FromQuery] int? skip, [FromQuery] int? count)
     {
-        return Ok(
-            await AbcDb.Listings
+        var listing = AbcDb.Listings
             .Include(l => l.Item)
             .Include(l => l.Images)
-            .Where(l => l.Item.SellerId == seller)
+            .Where(l => l.Item.Id == listingId)
             .Where(l => l.Active)
-            .Select(l => new { l.Id, l.ListingDate, l.Item, l.Tags, l.PricePerUnit, l.Quantity, l.Active, Image = l.Images.Select(i => new ImagePath(i.Image)) })
-            .ToArrayAsync());
+            .Select(l => l.ToDto())
+            .FirstOrDefault();
+        if (listing is null) return NotFound();
+        return Ok(listing);
     }
     [HttpPost()]
     public async Task<ActionResult<Listing>> CreateListing([FromBody] CreateListingRequest createListing)
