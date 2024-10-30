@@ -10,7 +10,7 @@ public class ListingImage
 {
     public int Id { get; set; }
     public int ListingId { get; set; }
-    [StringLength(100)]
+    [StringLength(400)]
     public string Image { get; set; } = "";
     public Listing Listing { get; set; } = null!;
 }

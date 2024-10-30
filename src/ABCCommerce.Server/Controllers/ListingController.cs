@@ -1,4 +1,5 @@
 
+using ABCCommerce.Server.Services;
 using ABCCommerceDataAccess;
 using Examine;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using SharedModels.Models;
 using SharedModels.Models.Requests;
+using System.Text;
 
 namespace ABCCommerce.Server.Controllers;
 [ApiController]
@@ -14,40 +16,41 @@ public class ListingController : Controller
 {
     public ILogger<ListingController> Logger { get; }
     public ABCCommerceContext AbcDb { get; }
+    public IImageService ImageService { get; }
     public IExamineManager ExamineManager { get; }
     public IHostEnvironment HostEnvironment { get; }
 
-    public ListingController(ILogger<ListingController> logger, ABCCommerceContext abcDb, IExamineManager examineManager, IHostEnvironment hostEnvironment)
+    public ListingController(ILogger<ListingController> logger, ABCCommerceContext abcDb, IImageService imageService, IExamineManager examineManager, IHostEnvironment hostEnvironment)
     {
         Logger = logger;
         AbcDb = abcDb;
+        ImageService = imageService;
         ExamineManager = examineManager;
         HostEnvironment = hostEnvironment;
     }
     [HttpPost("{listing:int}/Image")]
-    public ActionResult<ImagePath> AddImageToListing([FromQuery] int listing, [FromBody] AddImageRequest imageRequest)
+    public ActionResult<ImagePath> AddImageToListing(int listing, [FromBody] AddImageRequest imageRequest)
     {
         var editListing = AbcDb.Listings.Where(l => l.Id == listing).Include(l => l.Images).FirstOrDefault();
         if (editListing is null) return NotFound();
-        var bytes = Convert.FromBase64String(imageRequest.Image);
-        string name = Path.Combine("listings", $"{DateTime.Now:O}.{imageRequest.FileType}");
-        string pathstart = Path.Combine(HostEnvironment.ContentRootPath, "images");
-        System.IO.File.WriteAllBytes(Path.Combine(pathstart, name), bytes);
-        editListing.Images.Add(new ABCCommerceDataAccess.Models.ListingImage() { Image = name });
+
+        var imagePath = ImageService.AddImage(imageRequest.Image, imageRequest.FileType, "listings");
+
+        editListing.Images.Add(new ABCCommerceDataAccess.Models.ListingImage() { Image = imagePath.Path });
         AbcDb.SaveChanges();
-        return Ok(new ImagePath(name));
+        return Ok(imagePath);
     }
 
     [HttpGet("{listingId:int}")]
-    public async Task<ActionResult<Listing>> GetListings(int listingId, [FromQuery] int? skip, [FromQuery] int? count)
+    public async Task<ActionResult<Listing>> GetListing(int listingId)
     {
-        var listing = AbcDb.Listings
+        var listing = await AbcDb.Listings
             .Include(l => l.Item)
             .Include(l => l.Images)
             .Where(l => l.Item.Id == listingId)
             .Where(l => l.Active)
             .Select(l => l.ToDto())
-            .FirstOrDefault();
+            .FirstOrDefaultAsync();
         if (listing is null) return NotFound();
         return Ok(listing);
     }
@@ -77,7 +80,7 @@ public class ListingController : Controller
     [HttpPatch("{listing:int}")]
     public async Task<ActionResult<Listing>> UpdateListing(int listing, [FromBody] UpdateListingRequest updateRequest)
     {
-        var editListing = AbcDb.Listings.Where(l => l.Id == listing).Include(l => l.Images).FirstOrDefault();
+        var editListing = await AbcDb.Listings.Where(l => l.Id == listing).Include(l => l.Images).FirstOrDefaultAsync();
         if (editListing is null) return NotFound();
         if(updateRequest.Active is bool b)
         {
@@ -108,13 +111,13 @@ public class ListingController : Controller
         var quantity = AbcDb.Listings.Where(l => l.Id == listing).Select(l => new { l.Quantity }).FirstOrDefault()?.Quantity ?? -1;
         if (quantity == -1) return NotFound();
 
-        var requested = AbcDb.CartItems.Where(i => i.ListingId == listing).Sum(i => i.Quantity);
+        var requested = await AbcDb.CartItems.Where(i => i.ListingId == listing).SumAsync(i => i.Quantity);
         quantity -= requested;
         DateTime availabilityDate = DateTime.Now;
         if(quantity <= 0)
         {
             var overdraw = -quantity;
-            ABCCommerceDataAccess.Models.CartItem[] fromDbCartItems = AbcDb.CartItems.Where(i => i.ListingId == listing).OrderBy(i => i.AddDate).Take(overdraw+1).ToArray();
+            ABCCommerceDataAccess.Models.CartItem[] fromDbCartItems = await AbcDb.CartItems.Where(i => i.ListingId == listing).OrderBy(i => i.AddDate).Take(overdraw+1).ToArrayAsync();
             var openDate = fromDbCartItems.SkipWhile(i => (overdraw -= i.Quantity) > 0).Select(i => i.AddDate).First();
             availabilityDate = openDate.AddDays(5);
         }
@@ -124,5 +127,10 @@ public class ListingController : Controller
             Quantity = Math.Max(quantity, 0),
             Avaliability = availabilityDate,
         });
+    }
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Listing>>> GetAllListings()
+    {
+        return Ok(await AbcDb.Listings.Select(l => l.ToDto()).ToArrayAsync());
     }
 }

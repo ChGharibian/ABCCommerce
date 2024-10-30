@@ -31,12 +31,15 @@ public class DbImageService : IImageService
     {
         string imageName = $"{Convert.ToBase64String(Encoding.ASCII.GetBytes(DateTime.Now.ToString("O")))}{type}";
         string path = basePath is null ? imageName : Path.Combine(basePath, imageName);
+        path = path.Replace("\\", "/");
         var image = new DbImage()
         {
             Key = path,
             Base64 = base64,
             Type = type
         };
+        AbcDb.Images.Add(image);
+        AbcDb.SaveChanges();
         return new ImagePath(path);
     }
 }

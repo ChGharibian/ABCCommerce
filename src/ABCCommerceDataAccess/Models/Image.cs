@@ -9,7 +9,7 @@ namespace ABCCommerceDataAccess.Models;
 public class Image
 {
     [Key]
-    [StringLength(100)]
+    [StringLength(400)]
     public string Key { get; set; } = "";
     public string Base64 { get; set; } = "";
     [StringLength(30)]

@@ -21,7 +21,8 @@ public class ImageController : Controller
     [HttpGet("{**path}")]
     public ActionResult GetImage(string path)
     {
-        path = path.Replace("%2F", "\\");
+        path = path.Replace("%2F", "/");
+        path = path.Replace("%5C", "\\");
         var image = ImageService.GetImage(path);
         if(image is null)
         {

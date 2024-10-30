@@ -15,6 +15,6 @@ public class Listing
     public decimal PricePerUnit {get; set;}
     public string? Description {get; set;}
     public bool Active { get; set; }
-    public ImagePath[] Images {get; set;}
+    public ImagePath[] Images { get; set; } = Array.Empty<ImagePath>();
     public string[] Tags {get; set;}
 }

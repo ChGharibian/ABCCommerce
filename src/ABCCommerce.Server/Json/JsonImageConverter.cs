@@ -9,7 +9,7 @@ class JsonImageConverter : JsonConverter<ImagePath>
     {
         HttpContextAccessor = new HttpContextAccessor();
     }
-    string Url => new Uri(HttpContextAccessor.HttpContext!.Request.GetEncodedUrl()).GetLeftPart(UriPartial.Authority) + "/images/";
+    string Url => new Uri(HttpContextAccessor.HttpContext!.Request.GetEncodedUrl()).GetLeftPart(UriPartial.Authority) + "/Image/";
 
 
     public override ImagePath? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
