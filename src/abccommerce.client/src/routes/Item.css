@@ -1,9 +1,0 @@
-#item-page-wrapper {
-    position: relative;
-    top: var(--nav-bar-height);
-    height: calc(100% - var(--nav-bar-height));
-    overflow: hidden;
-    background-color: var(--main-bg-color);
-    color: var(--main-text-color);
-    text-align: center;
-}

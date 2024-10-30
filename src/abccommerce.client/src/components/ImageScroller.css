@@ -16,6 +16,6 @@
 
 .image-scroller-image {
     margin: auto;
-    width: 50%;
+    height: 50%;
     filter: var(--main-svg-color);
 }

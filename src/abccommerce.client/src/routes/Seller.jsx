@@ -54,7 +54,7 @@ function Seller() {
                 }
                 let sellerData = await response.json();
                 
-                response = await fetch(`http://localhost:5147/listing/${sellerId}`);
+                response = await fetch(`http://localhost:5147/seller/${sellerId}/listings`);
                 if(!response.ok) {
                     setSeller({
                         exists: false
@@ -78,7 +78,7 @@ function Seller() {
                     pricePerUnit: l.pricePerUnit,
                     quantity: l.quantity,
                     active: l.active,
-                    images: l.image
+                    images: l.images
                 }))
                 
         

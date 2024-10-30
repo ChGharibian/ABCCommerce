@@ -6,7 +6,7 @@ import Registration from "./Registration";
 import Home from "./Home";
 import WrongLink from "./WrongLink";
 import Seller from "./Seller";
-import Item from "./Item";
+import ListingPage from "./ListingPage";
 import '../App.css'
 import '../variables.css';
 
@@ -19,7 +19,7 @@ export default function App() {
         <Route path="login" element={<Login/>}/>
         <Route path="registration" element={<Registration/>}/>
         <Route path="seller/:sellerId" element={<Seller/>}/>
-        <Route path="seller/:sellerId/items/:itemId" element={<Item />} />
+        <Route path="seller/:sellerId/listing/:listingId" element={<ListingPage />} />
         <Route path="*" element={<WrongLink/>}/>
         <Route/>
       </Route>

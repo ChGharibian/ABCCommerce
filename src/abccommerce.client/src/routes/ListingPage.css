@@ -1,0 +1,43 @@
+#listing-page-wrapper {
+    position: relative;
+    top: var(--nav-bar-height);
+    height: calc(100% - var(--nav-bar-height));
+    overflow: hidden;
+    background-color: var(--main-bg-color);
+    color: var(--main-text-color);
+    text-align: left;
+}
+
+#listing-page-image-section {
+    height: 50%;
+}
+
+#listing-page-details-section {
+    padding: .5rem 1.25rem;
+}
+
+#listing-page-details-section a {
+    text-decoration: underline;
+    color: inherit;
+}
+
+#listing-page-details-section .listing-detail {
+    margin-top: 5px;
+}
+
+#listing-page-top-info {
+    font-size: 1.3rem;
+}
+
+#listing-page-wrapper button {
+    margin: 5px 1.25rem;
+    padding: 3px;
+    background-color: var(--c-white-100);
+    outline: none;
+    border-radius: 2px;
+    border: none;
+}
+
+#listing-page-wrapper button:hover {
+    filter: brightness(80%);
+}
