@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import '../components/Input';
 import Input from '../components/Input';
+import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 import './login.css';
 
 export default function Login(){
@@ -11,10 +13,15 @@ export default function Login(){
     password: '',
   })
 
+  const [, setCookie, ] = useCookies(['token', 'refreshToken']);
   const [errors, setErrors] = useState({
     username:'',
     password:'',
+    submit:'',
   })
+
+  const navigate = useNavigate();
+
   const [serverMessage, setServerMessage] = useState ('');
 
   const handleSubmit = async e => {
@@ -33,15 +40,21 @@ export default function Login(){
 
     if(response.ok) {
       setServerMessage('We in boys');
-      console.log('dab on the haters', data);
-      //redirect them to their user profile or listings page
+      
+      const expDate = new Date(data.expirationDate);
+      console.log(expDate);
+
+      setCookie('userToken', data.token, {path: "/", expires: expDate});
+      setCookie('refreshToken', data.refreshToken, {path: "/"});//need to decide if adding a expires
+      navigate('/');
     } else{
       setServerMessage(data.error || "Authentication failed");
-      console.log('What did we do wrong when sending a request?')
+      setErrors({...errors, submit: "Username and/or password do not match system"});
     }
       
     } catch(error) {
       console.error('Fetch error',error);
+      setServerMessage('Network error, try again later');
     }
 
   }

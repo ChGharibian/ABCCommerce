@@ -1,6 +1,10 @@
 import { Outlet, Link } from "react-router-dom";
-import './Layout.css'
+import './Layout.css';
+import { useCookies } from 'react-cookie';
+import Login from './Login'
+import Logout from "../components/Logout";
 export default function Layout() {
+  const [cookies] = useCookies(['userToken']);
   return (
     <>
       <nav className="navbar">
@@ -8,15 +12,22 @@ export default function Layout() {
           <li>
             <Link to="/">Home</Link>
           </li>
-          <li>
-            <Link to="/Login">Login</Link>
-          </li>
+          {(!cookies.userToken || cookies.userToken !=="") && 
+            <li>
+              <Link to="/Login">Login</Link>
+            </li>
+          }
           <li>
             <Link to="/registration">Registration</Link>
           </li>
           <li>
             <Link to="/seller">Seller</Link>
           </li>
+          {(cookies.userToken && cookies.userToken != "") &&
+            <li>
+              <Logout/>
+            </li>
+          }
           <li>
             <Link to="/wronglink">wronglink</Link>
           </li>
