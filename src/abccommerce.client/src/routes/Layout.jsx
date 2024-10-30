@@ -12,7 +12,7 @@ export default function Layout() {
           <li>
             <Link to="/">Home</Link>
           </li>
-          {(!cookies.userToken || cookies.userToken !=="") && 
+          {(!cookies.userToken && cookies.userToken !=="") && 
             <li>
               <Link to="/Login">Login</Link>
             </li>
@@ -23,7 +23,7 @@ export default function Layout() {
           <li>
             <Link to="/seller">Seller</Link>
           </li>
-          {(cookies.userToken && cookies.userToken != "") &&
+          {(cookies.userToken && cookies.userToken !== "") &&
             <li>
               <Logout/>
             </li>
