@@ -1,6 +1,5 @@
 import './Listing.css';
-import { TagList } from './TagList';
-import Arrow from './Arrow';
+import TagList from './TagList';
 import ImageScroller from './ImageScroller';
 function Listing({listing}) {
     const listingDate = new Date(listing.listingDate)
@@ -36,7 +35,7 @@ function Listing({listing}) {
     }
     
     return <li className="listing-wrapper" key={listing.id}>
-        <a href={`/seller/${listing.item.seller.id}/items/${listing.item.id}`} className="listing-redirect"></a>
+        <a href={`/seller/${listing.item.seller.id}/listing/${listing.id}`} className="listing-redirect"></a>
         <div className="listing">
         {/* image would go first */}
         <div className="listing-image-wrapper">

@@ -50,16 +50,16 @@ public class SellerController : ControllerBase
     [HttpGet("{seller:int}/Listings")]
     public async Task<ActionResult<Listing>> GetListings(int seller, [FromQuery] int? skip, [FromQuery] int? count)
     {
-        return Ok(
-            await ABCDb.Listings
-            .Include(l => l.Item)
-            .Include(l => l.Images)
-            .Where(l => l.Item.SellerId == seller)
-            .Where(l => l.Active)
-            .Skip(skip ?? 0)
-            .Take(Math.Min(50, count ?? 50))
-            .Select(l => l.ToDto())
-            .ToArrayAsync());
+        Listing[] listings = await ABCDb.Listings
+                    .Include(l => l.Item)
+                    .Include(l => l.Images)
+                    .Where(l => l.Item.SellerId == seller)
+                    .Where(l => l.Active)
+                    .Skip(skip ?? 0)
+                    .Take(Math.Min(50, count ?? 50))
+                    .Select(l => l.ToDto())
+                    .ToArrayAsync();
+        return base.Ok(listings);
     }
 
     [HttpGet("{seller:int}/Items")]

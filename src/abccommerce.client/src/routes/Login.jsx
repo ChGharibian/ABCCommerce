@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import '../components/Input';
 import Input from '../components/Input';
+import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 import './login.css';
 
 export default function Login(){
@@ -11,11 +13,51 @@ export default function Login(){
     password: '',
   })
 
+  const [, setCookie, ] = useCookies(['token', 'refreshToken']);
   const [errors, setErrors] = useState({
     username:'',
     password:'',
+    submit:'',
   })
 
+  const navigate = useNavigate();
+
+  const [serverMessage, setServerMessage] = useState ('');
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+
+    try {
+      let response = await fetch("http://localhost:5147/user/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON. stringify(formData)
+    });
+
+    const data = await response.json();
+
+    if(response.ok) {
+      setServerMessage('We in boys');
+      
+      const expDate = new Date(data.expirationDate);
+      console.log(expDate);
+
+      setCookie('userToken', data.token, {path: "/", expires: expDate});
+      setCookie('refreshToken', data.refreshToken, {path: "/"});//need to decide if adding a expires
+      navigate('/');
+    } else{
+      setServerMessage(data.error || "Authentication failed");
+      setErrors({...errors, submit: "Username and/or password do not match system"});
+    }
+      
+    } catch(error) {
+      console.error('Fetch error',error);
+      setServerMessage('Network error, try again later');
+    }
+
+  }
   //validation
   const validateUsername = (username) => {
     let error = '';
@@ -57,21 +99,6 @@ export default function Login(){
     setErrors({...errors, [name]: error});
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const usernameError = validateUsername(formData.username);
-    const passwordError = validatePassword(formData.password);
-    setErrors({
-      username: usernameError,
-      password: passwordError,
-    });
-
-    if(!usernameError && !passwordError) {
-
-      console.log('Form submitteed! this is the data', formData);
-    }
-  }
 
 
 

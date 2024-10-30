@@ -1,6 +1,6 @@
 import Tag from "./Tag"
 import './TagList.css';
-export function TagList({tags, maxTags, maxTagWidth}) {
+export default function TagList({tags, maxTags, maxTagWidth}) {
     const maxMoreTagsAmt = 4;
     return <div className="tag-list">
         {tags.length > maxTags ?

@@ -32,8 +32,9 @@ public class ListingController : Controller
     public ActionResult<ImagePath> AddImageToListing(int listing, [FromBody] AddImageRequest imageRequest)
     {
         var editListing = AbcDb.Listings.Where(l => l.Id == listing).Include(l => l.Images).FirstOrDefault();
-        if (editListing is null) return NotFound();
-
+        if (editListing is null) 
+            return NotFound();
+        
         var imagePath = ImageService.AddImage(imageRequest.Image, imageRequest.FileType, "listings");
 
         editListing.Images.Add(new ABCCommerceDataAccess.Models.ListingImage() { Image = imagePath.Path });
@@ -131,6 +132,6 @@ public class ListingController : Controller
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Listing>>> GetAllListings()
     {
-        return Ok(await AbcDb.Listings.Select(l => l.ToDto()).ToArrayAsync());
+        return Ok(await AbcDb.Listings.Include(l => l.Item).ThenInclude(i => i.Seller).Include(i => i.Images).Select(l => l.ToDto()).ToArrayAsync());
     }
 }
