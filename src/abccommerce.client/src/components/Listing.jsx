@@ -45,7 +45,7 @@ function Listing({listing}) {
                 <p className="listing-price">{getDollarString(listing.pricePerUnit)}</p>
                 <p className="listing-quantity">{listing.quantity.toLocaleString()}</p>
                 <div className="listing-top-info">
-                    <p className="listing-name">{listing.item.name}</p>
+                    <p className="listing-name">{listing.name}</p>
                     <a className="listing-seller-name" 
                         href={listing.item.seller.id ? 
                         `/seller/${listing.item.seller.id}` : "#"}>
