@@ -1,5 +1,6 @@
 
 using ABCCommerce.Server.Services;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 
@@ -19,6 +20,7 @@ public class ImageController : Controller
 
 
     [HttpGet("{**path}")]
+    [DisableCors]
     public ActionResult GetImage(string path)
     {
         path = Uri.UnescapeDataString(path);
