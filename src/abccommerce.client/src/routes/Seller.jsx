@@ -45,7 +45,10 @@ function Seller() {
             }
         </div>
         {
-        seller.exists && listings && (listings.length > 0 || pageNumber > 1) &&
+        seller.exists && listings && 
+        (((listings.length > 0 && pageNumber !== 1) 
+        || (listings.length === listingsPerPage && pageNumber === 1)) 
+        || pageNumber > 1) &&
           <PageSelector width={160} height={40} handlePageChange={handlePageChange} page={pageNumber}/>
         }
         </>

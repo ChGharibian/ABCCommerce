@@ -17,5 +17,4 @@
 .image-scroller-image {
     margin: auto;
     height: 50%;
-    filter: var(--main-svg-color);
 }
