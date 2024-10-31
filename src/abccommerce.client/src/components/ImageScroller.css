@@ -7,14 +7,14 @@
 }
 
 .image-scroller-left-controls, .image-scroller-right-controls {
-    width: 25%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-grow: 1;
 }
 
 .image-scroller-image {
-    margin: auto;
-    height: 50%;
+    margin: auto 0;
+    height: 70%;
 }
