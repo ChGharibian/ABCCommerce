@@ -2,7 +2,8 @@
     position: relative;
     top: var(--nav-bar-height);
     height: calc(100% - var(--nav-bar-height));
-    overflow: hidden;
+    overflow-y: scroll;
+    overflow-x: hidden;
     background-color: var(--main-bg-color);
     color: var(--main-text-color);
     text-align: left;
@@ -10,6 +11,8 @@
 
 #listing-page-image-section {
     height: 50%;
+    width: 95%;
+    margin: 0 auto;
 }
 
 #listing-page-details-section {
@@ -19,6 +22,10 @@
 #listing-page-details-section a {
     text-decoration: underline;
     color: inherit;
+}
+
+#listing-page-details-section a:hover {
+    color: var(--c-yellow-100);
 }
 
 #listing-page-details-section .listing-detail {

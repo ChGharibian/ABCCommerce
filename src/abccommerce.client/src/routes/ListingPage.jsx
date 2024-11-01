@@ -1,69 +1,8 @@
 import './ListingPage.css';
-import ImageScroller from '../components/ImageScroller';
 import TagList from '../components/TagList';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-
-const fakeListing = {
-    "id": 0,
-    "name": "Random item",
-    "item": {
-      "id": 0,
-      "name": "string",
-      "sku": "string",
-      "seller": {
-        "id": 0,
-        "name": "Random Item Guy",
-        "image": "string"
-      }
-    },
-    "listingDate": "2024-10-29T00:22:52.248Z",
-    "quantity": 3,
-    "pricePerUnit": 13.32,
-    "description": "This is a very random item This is a very random item This is a very random item This is a very random item This is a very random item This is a very random item This is a very random item This is a very random item This is a very random item This is a very random item This is a very random item This is a very random item",
-    "active": true,
-    "images": [
-      "http://localhost:5147/images/airplane.svg",
-      "http://localhost:5147/images/bank2.svg"
-    ],
-    "tags": [
-      "tag",
-      "tsgadsfljasdlfja",
-      "sfjsdlfjs",
-      "lsjfls",
-      "sfjslldfusldfisfskjdf",
-      "tag",
-      "tsgadsfljasdlfja",
-      "sfjsdlfjs",
-      "lsjfls",
-      "sfjslldfusldfisfskjdf",
-      "tag",
-      "tsgadsfljasdlfja",
-      "sfjsdlfjs",
-      "lsjfls",
-      "sfjslldfusldfisfskjdf",
-      "tag",
-      "tsgadsfljasdlfja",
-      "sfjsdlfjs",
-      "lsjfls",
-      "sfjslldfusldfisfskjdf",
-      "tag",
-      "tsgadsfljasdlfja",
-      "sfjsdlfjs",
-      "lsjfls",
-      "sfjslldfusldfisfskjdf",
-      "tag",
-      "tsgadsfljasdlfja",
-      "sfjsdlfjs",
-      "lsjfls",
-      "sfjslldfusldfisfskjdf",
-      "tag",
-      "tsgadsfljasdlfja",
-      "sfjsdlfjs",
-      "lsjfls",
-      "sfjslldfusldfisfskjdf",
-    ]
-  }
+import ImageList from '../components/ImageList';
 
 export default function ListingPage() {
     const [listing, setListing] = useState();
@@ -127,7 +66,7 @@ export default function ListingPage() {
         {listing ?
         <>
         <div id="listing-page-image-section">
-            <ImageScroller images={listing.images}/>
+            <ImageList images={listing.images}/>
         </div>
         <div id="listing-page-details-section">
             <div id="listing-page-top-info" className="listing-detail">{listing.name} · {getDollarString(listing.pricePerUnit)} · {listing.quantity} available</div>
