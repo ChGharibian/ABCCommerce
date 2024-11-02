@@ -10,18 +10,12 @@
     justify-content: center;
 }
 
-/* .image-list-image-wrapper {
-    gap: 1rem;
-    width: calc(90% + 2rem);
-} */
-
 .control-left, .control-right {
     height: 100%;
 }
 
 .image-list-wrapper img {
     aspect-ratio: 4 / 3;
-    /* width: calc(33% - .67rem); */
     min-width: 300px;
     max-height: 90%;
 }

@@ -3,7 +3,7 @@ import Arrow from './Arrow';
 import './ImageList.css';
 export default function ImageList({images}) {
     const [imagesPerScroll, setImagesPerScroll] = useState(1);
-    const [range, setRange] = useState([0,0]) // second number non inclusive
+    const [range, setRange] = useState([0,0]) // inclusive both ends
     const imageListWrapper = useRef(null);
 
     const getInBoundIndex = (arr, i) => {
@@ -35,7 +35,7 @@ export default function ImageList({images}) {
 
             newArr.push(arr[i]);
         }
-
+        if(arr[range[1]]) newArr.push(arr[range[1]]);
         return newArr;
     }
 
@@ -57,9 +57,9 @@ export default function ImageList({images}) {
 
     useEffect(() => {
         images.length > imagesPerScroll ? 
-        setRange([range[0], getInBoundIndex(images, range[0] + imagesPerScroll)])
+        setRange([range[0], getInBoundIndex(images, range[0] + imagesPerScroll - 1)])
         :
-        setRange([0, images.length]);
+        setRange([range[0], getInBoundIndex(images, range[0] + images.length - 1)]);
     }, [imagesPerScroll])
 
     useEffect(() => {
