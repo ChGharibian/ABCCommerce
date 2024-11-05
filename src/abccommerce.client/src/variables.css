@@ -1,5 +1,5 @@
 :root {
-    --nav-bar-height: 80px;
+    --nav-bar-height: 50px;
 
     --c-yellow-100: rgb(221, 220, 192);
 
@@ -13,6 +13,8 @@
     --c-grey-500: #5f5c5c;
     --c-grey-600: #424040;
     --c-grey-700: #3c3a3a;
+    --c-grey-800: #303030;
+    --c-grey-900: #2a2a2a;
 
     --c-red-300: #e81212;
 
@@ -24,6 +26,8 @@
     --main-svg-color: invert(100%) sepia(0%) saturate(0%) hue-rotate(152deg) brightness(105%) contrast(103%);
 
     --secondary-bg-color: var(--c-grey-700);
+
+    --tertiary-bg-color: var(--c-grey-800);
 
     --error-text-color: var(--c-red-300);
 }

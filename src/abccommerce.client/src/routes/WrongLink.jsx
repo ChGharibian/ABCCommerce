@@ -1,7 +1,9 @@
-
+import './WrongLink.css';
 
 export default function WrongLink(){
   return(
-    <h1>This is the wrong link</h1>
+    <div id="wrong-link-wrapper">
+      <h1>Page not found</h1>
+    </div>
   )
 }

@@ -1,0 +1,28 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: var(--tertiary-bg-color);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: var(--nav-bar-height); /* Set the height of your navbar */
+    color: var(--main-text-color);
+  }
+  
+  .navbar ul {
+    list-style: none;
+    display: flex;
+    margin: 10;
+    padding: 100;
+  }
+  
+  .navbar li {
+    margin-right: 20px;
+  }
+
+.navbar li a {
+    text-decoration: underline;
+    color: inherit;
+}

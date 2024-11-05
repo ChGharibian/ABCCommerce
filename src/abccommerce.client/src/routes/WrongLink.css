@@ -1,0 +1,17 @@
+#wrong-link-wrapper {
+    position: relative;
+    top: var(--nav-bar-height);
+    height: calc(100% - var(--nav-bar-height));
+    overflow: hidden;
+    color: var(--main-text-color);
+    background-color: var(--main-bg-color);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#wrong-link-wrapper h1 {
+    position: relative;
+    bottom: var(--nav-bar-height);
+}
