@@ -12,8 +12,6 @@ export default function Logout(){
     navigate('/login');
   }
   return (
-    <div>
-      <button onClick={handleClick}>LogOut</button>
-    </div>
+      <a onClick={handleClick}>Logout</a>
   )
 }

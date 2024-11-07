@@ -1,0 +1,21 @@
+.image-list-wrapper {
+    gap: 1rem;
+    width: 100%;
+    height: 100%;
+}
+
+.image-list-wrapper, .control-left, .control-right, .image-list-image-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.control-left, .control-right {
+    height: 100%;
+}
+
+.image-list-wrapper img {
+    aspect-ratio: 4 / 3;
+    min-width: 300px;
+    max-height: 90%;
+}

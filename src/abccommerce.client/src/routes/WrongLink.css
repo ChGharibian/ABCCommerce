@@ -1,8 +1,4 @@
-.small-text {
-    font-size: .7rem;
-}
-
-#seller-wrapper {
+#wrong-link-wrapper {
     position: relative;
     top: var(--nav-bar-height);
     height: calc(100% - var(--nav-bar-height));
@@ -10,21 +6,12 @@
     color: var(--main-text-color);
     background-color: var(--main-bg-color);
     text-align: center;
-}
-
-#seller-name-wrapper {
-    position: fixed;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    padding: .5rem 0;
-    height: 4rem;
-    background-color: var(--secondary-bg-color);
-    z-index: 2;
 }
 
-#seller-name {
-    width: 100%;
+#wrong-link-wrapper h1 {
+    position: relative;
+    bottom: var(--nav-bar-height);
 }
-

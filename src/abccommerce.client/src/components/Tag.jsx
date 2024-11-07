@@ -1,8 +1,9 @@
 import './Tag.css';
-export default function Tag({tag, maxWidth}) {
+export default function Tag({tag, maxWidth, fontSize}) {
 
     return <p className="tag small-text"
     style={{
-        maxWidth
+        maxWidth,
+        fontSize
     }}>{tag}</p>
 }
