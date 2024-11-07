@@ -20,7 +20,6 @@ export default function Navbar() {
             </li>
           </>
           }
-          
           {(cookies.userToken && cookies.userToken !== "") &&
             <li>
               <Logout/>

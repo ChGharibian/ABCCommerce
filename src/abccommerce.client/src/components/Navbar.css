@@ -25,4 +25,9 @@
 .navbar li a {
     text-decoration: underline;
     color: inherit;
+    cursor: pointer;
+}
+
+.navbar li a:hover {
+  color: var(--c-white-700);
 }
