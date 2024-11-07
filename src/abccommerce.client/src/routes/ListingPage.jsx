@@ -74,7 +74,7 @@ export default function ListingPage() {
             {getDateElement(new Date(listing.listingDate))}
             <p className="listing-detail">{listing.description}</p>
             <div className="listing-detail">
-                <TagList tags={listing.tags} maxTags={35} maxTagWidth="4rem" />
+                <TagList tags={listing.tags} maxTags={35} maxTagWidth="6rem" fontSize="1rem" />
             </div>
         </div>
         <button>Add to Cart</button>
