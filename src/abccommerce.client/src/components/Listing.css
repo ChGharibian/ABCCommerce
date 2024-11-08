@@ -35,13 +35,13 @@
 }
 
 .listing-redirect:hover + .listing, .listing:has(.listing-seller-name:hover), 
-.listing:has(.arrow:hover) {
+.listing:has(.arrow-click-area:hover) {
     border: 2px solid var(--c-grey-200);
 }
 
 .listing-redirect:hover + .listing .listing-image-wrapper, 
 .listing:has(.listing-seller-name:hover) .listing-image-wrapper,
-.listing:has(.arrow:hover) .listing-image-wrapper
+.listing:has(.arrow-click-area:hover) .listing-image-wrapper
 {
     border-bottom: 2px solid var(--c-grey-200);
 }

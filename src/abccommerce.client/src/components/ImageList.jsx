@@ -81,7 +81,7 @@ export default function ImageList({images}) {
             :   
                 <>
                 <div className="control-left">
-                    <Arrow size="20px" direction="left" onClick={scrollLeft}/>
+                    <Arrow size={20} direction="left" onClick={scrollLeft}/>
                 </div>
                     {
                     getFromRange(images, range).map((i, index) => 
@@ -89,7 +89,7 @@ export default function ImageList({images}) {
                     )
                     }
                 <div className="control-right">
-                    <Arrow size="20px" direction="right" onClick={scrollRight}/>
+                    <Arrow size={20} direction="right" onClick={scrollRight}/>
                 </div>
                 </>
             }

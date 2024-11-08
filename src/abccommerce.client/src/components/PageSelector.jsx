@@ -18,11 +18,11 @@ export default function PageSelector({width, height, handlePageChange, page}) {
             top: "calc(97.5% - " + height + "px)",
             left: "calc(50% - " + (width / 2) + "px)" 
         }}>
-            <Arrow direction="left" size={(height / 4) + "px"} onClick={downPage} margin="0 1rem" dimAmount="70%" />
+            <Arrow direction="left" size={(height / 4)} onClick={downPage} margin="0 1rem" dimAmount="70%" thickness={2}/>
             <div className="page-number" style={{
                 fontSize: (height / 2) + "px"
             }}>{page}</div>
-            <Arrow direction="right" size={(height / 4) + "px"} onClick={upPage} margin="0 1rem" dimAmount="70%" />
+            <Arrow direction="right" size={(height / 4)} onClick={upPage} margin="0 1rem" dimAmount="70%" thickness={2}/>
         </div>
     )
 }   
