@@ -14,12 +14,7 @@
   .navbar ul {
     list-style: none;
     display: flex;
-    margin: 10;
-    padding: 100;
-  }
-  
-  .navbar li {
-    margin-right: 20px;
+    gap: 1rem;
   }
 
 .navbar li a {

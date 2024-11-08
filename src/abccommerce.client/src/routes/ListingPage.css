@@ -38,12 +38,17 @@
 }
 
 #listing-page-wrapper button {
-    margin: 5px 1.25rem;
+    margin: 10px 1.25rem;
     padding: 3px;
     background-color: var(--c-white-100);
     outline: none;
     border-radius: 2px;
     border: none;
+}
+
+#listing-page-wrapper .error {
+    color: var(--error-text-color);
+    display: inline;
 }
 
 #listing-page-wrapper button:hover {

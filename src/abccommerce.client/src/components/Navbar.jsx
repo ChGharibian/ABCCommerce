@@ -21,9 +21,14 @@ export default function Navbar() {
           </>
           }
           {(cookies.userToken && cookies.userToken !== "") &&
+          <>
             <li>
               <Logout/>
             </li>
+            <li>
+              <Link to="/cart">Cart</Link>
+            </li>
+          </>
           }
         </ul>
       </nav>

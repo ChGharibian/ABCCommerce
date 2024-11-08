@@ -2,11 +2,16 @@ import './ListingPage.css';
 import TagList from '../components/TagList';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 import ImageList from '../components/ImageList';
+import Input from '../components/Input';
 
 export default function ListingPage() {
     const [listing, setListing] = useState();
+    const [quantity, setQuantity] = useState(1);
+    const [error, setError] = useState('');
     const {sellerId, listingId} = useParams();
+    const [cookies ,setCookie,] = useCookies(['userToken', 'refreshToken']);
     useEffect(() => {
         getListing();
     }, [])
@@ -61,6 +66,45 @@ export default function ListingPage() {
       </p>
     }
 
+    async function addToCart() {
+      // refresh token method here
+
+      try {
+        let response = await fetch("http://localhost:5147/cart", {
+          method: "POST",
+          headers: {
+            "Authorization": "Bearer " + cookies.userToken,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            listingId: listing.id,
+            quantity
+          })
+        })
+        
+        if(response.ok) {
+          setError('');
+          console.log(await response.json());
+        } else if(response.status === 401) {
+          // unauthorized
+          setError('Log in to add items to cart');
+        } else {
+          // other issue
+          setError('Something went wrong, try again later');
+        }
+      }
+      catch(error) {
+        setError('Something went wrong, try again later');
+        console.error(error);
+      }
+      
+    }
+
+    function handleQuantityChange(e) {
+      e.preventDefault();
+      if(e.target.value >= 1 && e.target.value <= listing.quantity) setQuantity(e.target.value);
+    }
+
     return (
     <div id="listing-page-wrapper">
         {listing ?
@@ -77,7 +121,12 @@ export default function ListingPage() {
                 <TagList tags={listing.tags} maxTags={35} maxTagWidth="6rem" fontSize="1rem" />
             </div>
         </div>
-        <button>Add to Cart</button>
+        <Input value={quantity} type="number" placeholder="Quantity" style={{width: "8rem", marginLeft: "1.25rem", marginTop: "5px"}} 
+          onChange={handleQuantityChange}/>
+        <button onClick={addToCart}>Add to Cart</button>
+        {error &&
+        <p className="error">{error}</p>
+        }
         </>
         :
         <p>Loading</p>
