@@ -84,9 +84,11 @@ export default function ListingPage() {
             <ImageList images={listing.images}/>
         </div>
         <div id="listing-page-details-section">
-            <div id="listing-page-top-info" className="listing-detail">{listing.name} · {getDollarString(listing.pricePerUnit)} · {listing.quantity} available</div>
+            <div id="listing-page-top-info" className="listing-detail">
+              {listing.name ? listing.name : <i>No name</i>} · {getDollarString(listing.pricePerUnit)} · {listing.quantity} available
+              </div>
             <a className="listing-detail" href={`/seller/${listing.item.seller.id}`}>{listing.item.seller.name}</a>
-            <p className="listing-detail">{getDateText(new Date(listing.listingDate))}</p>
+            <p className="listing-detail">{'Posted ' + getDateText(new Date(listing.listingDate)).toLowerCase()}</p>
             <p className="listing-detail">{listing.description}</p>
             <div className="listing-detail">
                 <TagList tags={listing.tags} maxTags={35} maxTagWidth="6rem" fontSize="1rem" />

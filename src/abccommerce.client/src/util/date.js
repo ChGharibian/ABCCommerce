@@ -8,16 +8,30 @@ export function monthsSince(date) {
 }
 
 export function getDateText(date) {
+    let ms = Date.now().valueOf() - date.valueOf();
+    let seconds = Math.floor(ms / 1000);
+    let years = Math.floor(seconds / 31540000);
+    if(years > 0) {
+        return years + (years > 1 ? ' years ago' : ' year ago');
+    }
     let months = monthsSince(date);
-    let yearsAgo = Math.floor(months / 12);
-    return  months >= 12 ?
-            (yearsAgo !== 1 ? yearsAgo + ' years ago' : yearsAgo + ' year ago')
-            : months >= 1 ?
-            (months !== 1 ? months + ' months ago' : months + ' month ago')
-            :
-            date.toDateString().slice(3) + ' ' + 
-            date.toLocaleTimeString('en-US').slice(0, -6) + ' ' + 
-            date.toLocaleTimeString('en-US').slice(-2)
-        
-    
+    if(months > 0) {
+        return months + (months > 1 ? ' months ago' : ' month ago');
+    }
+    let minutes = Math.floor(seconds / 60);
+    seconds = seconds % 60;
+    let hours = Math.floor(minutes / 60)
+    minutes = minutes % 60;
+    let days = Math.floor(hours / 24);
+    hours = hours % 24;
+    if(days > 0) {
+        return days + (days > 1 ? ' days ago'  : ' day ago');
+    }
+    if(hours > 0) {
+        return hours + (hours > 1 ? ' hours ago' : ' hour ago')
+    }
+    if(minutes > 0) {
+        return minutes + (minutes > 1 ? ' minutes ago' : 'minute ago');
+    }
+    return 'Just now';
 }
