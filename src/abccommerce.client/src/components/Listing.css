@@ -52,7 +52,7 @@
     height: 100%;
     width: 100%;
     border: 1px solid var(--c-white-100);
-    margin: 1px;
+    margin: -1px;
 }
 
 .listing-image-wrapper {

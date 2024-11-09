@@ -5,7 +5,8 @@ import { useParams } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import ImageList from '../components/ImageList';
 import Input from '../components/Input';
-
+import { getDateText } from '../util/date';
+import { getDollarString } from '../util/currency';
 export default function ListingPage() {
     const [listing, setListing] = useState();
     const [quantity, setQuantity] = useState(1);
@@ -34,36 +35,6 @@ export default function ListingPage() {
         catch(error) {
           console.error(error);
         }
-    }
-
-    function getDollarString(price) {
-        return '$' + Number.parseFloat(price).toFixed(2);
-    }
-
-    function monthsSince(date) {
-      let currentDate = new Date();
-      let yearOffset = (currentDate.getFullYear() - date.getFullYear()) * 12;
-      let monthOffset = currentDate.getMonth() - date.getMonth();
-      let dayOffset = currentDate.getDate() >= date.getDate() ? 0 : -1;
-
-      return yearOffset + monthOffset + dayOffset;
-    }
-
-    function getDateElement(date) {
-      let months = monthsSince(date);
-      let yearsAgo = Math.floor(months / 12);
-      return <p className="listing-detail">
-          {
-              months >= 12 ?
-              (yearsAgo !== 1 ? yearsAgo + ' years ago' : yearsAgo + ' year ago')
-              : months >= 1 ?
-              (months !== 1 ? months + ' months ago' : months + ' month ago')
-              :
-              date.toDateString().slice(3) + ' ' + 
-              date.toLocaleTimeString('en-US').slice(0, -6) + ' ' + 
-              date.toLocaleTimeString('en-US').slice(-2)
-          }
-      </p>
     }
 
     async function addToCart() {
@@ -115,7 +86,7 @@ export default function ListingPage() {
         <div id="listing-page-details-section">
             <div id="listing-page-top-info" className="listing-detail">{listing.name} · {getDollarString(listing.pricePerUnit)} · {listing.quantity} available</div>
             <a className="listing-detail" href={`/seller/${listing.item.seller.id}`}>{listing.item.seller.name}</a>
-            {getDateElement(new Date(listing.listingDate))}
+            <p className="listing-detail">{getDateText(new Date(listing.listingDate))}</p>
             <p className="listing-detail">{listing.description}</p>
             <div className="listing-detail">
                 <TagList tags={listing.tags} maxTags={35} maxTagWidth="6rem" fontSize="1rem" />

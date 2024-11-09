@@ -1,18 +1,12 @@
 import { useEffect, useState, useRef } from "react";
 import Arrow from './Arrow';
 import './ImageList.css';
+import { getInBoundIndex, getFromRange } from "../util/arrays";
+
 export default function ImageList({images}) {
     const [imagesPerScroll, setImagesPerScroll] = useState(1);
     const [range, setRange] = useState([0,0]) // inclusive both ends
     const imageListWrapper = useRef(null);
-
-    const getInBoundIndex = (arr, i) => {
-        // js modulo is actually a remainder
-        if(i < 0) {
-            return arr.length + (i % arr.length);
-        }
-        return i % arr.length;
-    }   
 
     const scrollLeft = () => {
         setRange([getInBoundIndex(images, range[0] - 1),
@@ -22,21 +16,6 @@ export default function ImageList({images}) {
     const scrollRight = () => {
         setRange([getInBoundIndex(images, range[0] + 1),
                   getInBoundIndex(images, range[1] + 1)]);
-    }
-
-    const getFromRange = (arr, range) => {
-        let newArr = [];
-        for(let i = range[0]; i !== range[1]; i++) {
-            // loop back to start if i is out of array bound
-            if(i >= arr.length) {
-                if(range[1] === 0) break;
-                i = 0;    
-            }
-
-            newArr.push(arr[i]);
-        }
-        if(arr[range[1]]) newArr.push(arr[range[1]]);
-        return newArr;
     }
 
     const handleResize = () => {
