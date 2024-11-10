@@ -81,7 +81,9 @@ export default function ListingPage() {
         {listing ?
         <>
         <div id="listing-page-image-section">
-            <ImageList images={listing.images}/>
+          <div>
+              <ImageList images={listing.images}/>
+          </div>
         </div>
         <div id="listing-page-details-section">
             <div id="listing-page-top-info" className="listing-detail">

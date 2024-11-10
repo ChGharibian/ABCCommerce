@@ -15,7 +15,7 @@ export default function PageSelector({width, height, handlePageChange, page}) {
         <div className="page-selector-wrapper" style={{
             width,
             height,
-            top: "calc(97.5% - " + height + "px)",
+            top: "calc(100% - 1rem - 1px - " + height + "px)",
             left: "calc(50% - " + (width / 2) + "px)" 
         }}>
             <Arrow direction="left" size={(height / 4)} onClick={downPage} margin="0 1rem" dimAmount="70%" thickness={2}/>

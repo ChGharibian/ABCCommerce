@@ -19,13 +19,14 @@
     justify-content: center;
     width: 100%;
     padding: .5rem 0;
-    height: 4rem;
+    height: 3rem;
     background-color: var(--secondary-bg-color);
     z-index: 2;
-    border-bottom: 1px solid var(--c-grey-200);
+    border-bottom: 1px solid var(--secondary-border-color);
 }
 
 #seller-name {
     width: 100%;
+    font-size: 1.5rem;
 }
 

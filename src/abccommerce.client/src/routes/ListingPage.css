@@ -11,7 +11,16 @@
 
 #listing-page-image-section {
     height: 50%;
+    width: 100%;
+    background-color: var(--secondary-bg-color);
+    border: none;
+    border-bottom: 1px solid var(--main-border-color);
+    border-top: 1px solid var(--secondary-border-color);
+}
+
+#listing-page-image-section > div {
     width: 95%;
+    height: 100%;
     margin: 0 auto;
 }
 
@@ -26,7 +35,7 @@
 }
 
 #listing-page-details-section a:hover {
-    color: var(--c-yellow-100);
+    color: var(--c-light-blue-200);
 }
 
 #listing-page-details-section .listing-detail {
@@ -38,7 +47,7 @@
 }
 
 #listing-page-wrapper button {
-    margin: 10px 1.25rem;
+    margin: 0 1.25rem;
     padding: 3px;
     background-color: var(--c-white-100);
     outline: none;

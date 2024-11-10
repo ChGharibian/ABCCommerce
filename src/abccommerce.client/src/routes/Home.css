@@ -9,8 +9,9 @@
 }
 
 #search-controls-wrapper {
-    height: 4rem;
-    border-bottom: 1px solid var(--c-grey-200);
+    height: var(--secondary-bar-height);
+    border-bottom: 1px solid var(--secondary-border-color);
+    background-color: var(--secondary-bg-color);
 }
 
 #search-controls {
@@ -24,7 +25,6 @@
     width: 20rem;
     outline: none;
     border: none;
-    border: 12x 1px 0 1px solid var(--main-input-bg-color);
     background-color: var(--main-input-bg-color);
     color: var(--main-text-color);
 }
@@ -37,8 +37,8 @@
 }
 
 #search-button:hover {
-    border: 1px solid var(--c-grey-100);
-    background-color: var(--c-grey-600);
+    border: 1px solid var(--main-input-border-color);
+    background-color: var(--secondary-input-bg-color);
 }
 
 #search-bar, #search-button {

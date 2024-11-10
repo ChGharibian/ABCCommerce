@@ -2,7 +2,7 @@ import './Arrow.css';
 import { useState } from 'react';
 export default function Arrow({direction = "left", onClick = ()=>{}, 
                                size = 30, thickness = 5, 
-                               color = "var(--c-white-100)",
+                               color = "var(--main-text-color)",
                                secondaryColor = "transparent",
                                dimAmount="50%",
                                ...rest}) {

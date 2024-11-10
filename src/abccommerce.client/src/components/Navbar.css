@@ -8,7 +8,7 @@
     justify-content: center;
     align-items: center;
     height: var(--nav-bar-height); /* Set the height of your navbar */
-    color: var(--main-text-color);
+    color: var(--secondary-text-color);
   }
   
   .navbar ul {
