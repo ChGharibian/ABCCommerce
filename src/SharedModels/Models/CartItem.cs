@@ -4,8 +4,8 @@ public class CartItem
 {
     public int Id { get; init; }
     public Listing? Listing { get; init; }
-    public DateTime AddDate { get; init; }
-    public int Quantity { get; init; }
+    public DateTime AddDate { get; set; }
+    public int Quantity { get; set; }
 
     public override bool Equals(object? obj)
     {

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Listing from '../components/Listing';
 import searchImg from '../assets/search.svg';
 import PageSelector from '../components/PageSelector';
+import { handlePageChange } from '../util/paging';
 
 export default function Home() {
     const [listings, setListings] = useState([]);
@@ -29,11 +30,6 @@ export default function Home() {
     const handleSearchSubmit = () => {
       setQuery(searchInput.trim());
       setPageNumber(1);
-    }
-
-    const handlePageChange = page => {
-      if(listings?.length === 0 && page > pageNumber) return;
-      setPageNumber(page);
     }
 
     async function search(query, step, count) {
@@ -81,7 +77,9 @@ export default function Home() {
         </div>
         {
         (listings?.length > 0 || listings?.length === 0 && searched && pageNumber > 1) &&
-          <PageSelector width={160} height={40} handlePageChange={handlePageChange} page={pageNumber}/>
+          <PageSelector width={160} height={40} 
+          handlePageChange={(page) => handlePageChange(page, pageNumber, setPageNumber, listings)}
+          page={pageNumber}/>
         }
     </div>
     )

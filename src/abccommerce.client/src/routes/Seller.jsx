@@ -3,66 +3,14 @@ import { useEffect, useState } from 'react';
 import './Seller.css';
 import Listing from '../components/Listing';
 import PageSelector from '../components/PageSelector';
-function Seller() {
+import { handlePageChange } from '../util/paging';
+export default function Seller() {
     // const location = useLocation();
     const [seller, setSeller] = useState();
     const [listings, setListings] = useState();
     const [pageNumber, setPageNumber] = useState(1);
     const { sellerId } = useParams();
     const listingsPerPage = 24;
-
-    useEffect(() => {
-        getPageData(pageNumber, listingsPerPage)
-    }, [pageNumber, seller])
-
-    function handlePageChange(page) {
-        if(listings?.length === 0 && page > pageNumber) return;
-        setPageNumber(page);
-    }
-
-    let contents = 
-    <div id="seller-wrapper">
-        {seller && !seller.error ?
-        <>
-        <div id="seller-name-wrapper">
-            <h1 id="seller-name">{seller.exists ? seller.name : "Seller not found"}</h1>
-        </div>
-        <div className="listings-wrapper">
-            {listings?.length > 0 ? 
-            <ul className="listings">
-                {listings.map(l => 
-                    <Listing listing={l} key={l.id} />
-                )}
-            </ul>
-            : seller.exists && listings?.loading ?
-            <p id="no-listings">Loading</p>
-            : seller.exists && pageNumber === 1 ?
-            <p id="no-listings">This seller has no listings</p>
-            : seller.exists && pageNumber > 1 ?
-            <p id="no-listings">No items on this page</p>
-            :
-            <></>
-            }
-        </div>
-        {
-        seller.exists && listings && 
-        (((listings.length > 0 && pageNumber !== 1) 
-        || (listings.length === listingsPerPage && pageNumber === 1)) 
-        || pageNumber > 1) &&
-          <PageSelector width={160} height={40} handlePageChange={handlePageChange} page={pageNumber}/>
-        }
-        </>
-        : seller?.error ?
-        <p>An error occured</p>
-        :
-        <p>Loading</p>
-        }
-        
-        
-    </div>
-    
-    return contents;
-
 
     async function getSellerListingData(page, listingsPerPage) {
         try {
@@ -135,8 +83,53 @@ function Seller() {
         }
     }
 
+    useEffect(() => {
+        getPageData(pageNumber, listingsPerPage)
+    }, [pageNumber, seller])
+
+    
+    
+    return (
+        <div id="seller-wrapper">
+            {seller && !seller.error ?
+            <>
+            <div id="seller-name-wrapper">
+                <h1 id="seller-name">{seller.exists ? seller.name : "Seller not found"}</h1>
+            </div>
+            <div className="listings-wrapper">
+                {listings?.length > 0 ? 
+                <ul className="listings">
+                    {listings.map(l => 
+                        <Listing listing={l} key={l.id} />
+                    )}
+                </ul>
+                : seller.exists && listings?.loading ?
+                <p id="no-listings">Loading</p>
+                : seller.exists && pageNumber === 1 ?
+                <p id="no-listings">This seller has no listings</p>
+                : seller.exists && pageNumber > 1 ?
+                <p id="no-listings">No items on this page</p>
+                :
+                <></>
+                }
+            </div>
+            {
+            seller.exists && listings && 
+            (((listings.length > 0 && pageNumber !== 1) 
+            || (listings.length === listingsPerPage && pageNumber === 1)) 
+            || pageNumber > 1) &&
+            <PageSelector width={160} height={40} 
+            handlePageChange={(page) => handlePageChange(page, pageNumber, setPageNumber, listings)} 
+            page={pageNumber}/>
+            }
+            </>
+            : seller?.error ?
+            <p>An error occured</p>
+            :
+            <p>Loading</p>
+            }
+            
+            
+        </div>
+    );
 }
-
-
-
-export default Seller;
