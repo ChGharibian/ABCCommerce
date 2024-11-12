@@ -4,6 +4,7 @@ import Login from "./Login";
 import Layout from "./Layout";
 import Registration from "./Registration";
 import Home from "./Home";
+import Cart from "./Cart";
 import WrongLink from "./WrongLink";
 import Seller from "./Seller";
 import ListingPage from "./ListingPage";
@@ -20,6 +21,7 @@ export default function App() {
         <Route path="registration" element={<Registration/>}/>
         <Route path="seller/:sellerId" element={<Seller/>}/>
         <Route path="seller/:sellerId/listing/:listingId" element={<ListingPage />} />
+        <Route path="cart" element={<Cart/>}/>
         <Route path="*" element={<WrongLink/>}/>
         <Route/>
       </Route>
