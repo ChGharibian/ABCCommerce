@@ -68,6 +68,10 @@ public class CartController : Controller
         {
             return Unauthorized();
         }
+        if(cartPatch.Quantity is not int newQuantity)
+        {
+            return ValidationProblem("Body must contain an updated field.", title: "Must contain an updated field");
+        }
         var cartItem = ABCDb.CartItems
             .Where(c => c.UserId == id && c.Id == cartItemId)
             .Include(c => c.Listing)
@@ -77,15 +81,11 @@ public class CartController : Controller
             .FirstOrDefault();
         if (cartItem == null) return NotFound();
 
-        if(cartPatch.Quantity is not int newQuantity)
-        {
-            var validationProblem = ProblemDetailsFactory.CreateValidationProblemDetails(HttpContext, ModelState);
-            validationProblem.Errors["Must contain an updated field"] = ["Patch body must contain an updated field."];
-            return ValidationProblem(validationProblem);
-        }
 
         cartItem.Quantity = newQuantity;
         cartItem.AddDate = DateTime.Now;
+
+        ABCDb.SaveChanges();
 
         return Ok(cartItem);
     }
@@ -96,9 +96,18 @@ public class CartController : Controller
         {
             return Unauthorized();
         }
-        var cartItem = ABCDb.CartItems.Where(c => c.UserId == id).FirstOrDefault(c => c.Id == cartItemId);
-        if (cartItem is null) return NotFound();
-        ABCDb.CartItems.Remove(cartItem);
+        using var transaction = ABCDb.Database.BeginTransaction();
+        var deleteCount = ABCDb.CartItems.Where(c => c.UserId == id && c.Id == cartItemId).ExecuteDelete();
+        if (deleteCount > 1)
+        {
+            transaction.Rollback();
+            return Problem("There was an issue removing the cart item.");
+        }
+        if (deleteCount == 0) return NotFound();
+
+        ABCDb.SaveChanges();
+        transaction.Commit();
+
         return NoContent();
     }
     [HttpPost]
