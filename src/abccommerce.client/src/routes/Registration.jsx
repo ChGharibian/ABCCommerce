@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import './Registration.css';
 import DropdownList from '../components/DropdownList';
+import { setTokens } from '../util/tokens';
 export default function Registration() {
-  const [cookies, setCookie, removeCookie] = useCookies(['token', 'refreshToken']);
   const [states, setStates] = useState([]);
   useEffect(() => {
     getStateData();
   }, [])
+
+  const refreshTokenMonths = 6;
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -25,10 +27,7 @@ export default function Registration() {
       });
   
       let data = await response.json();
-  
-      let expDate = new Date(data.expirationDate);
-      setCookie('token', data.token, {path: "/", expires: expDate});
-      setCookie('refreshToken', data.refreshToken, {path: "/"});
+      setTokens(data);
     } catch(error) {
       console.error(error);
     }

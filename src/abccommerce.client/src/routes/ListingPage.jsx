@@ -7,10 +7,12 @@ import ImageList from '../components/ImageList';
 import Input from '../components/Input';
 import { getDateText } from '../util/date';
 import { getDollarString } from '../util/currency';
+import { refresh, setUserToken } from '../util/tokens';
 export default function ListingPage() {
     const [listing, setListing] = useState();
     const [quantity, setQuantity] = useState(1);
     const [error, setError] = useState('');
+    const [refreshed, setRefreshed] = useState(false);
     const {sellerId, listingId} = useParams();
     const [cookies ,setCookie,] = useCookies(['userToken', 'refreshToken']);
     useEffect(() => {
@@ -55,10 +57,18 @@ export default function ListingPage() {
         
         if(response.ok) {
           setError('');
-          console.log(await response.json());
-        } else if(response.status === 401) {
+        } else if(response.status === 401 && !refreshed) {
           // unauthorized
-          setError('Log in to add items to cart');
+          let refSuccess = await refresh(cookies.refreshToken);
+          console.log(refSuccess);
+          setRefreshed(true);
+          if(refSuccess) {
+            setError('Try again');
+          } else {
+            setError('Please log in to add to cart');
+          }
+        } else if(response.status === 401) {
+          setError('Please log in to add to cart');
         } else {
           // other issue
           setError('Something went wrong, try again later');

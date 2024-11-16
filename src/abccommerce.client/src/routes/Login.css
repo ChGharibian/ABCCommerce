@@ -3,24 +3,23 @@
 }
 
 #login-wrapper {
-  --navbar-height: 80px;
   position: relative;
-  top: var(--navbar-height);
-  height: calc(100% - 80px);
+  top: var(--nav-bar-height);
+  height: calc(100% - var(--nav-bar-height));
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #424040;
+  background-color: var(--main-bg-color);
   text-align: center;
 }
 
 #login-form {
-  color: white;
+  color: var(--main-text-color);
   position: relative;
-  bottom: calc(var(--navbar-height) / 2);
+  bottom: calc(var(--nav-bar-height) / 2);
   width: max(60%, 500px);
   height: 80%;
   padding: 10px;
-  background-color: #3c3a3a;
-  border: 1px solid rgb(234, 228, 228);
+  background-color: var(--secondary-bg-color);
+  border: 1px solid var(--secondary-border-color);
 }

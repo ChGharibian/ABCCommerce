@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import '../components/Input';
 import Input from '../components/Input';
 import { useNavigate } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
 import './login.css';
+import { setTokens } from '../util/tokens';
 
 export default function Login(){
 
@@ -13,7 +13,6 @@ export default function Login(){
     password: '',
   })
 
-  const [, setCookie, ] = useCookies(['token', 'refreshToken']);
   const [errors, setErrors] = useState({
     username:'',
     password:'',
@@ -41,11 +40,8 @@ export default function Login(){
     if(response.ok) {
       setServerMessage('We in boys');
       
-      const expDate = new Date(data.expirationDate);
-      console.log(expDate);
 
-      setCookie('userToken', data.token, {path: "/", expires: expDate});
-      setCookie('refreshToken', data.refreshToken, {path: "/"});//need to decide if adding a expires
+      setTokens(data);
       navigate('/');
     } else{
       setServerMessage(data.error || "Authentication failed");
