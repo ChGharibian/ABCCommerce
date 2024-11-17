@@ -78,7 +78,7 @@ export default function Home() {
         {
         (listings?.length > 0 || listings?.length === 0 && searched && pageNumber > 1) &&
           <PageSelector width={160} height={40} 
-          handlePageChange={(page) => handlePageChange(page, pageNumber, setPageNumber, listings)}
+          handlePageChange={(page) => handlePageChange(page, pageNumber, listings, setPageNumber)}
           page={pageNumber}/>
         }
     </div>

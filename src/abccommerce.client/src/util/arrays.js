@@ -1,10 +1,14 @@
 /**
- * Returns an index based on the input index that is 
- * in the bounds of the input array.
+ * @module arrays 
+ */
+
+/**
+ * Returns an index that is in bounds of the input array based on
+ * an input index that can have any value.
  * @function getInBoundIndex
  * @param {Array} arr - Array to be indexed
  * @param {Number} i  - Index
- * @returns {Number}
+ * @returns {Number} In bound index
  */
 export const getInBoundIndex = (arr, i) => {
     // js modulo is actually a remainder
@@ -14,6 +18,15 @@ export const getInBoundIndex = (arr, i) => {
     return i % arr.length;
 }  
 
+
+/**
+ * Returns a subarray based on a flexible range. This range allows for looping past the end of the array.
+ * @function
+ * @param {Array} arr - Input array
+ * @param {Array} range - Range array; the first element in the array is the starting point (inclusive)
+ * , while the second is the end point (inclusive)
+ * @returns {Array} Subarray
+ */
 export const getFromRange = (arr, range) => {
     let newArr = [];
     for(let i = range[0]; i !== range[1]; i++) {

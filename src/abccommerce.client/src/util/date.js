@@ -1,3 +1,13 @@
+/**
+ * @module date
+ */
+
+/**
+ * Returns the amount of months that have passed since the given date.
+ * @function
+ * @param {Date} date - Date to compare
+ * @returns {Number} Months since given date
+ */
 export function monthsSince(date) {
     let currentDate = new Date();
     let yearOffset = (currentDate.getFullYear() - date.getFullYear()) * 12;
@@ -7,6 +17,13 @@ export function monthsSince(date) {
     return yearOffset + monthOffset + dayOffset;
 }
 
+/**
+ * Converts a date into a string representing the time 
+ * elapsed since the date given.
+ * @function
+ * @param {Date} date - Date to convert
+ * @returns {string} Time elapsed since date
+ */
 export function getDateText(date) {
     let ms = Date.now().valueOf() - date.valueOf();
     let seconds = Math.floor(ms / 1000);

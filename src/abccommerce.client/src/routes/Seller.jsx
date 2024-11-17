@@ -119,7 +119,7 @@ export default function Seller() {
             || (listings.length === listingsPerPage && pageNumber === 1)) 
             || pageNumber > 1) &&
             <PageSelector width={160} height={40} 
-            handlePageChange={(page) => handlePageChange(page, pageNumber, setPageNumber, listings)} 
+            handlePageChange={(page) => handlePageChange(page, pageNumber, listings, setPageNumber)} 
             page={pageNumber}/>
             }
             </>
