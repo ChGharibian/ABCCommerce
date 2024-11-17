@@ -1,3 +1,11 @@
+/**
+ * Returns an index based on the input index that is 
+ * in the bounds of the input array.
+ * @function getInBoundIndex
+ * @param {Array} arr - Array to be indexed
+ * @param {Number} i  - Index
+ * @returns {Number}
+ */
 export const getInBoundIndex = (arr, i) => {
     // js modulo is actually a remainder
     if(i < 0) {
