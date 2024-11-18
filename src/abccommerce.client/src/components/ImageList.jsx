@@ -2,7 +2,14 @@ import { useEffect, useState, useRef } from "react";
 import Arrow from './Arrow';
 import './ImageList.css';
 import { getInBoundIndex, getFromRange } from "../util/arrays";
-
+/**
+ * @category component
+ * @function ImageList
+ * @description Creates a dynamically sized list of images that is scrollable when necessary.
+ * @param {Object} props
+ * @param {Array<String>} props.images List of image sources to display
+ * @returns {JSX.Element}
+ */
 export default function ImageList({images}) {
     const [imagesPerScroll, setImagesPerScroll] = useState(1);
     const [range, setRange] = useState([0,0]) // inclusive both ends

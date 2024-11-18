@@ -3,6 +3,42 @@ import TagList from './TagList';
 import ImageScroller from './ImageScroller';
 import { getDateText } from '../util/date';
 import { getDollarString } from '../util/currency';
+/**
+ * @typedef {Object} SellerObject
+ * @property {Number} id Seller ID
+ * @property {String} name Seller name
+ * @property {String} image Seller image
+ */
+
+/** 
+ * @typedef {Object} ItemObject
+ * @property {Number} id Item ID
+ * @property {String} name Item name
+ * @property {String} sku Item SKU
+ * @property {SellerObject} seller Seller that made the item
+ */
+
+/**
+ * @typedef {Object} ListingObject
+ * @property {Number} id Listing ID
+ * @property {String} name Listing name
+ * @property {ItemObject} item Item associated with listing
+ * @property {String} listingDate Date listed
+ * @property {Number} quantity Listing quantity
+ * @property {Number} pricePerUnit Listing price
+ * @property {String} description Listing description
+ * @property {Boolean} active Active status of listing
+ * @property {Array<String>} images Listing images
+ * @property {Array<String>} tags Listing tags
+ */
+
+/**
+ * @category component
+ * @function Listing
+ * @description Displays a listing's name, seller, tags, date, price, quantity, and images in a card style design.
+ * @param {ListingObject} props
+ * @returns {JSX.Element}
+ */
 function Listing({listing}) {
     const listingDate = new Date(listing.listingDate)
     

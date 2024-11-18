@@ -1,5 +1,19 @@
 import Tag from "./Tag"
 import './TagList.css';
+/**
+ * @category component
+ * @function TagList
+ * @description Displays a list of tags with limits on the the
+ * amount of tags to be displayed, their max width, and their 
+ * font size. Displays text that indicates the amount of tags that
+ * aren't shown.
+ * @param {Object} props
+ * @param {Array<String>} props.tags List of text to turn into tags
+ * @param {Number} props.maxTags Max amount of tags to be displayed in the list
+ * @param {String} props.maxTagWidth Max width of the tags (CSS format)
+ * @param {String} [props.fontSize=".7rem"] Font size of the tags (CSS format)
+ * @returns {JSX.Element}
+ */
 export default function TagList({tags, maxTags, maxTagWidth, fontSize=".7rem"
 }) {
     const maxMoreTagsAmt = 4;

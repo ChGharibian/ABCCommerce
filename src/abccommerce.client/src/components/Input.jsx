@@ -1,7 +1,13 @@
 import React from 'react';
 import './Input.css';
 
-
+/**
+ * @category component
+ * @function Input
+ * @description Abstraction of default html input component containing default input styling for the site.
+ * @param {React.HTMLAttributes<HTMLInputElement>} props
+ * @returns {JSX.Element}
+ */
 export default function Input({
   type='text', 
   label,

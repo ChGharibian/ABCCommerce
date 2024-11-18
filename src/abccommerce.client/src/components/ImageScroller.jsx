@@ -2,7 +2,14 @@ import { useState } from "react";
 import Arrow from "./Arrow";
 import './ImageScroller.css';
 import { getInBoundIndex } from "../util/arrays";
-
+/**
+ * @category component
+ * @function ImageScroller
+ * @description Creates a simple horizontal scrolling display for images with one image displayed at a time.
+ * @param {Object} props
+ * @param {Array<String>} props.images List of image sources to display
+ * @returns {JSX.Element}
+ */
 export default function ImageScroller({images}) {
     const [currentImage, setCurrentImage] = useState(0);
 

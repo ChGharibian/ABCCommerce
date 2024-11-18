@@ -1,11 +1,11 @@
 /**
- * @module arrays 
+ * @module arrays
  */
 
 /**
  * Returns an index that is in bounds of the input array based on
  * an input index that can have any value.
- * @function getInBoundIndex
+ * @function 
  * @param {Array} arr - Array to be indexed
  * @param {Number} i  - Index
  * @returns {Number} In bound index

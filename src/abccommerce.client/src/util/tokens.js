@@ -1,9 +1,9 @@
 /**
  * @typedef {Object} TokenData
- * @property {string} token User token
- * @property {string} refreshToken Refresh token
- * @property {string} tokenType Type of token
- * @property {string} expirationDate Token expiration date
+ * @property {String} token User token
+ * @property {String} refreshToken Refresh token
+ * @property {String} tokenType Type of token
+ * @property {String} expirationDate Token expiration date
  */
 
 /**

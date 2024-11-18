@@ -2,6 +2,13 @@ import './Navbar.css';
 import { Link } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import Logout from './Logout';
+/**
+ * @category component
+ * @function Navbar
+ * @description Displays a navbar that allows navigation through the site,
+ * dynamically changing based on whether or not a client is logged in.
+ * @returns {JSX.Element}
+ */
 export default function Navbar() {
     const [cookies] = useCookies(['userToken']);
     return (
