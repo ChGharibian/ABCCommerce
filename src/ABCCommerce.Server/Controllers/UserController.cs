@@ -1,16 +1,17 @@
-
 using ABCCommerce.Server.Services;
 using ABCCommerceDataAccess;
-using ABCCommerceDataAccess.Models;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SharedModels.Models;
 using SharedModels.Models.Requests;
 using SharedModels.Models.Response;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+
+using UserModel = ABCCommerceDataAccess.Models.User;
+using SellerModel = ABCCommerceDataAccess.Models.Seller;
+using UserSellerModel = ABCCommerceDataAccess.Models.UserSeller;
 
 namespace ABCCommerce.Server.Controllers;
 [ApiController]
@@ -30,11 +31,15 @@ public class UserController : Controller
         TokenService = tokenService;
         PasswordHasher = passwordHasher;
     }
+    /// <summary>
+    /// Get the cart items belonging to the user.
+    /// </summary>
+    /// <returns></returns>
     [Authorize]
     [HttpGet("Cart")]
     public ActionResult GetCart()
     {
-        if(!int.TryParse(User.FindFirstValue("userid"), out int id))
+        if (!int.TryParse(User.FindFirstValue("userid"), out int id))
         {
             return Unauthorized();
         }
@@ -43,16 +48,34 @@ public class UserController : Controller
             .Include(c => c.Listing)
             .ThenInclude(l => l.Item)
             .ThenInclude(i => i.Seller)
-            .Select(c => new
-            {
-                c.Id,
-                Listing = c.Listing.ToDto(),
-                c.AddDate,
-                c.Quantity,
-            })
+            .Select(c => c.ToDto())
             .ToArray();
         return Ok(cartItems);
     }
+    /// <summary>
+    /// Get the sellers the user belongs to.
+    /// </summary>
+    /// <returns></returns>
+    [Authorize]
+    [HttpGet("Sellers")]
+    public ActionResult<IEnumerable<Seller>> GetSellers()
+    {
+        if (!int.TryParse(User.FindFirstValue("userid"), out int id))
+        {
+            return Unauthorized();
+        }
+        var sellers = ABCDb.UserSellers
+            .Where(c => c.UserId == id)
+            .Include(c => c.Seller)
+            .Select(c => c.Seller.ToDto())
+            .ToArray();
+        return Ok(sellers);
+    }
+    /// <summary>
+    /// Refresh a user login token.
+    /// </summary>
+    /// <param name="refreshRequest"></param>
+    /// <returns></returns>
     [HttpPost("Refresh")]
     public ActionResult<TokenResponse> RefreshUserToken([FromBody] RefreshTokenRequest refreshRequest)
     {
@@ -62,14 +85,19 @@ public class UserController : Controller
         if (user is null) return NotFound();
         return TokenService.CreateToken(user);
     }
+    /// <summary>
+    /// Register a new user.
+    /// </summary>
+    /// <param name="registerUserRequest"></param>
+    /// <returns></returns>
     [HttpPost("Register")]
     public ActionResult<TokenResponse> RegisterUser([FromBody] RegisterUserRequest registerUserRequest)
     {
-        if(ABCDb.Users.Any(u => u.Email == registerUserRequest.Email))
+        if (ABCDb.Users.Any(u => u.Email == registerUserRequest.Email))
         {
             return BadRequest("Email is already taken.");
         }
-        var user = new User
+        var user = new UserModel
         {
             Email = registerUserRequest.Email,
             Username = registerUserRequest.Username ?? "",
@@ -85,7 +113,7 @@ public class UserController : Controller
         ABCDb.Users.Add(user);
         ABCDb.SaveChanges();
 
-        var seller = new Seller()
+        var seller = new SellerModel()
         {
             Name = registerUserRequest.Email,
         };
@@ -93,7 +121,7 @@ public class UserController : Controller
         ABCDb.Sellers.Add(seller);
         ABCDb.SaveChanges();
 
-        var userSeler = new UserSeller()
+        var userSeler = new UserSellerModel()
         {
             User = user,
             Seller = seller,
@@ -105,6 +133,11 @@ public class UserController : Controller
 
         return Ok(TokenService.CreateToken(user));
     }
+    /// <summary>
+    /// Login to an existing user.
+    /// </summary>
+    /// <param name="loginRequest"></param>
+    /// <returns></returns>
     [HttpPost("Login")]
     public ActionResult<TokenResponse> LoginUser([FromBody] LoginRequest loginRequest)
     {

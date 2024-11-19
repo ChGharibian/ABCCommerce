@@ -18,8 +18,8 @@ public class ItemController : Controller
         Logger = logger;
         AbcDb = abcDb;
     }
-    [HttpGet]
 
+    [HttpGet]
     public ActionResult<IEnumerable<Item>> GetItemQuery([FromQuery] string sku)
     {
         return Ok(AbcDb.Items.Where(i => i.SKU == sku).Include(i => i.Listings).Select(i => i.ToDto()).ToArray());
@@ -31,6 +31,7 @@ public class ItemController : Controller
     {
         return Ok(AbcDb.Items.Where(i => i.Id == item).Include(i => i.Listings).Select(i => i.ToDto()).ToArray());
     }
+
     [HttpPost]
     public async Task<ActionResult<Item>> CreateItem([FromBody] CreateItemRequest createItem)
     {

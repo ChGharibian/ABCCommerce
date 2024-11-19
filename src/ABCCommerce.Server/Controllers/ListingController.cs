@@ -14,14 +14,16 @@ namespace ABCCommerce.Server.Controllers;
 [Route("[controller]")]
 public class ListingController : Controller
 {
+    public ListingService ListingService { get; }
     public ILogger<ListingController> Logger { get; }
     public ABCCommerceContext AbcDb { get; }
     public IImageService ImageService { get; }
     public IExamineManager ExamineManager { get; }
     public IHostEnvironment HostEnvironment { get; }
 
-    public ListingController(ILogger<ListingController> logger, ABCCommerceContext abcDb, IImageService imageService, IExamineManager examineManager, IHostEnvironment hostEnvironment)
+    public ListingController(ListingService listingService, ILogger<ListingController> logger, ABCCommerceContext abcDb, IImageService imageService, IExamineManager examineManager, IHostEnvironment hostEnvironment)
     {
+        ListingService = listingService;
         Logger = logger;
         AbcDb = abcDb;
         ImageService = imageService;
@@ -109,24 +111,11 @@ public class ListingController : Controller
     [HttpGet("{listing:int}/Availability")]
     public async Task<ActionResult<Listing>> Availability(int listing)
     {
-        var quantity = AbcDb.Listings.Where(l => l.Id == listing).Select(l => new { l.Quantity }).FirstOrDefault()?.Quantity ?? -1;
-        if (quantity == -1) return NotFound();
-
-        var requested = await AbcDb.CartItems.Where(i => i.ListingId == listing).SumAsync(i => i.Quantity);
-        quantity -= requested;
-        DateTime availabilityDate = DateTime.Now;
-        if(quantity <= 0)
-        {
-            var overdraw = -quantity;
-            ABCCommerceDataAccess.Models.CartItem[] fromDbCartItems = await AbcDb.CartItems.Where(i => i.ListingId == listing).OrderBy(i => i.AddDate).Take(overdraw+1).ToArrayAsync();
-            var openDate = fromDbCartItems.SkipWhile(i => (overdraw -= i.Quantity) > 0).Select(i => i.AddDate).First();
-            availabilityDate = openDate.AddDays(5);
-        }
+        var quantity = await ListingService.Availability(listing);
 
         return Ok(new
         {
             Quantity = Math.Max(quantity, 0),
-            Avaliability = availabilityDate,
         });
     }
     [HttpGet]

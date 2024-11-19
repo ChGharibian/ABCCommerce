@@ -21,10 +21,13 @@ public class CartController : Controller
 {
 
     private readonly ILogger<CartController> _logger;
+
+    public ListingService ListingService { get; }
     public ABCCommerceContext ABCDb { get; }
 
-    public CartController(ILogger<CartController> logger, ABCCommerceContext abcDb)
+    public CartController(ListingService listingService, ILogger<CartController> logger, ABCCommerceContext abcDb)
     {
+        ListingService = listingService;
         _logger = logger;
         ABCDb = abcDb;
     }
@@ -37,6 +40,8 @@ public class CartController : Controller
         }
         var cartItems = ABCDb.CartItems
             .Where(c => c.UserId == id)
+            .Include(c => c.Listing)
+            .ThenInclude(l => l.Images)
             .Include(c => c.Listing)
             .ThenInclude(l => l.Item)
             .ThenInclude(i => i.Seller)
@@ -77,17 +82,16 @@ public class CartController : Controller
             .Include(c => c.Listing)
             .ThenInclude(l => l.Item)
             .ThenInclude(i => i.Seller)
-            .Select(c => c.ToDto())
             .FirstOrDefault();
         if (cartItem == null) return NotFound();
 
 
         cartItem.Quantity = newQuantity;
-        cartItem.AddDate = DateTime.Now;
-
+        cartItem.ModifiedDate = DateTime.Now;
+        cartItem.ReservationExpirationDate = null;
         ABCDb.SaveChanges();
 
-        return Ok(cartItem);
+        return Ok(cartItem.ToDto());
     }
     [HttpDelete("{cartItemId:int}")]
     public ActionResult DeleteCartItem(int cartItemId)
@@ -117,12 +121,15 @@ public class CartController : Controller
         {
             return Unauthorized();
         }
+
+        DateTime now = DateTime.Now;
         var cartItem = new ABCCommerceDataAccess.Models.CartItem()
         {
             UserId = id,
             ListingId = addToCart.ListingId,
             Quantity = addToCart.Quantity,
-            AddDate = DateTime.Now,
+            AddDate = now,
+            ModifiedDate = now,
         };
         ABCDb.CartItems.Add(cartItem);
         ABCDb.SaveChanges();
@@ -159,6 +166,10 @@ public class CartController : Controller
                 if(requestItem.Quantity > cartItem.Quantity)
                 {
                     tooMuchQuantityItems.Add(requestItem.CartItem);
+                }
+                else
+                {
+                    //ListingService.IsCountAvailable(requestItem.Quantity)
                 }
                 j++;
             }
