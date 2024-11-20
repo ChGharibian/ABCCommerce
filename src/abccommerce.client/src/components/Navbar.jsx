@@ -1,7 +1,12 @@
 import './Navbar.css';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import Logout from './Logout';
+import Select from './Select';
+import { refresh } from '../util/tokens';
+import { getSellerData } from '../util/users';
+import SellerSelector from './SellerSelector';
 /**
  * @category component
  * @function Navbar
@@ -12,7 +17,11 @@ import Logout from './Logout';
  * @returns {JSX.Element}
  */
 export default function Navbar() {
-    const [cookies] = useCookies(['userToken']);
+    const [cookies] = useCookies(['userToken', 'refreshToken']);
+    useEffect(() => {
+      refresh(cookies.refreshToken);
+    }, [])
+    
     return (
         <nav className="navbar">
         <ul>
@@ -36,6 +45,9 @@ export default function Navbar() {
               </li>
               <li>
                 <Link to="/cart">Cart</Link>
+              </li>
+              <li>
+                <SellerSelector />
               </li>
             </>
           }

@@ -14,6 +14,7 @@
 /**
  * Sets the userToken cookie with the appropriate details specified
  * by the input tokenData object.
+ * @async
  * @function
  * @author Thomas Scott, Angel Cortes
  * @since November 16
@@ -27,6 +28,7 @@ export async function setUserToken(tokenData) {
 /**
  * Sets the refreshToken cookie with the appropriate details specified
  * by the input tokenData object.
+ * @async
  * @function
  * @author Thomas Scott, Angel Cortes
  * @since November 16
@@ -42,6 +44,7 @@ export async function setRefreshToken(tokenData) {
 /**
  * Sets both userToken and refreshToken cookies with appropriate details 
  * specified by the input tokenData object.
+ * @async
  * @function
  * @author Thomas Scott, Angel Cortes
  * @since November 16
@@ -54,10 +57,11 @@ export async function setTokens(tokenData) {
 
 /**
  * Attempts to refresh the userToken cookie using the refreshToken cookie.
+ * @async
  * @function
  * @author Thomas Scott, Angel Cortes
  * @since November 16
- * @param {string} refreshToken Refresh token cookie string
+ * @param {String} refreshToken Refresh token cookie string
  * @returns {Boolean} Boolean representing the success of 
  * refreshing the userToken cookie
  */

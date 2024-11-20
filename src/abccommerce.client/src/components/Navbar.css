@@ -26,3 +26,8 @@
 .navbar li a:hover {
   color: var(--c-white-700);
 }
+
+.navbar li:has(select) {
+  position: absolute;
+  right: 2%;
+}
