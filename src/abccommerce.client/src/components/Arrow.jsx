@@ -3,6 +3,8 @@ import { useState } from 'react';
 /**
  * @category component
  * @function Arrow
+ * @author Thomas Scott, Angel Cortes
+ * @since October 26
  * @description Creates an arrow of any size in four basic directions. Can trigger passed on functionality on click.
  * @param {Object} props
  * @param {String} [props.direction="left"] Direction of arrow

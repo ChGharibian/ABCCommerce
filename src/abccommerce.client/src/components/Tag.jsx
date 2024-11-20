@@ -2,6 +2,8 @@ import './Tag.css';
 /**
  * @category component
  * @function Tag
+ * @author Thomas Scott
+ * @since October 25
  * @description Displays a tag with styles matching the site.
  * @param {Object} props
  * @param {String} props.tag Tag text to be displayed

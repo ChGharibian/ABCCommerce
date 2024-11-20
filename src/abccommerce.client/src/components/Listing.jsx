@@ -34,8 +34,10 @@ import { getDollarString } from '../util/currency';
 
 /**
  * @category component
+ * @author Thomas Scott
  * @function Listing
  * @description Displays a listing's name, seller, tags, date, price, quantity, and images in a card style design.
+ * @since October 7
  * @param {ListingObject} props
  * @returns {JSX.Element}
  */

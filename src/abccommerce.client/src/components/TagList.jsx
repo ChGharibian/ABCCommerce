@@ -3,6 +3,8 @@ import './TagList.css';
 /**
  * @category component
  * @function TagList
+ * @author Thomas Scott, Angel Cortes
+ * @since October 25
  * @description Displays a list of tags with limits on the the
  * amount of tags to be displayed, their max width, and their 
  * font size. Displays text that indicates the amount of tags that

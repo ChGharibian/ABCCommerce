@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 /**
  * @category component
  * @function Logout
+ * @author Angel Cortes
+ * @since October 29
  * @description Displays a button that removes a client's userToken and refreshToken cookies,
  * logging them out of their account and redirecting them to the login page.
  * @returns {JSX.Element}

@@ -5,8 +5,10 @@ import Logout from './Logout';
 /**
  * @category component
  * @function Navbar
+ * @author Angel Cortes
  * @description Displays a navbar that allows navigation through the site,
  * dynamically changing based on whether or not a client is logged in.
+ * @since September 30
  * @returns {JSX.Element}
  */
 export default function Navbar() {

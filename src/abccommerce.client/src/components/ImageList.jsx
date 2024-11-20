@@ -5,6 +5,8 @@ import { getInBoundIndex, getFromRange } from "../util/arrays";
 /**
  * @category component
  * @function ImageList
+ * @author Thomas Scott, Angel Cortes
+ * @since November 1
  * @description Creates a dynamically sized list of images that is scrollable when necessary.
  * @param {Object} props
  * @param {Array<String>} props.images List of image sources to display

@@ -5,6 +5,8 @@ import { getInBoundIndex } from "../util/arrays";
 /**
  * @category component
  * @function ImageScroller
+ * @author Thomas Scott, Angel Cortes
+ * @since October 26
  * @description Creates a simple horizontal scrolling display for images with one image displayed at a time.
  * @param {Object} props
  * @param {Array<String>} props.images List of image sources to display

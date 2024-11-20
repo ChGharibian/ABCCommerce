@@ -1,8 +1,8 @@
-# React + Vite
+# Sell a Startup and Retire
+## Frontend Documentation
+<p>This documentation contains the methods, modules, and components used to construct
+ the frontend of our e-commerce website, ABCCommerce.</p>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<p>The <a href="./global.html">components</a> of the frontend were constructed using React, 
+and the more general logic seen in the <a href="./module-arrays.html">modules</a> were written in vanlla 
+Javascript.</p>

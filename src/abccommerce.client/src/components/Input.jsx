@@ -4,6 +4,8 @@ import './Input.css';
 /**
  * @category component
  * @function Input
+ * @author Angel Cortes
+ * @since October 24
  * @description Abstraction of default html input component containing default input styling for the site.
  * @param {React.HTMLAttributes<HTMLInputElement>} props
  * @returns {JSX.Element}

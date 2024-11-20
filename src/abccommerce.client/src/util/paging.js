@@ -6,6 +6,8 @@
  * Provides basic logic for pagination and protection against 
  * page numbers less than 1. 
  * @function
+ * @author Thomas Scott, Angel Cortes
+ * @since November 8
  * @param {Number} newPage - Proposed new page to switch to
  * @param {Number} currentPage - Current page
  * @param {Array} list - List of items on the current page 
