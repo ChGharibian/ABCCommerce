@@ -1,0 +1,9 @@
+#add-listing-wrapper {
+    position: relative;
+    top: var(--nav-bar-height);
+    height: calc(100% - var(--nav-bar-height));
+    overflow: hidden;
+    color: var(--main-text-color);
+    background-color: var(--main-bg-color);
+    text-align: center;
+}

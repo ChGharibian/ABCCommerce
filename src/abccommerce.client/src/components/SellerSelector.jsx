@@ -21,7 +21,7 @@ export default function SellerSelector() {
         let data = await getSellerData(cookies.userToken);
         if(data) {
           setSellers(data);
-          setCookie('seller', data[0].id ?? "");
+          setCookie('seller', data[0].id ?? "", {path: "/"});
         } else {
           setSellers([]);
         }
