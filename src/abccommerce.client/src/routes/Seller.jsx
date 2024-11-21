@@ -1,5 +1,6 @@
 import {useParams} from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
 import './Seller.css';
 import Listing from '../components/Listing';
 import PageSelector from '../components/PageSelector';
@@ -9,6 +10,8 @@ export default function Seller() {
     const [seller, setSeller] = useState();
     const [listings, setListings] = useState();
     const [pageNumber, setPageNumber] = useState(1);
+    const [canEdit, setCanEdit] = useState(false);
+    const [cookies] = useCookies(['seller']);
     const { sellerId } = useParams();
     const listingsPerPage = 24;
 
@@ -70,8 +73,6 @@ export default function Seller() {
                 exists: false
             })
         }
-        
-
     }
 
     function getPageData(page, listingsPerPage) {
@@ -87,7 +88,15 @@ export default function Seller() {
         getPageData(pageNumber, listingsPerPage)
     }, [pageNumber, seller])
 
-    
+    useEffect(() => {
+        setCanEdit(Number(cookies.seller) === Number(sellerId));
+    }, [cookies.seller])
+
+    useEffect(() => {
+        // on mount
+        setCanEdit(Number(cookies.seller) === Number(sellerId));
+        // setCanEdit(true);
+    }, [])
     
     return (
         <div id="seller-wrapper">
@@ -95,6 +104,9 @@ export default function Seller() {
             <>
             <div id="seller-name-wrapper">
                 <h1 id="seller-name">{seller.exists ? seller.name : "Seller not found"}</h1>
+                {canEdit && 
+                    <a href={`/seller/${sellerId}/addlisting`}>Add Listing</a>
+                }
             </div>
             <div className="listings-wrapper">
                 {listings?.length > 0 ? 

@@ -1,0 +1,10 @@
+.select-wrapper select {
+    border: none;
+    outline: none;
+    padding: 2px;
+    background-color: var(--secondary-text-color);   
+}
+
+.select-wrapper select:hover {
+    background-color: var(--main-text-color);
+}

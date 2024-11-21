@@ -4,7 +4,9 @@ import './DropdownList.css';
 /**
  * @category component
  * @function DropdownList
+ * @author Thomas Scott, Angel Cortes
  * @description Creates an input field that searches a list of items to select.
+ * @since October 20
  * @param {Object} props
  * @param {String} props.placeholder Placeholder of the input element
  * @param {Array<String>} props.list List of items to be searched while typing

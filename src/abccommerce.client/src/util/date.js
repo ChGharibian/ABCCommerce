@@ -5,6 +5,8 @@
 /**
  * Returns the amount of months that have passed since the given date.
  * @function
+ * @author Thomas Scott, Angel Cortes
+ * @since November 8
  * @param {Date} date - Date to compare
  * @returns {Number} Months since given date
  */
@@ -21,6 +23,8 @@ export function monthsSince(date) {
  * Converts a date into a string representing the time 
  * elapsed since the date given.
  * @function
+ * @author Thomas Scott, Angel Cortes
+ * @since November 8
  * @param {Date} date - Date to convert
  * @returns {string} Time elapsed since date
  */

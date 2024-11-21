@@ -1,16 +1,27 @@
 import './Navbar.css';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import Logout from './Logout';
+import Select from './Select';
+import { refresh } from '../util/tokens';
+import { getSellerData } from '../util/users';
+import SellerSelector from './SellerSelector';
 /**
  * @category component
  * @function Navbar
+ * @author Angel Cortes
  * @description Displays a navbar that allows navigation through the site,
  * dynamically changing based on whether or not a client is logged in.
+ * @since September 30
  * @returns {JSX.Element}
  */
 export default function Navbar() {
-    const [cookies] = useCookies(['userToken']);
+    const [cookies] = useCookies(['userToken', 'refreshToken']);
+    useEffect(() => {
+      refresh(cookies.refreshToken);
+    }, [])
+    
     return (
         <nav className="navbar">
         <ul>
@@ -34,6 +45,9 @@ export default function Navbar() {
               </li>
               <li>
                 <Link to="/cart">Cart</Link>
+              </li>
+              <li>
+                <SellerSelector />
               </li>
             </>
           }

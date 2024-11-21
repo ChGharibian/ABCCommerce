@@ -8,6 +8,7 @@ import Cart from "./Cart";
 import WrongLink from "./WrongLink";
 import Seller from "./Seller";
 import ListingPage from "./ListingPage";
+import AddListing from "./AddListing";
 import '../App.css'
 import '../variables.css';
 
@@ -20,6 +21,7 @@ export default function App() {
         <Route path="login" element={<Login/>}/>
         <Route path="registration" element={<Registration/>}/>
         <Route path="seller/:sellerId" element={<Seller/>}/>
+        <Route path="seller/:sellerId/addlisting" element={<AddListing />} />
         <Route path="seller/:sellerId/listing/:listingId" element={<ListingPage />} />
         <Route path="cart" element={<Cart/>}/>
         <Route path="*" element={<WrongLink/>}/>

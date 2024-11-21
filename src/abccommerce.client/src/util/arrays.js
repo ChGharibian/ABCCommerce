@@ -6,6 +6,8 @@
  * Returns an index that is in bounds of the input array based on
  * an input index that can have any value.
  * @function 
+ * @author Thomas Scott, Angel Cortes
+ * @since November 8
  * @param {Array} arr - Array to be indexed
  * @param {Number} i  - Index
  * @returns {Number} In bound index
@@ -22,6 +24,8 @@ export const getInBoundIndex = (arr, i) => {
 /**
  * Returns a subarray based on a flexible range. This range allows for looping past the end of the array.
  * @function
+ * @author Thomas Scott, Angel Cortes
+ * @since November 8
  * @param {Array} arr - Input array
  * @param {Array} range - Range array; the first element in the array is the starting point (inclusive)
  * , while the second is the end point (inclusive)

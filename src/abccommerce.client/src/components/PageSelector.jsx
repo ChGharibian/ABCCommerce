@@ -3,8 +3,10 @@ import './PageSelector.css';
 /**
  * @category component
  * @function PageSelector
+ * @author Thomas Scott
  * @description Displays a tool at the bottom of the page used to 
  * switch between pages, providing an abstract functionality for paging.
+ * @since October 24
  * @param {Object} props
  * @param {Number} props.width Width of the page selector
  * @param {Number} props.height Height of the page selector
