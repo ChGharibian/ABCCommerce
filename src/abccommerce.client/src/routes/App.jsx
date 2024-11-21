@@ -11,10 +11,17 @@ import ListingPage from "./ListingPage";
 import AddListing from "./AddListing";
 import '../App.css'
 import '../variables.css';
-
+/**
+ * @global
+ * @function App
+ * @author Angel Cortes
+ * @since September 30
+ * @description Handles routing within the frontend, serving the correct 
+ * pages for each route.
+ * @returns {JSX.Element} Router
+ */
 export default function App() {
   return (
-    
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Home/>}/>

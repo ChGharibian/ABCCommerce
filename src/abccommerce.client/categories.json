@@ -4,5 +4,8 @@
     },
     "utility": {
         "displayName": "Utility"
+    },
+    "route": {
+        "displayName": "Routes"
     }
 }

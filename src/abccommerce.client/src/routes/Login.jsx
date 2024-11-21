@@ -5,6 +5,15 @@ import { useNavigate } from 'react-router-dom';
 import './login.css';
 import { setTokens } from '../util/tokens';
 
+/**
+ * @category route
+ * @function Login
+ * @author Angel Cortes
+ * @since October 24
+ * @description Displays a form that allows users to enter their user credentials and 
+ * log into their account.
+ * @returns {JSX.Element} Login page
+ */
 export default function Login(){
 
   //set state

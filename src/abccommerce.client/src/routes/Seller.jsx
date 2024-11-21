@@ -6,7 +6,14 @@ import Listing from '../components/Listing';
 import PageSelector from '../components/PageSelector';
 import { handlePageChange } from '../util/paging';
 import plusImage from '../assets/plus-symbol.svg';
-
+/**
+ * @category route
+ * @function Seller
+ * @author Thomas Scott
+ * @since September 26
+ * @description Displays a specific seller's name and their inventory of listings.
+ * @returns {JSX.Element} Seller page
+ */
 export default function Seller() {
     // const location = useLocation();
     const [seller, setSeller] = useState();
