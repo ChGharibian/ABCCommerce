@@ -5,6 +5,8 @@ import './Seller.css';
 import Listing from '../components/Listing';
 import PageSelector from '../components/PageSelector';
 import { handlePageChange } from '../util/paging';
+import plusImage from '../assets/plus-symbol.svg';
+
 export default function Seller() {
     // const location = useLocation();
     const [seller, setSeller] = useState();
@@ -105,7 +107,12 @@ export default function Seller() {
             <div id="seller-name-wrapper">
                 <h1 id="seller-name">{seller.exists ? seller.name : "Seller not found"}</h1>
                 {canEdit && 
-                    <a href={`/seller/${sellerId}/addlisting`}>Add Listing</a>
+                <div>
+                    <p>Add listing</p>
+                    <a href={`/seller/${sellerId}/addlisting`}>
+                        <img src={plusImage}></img>
+                    </a>
+                </div>
                 }
             </div>
             <div className="listings-wrapper">

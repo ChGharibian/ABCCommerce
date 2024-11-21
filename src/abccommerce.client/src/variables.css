@@ -52,6 +52,7 @@
     --secondary-input-bg-color: var(--c-grey-600);
     --secondary-border-color: var(--c-grey-500);
     --secondary-text-color: var(--c-white-800);
+    --secondary-svg-color: invert(79%) sepia(0%) saturate(1557%) hue-rotate(221deg) brightness(91%) contrast(96%);
 
     --tertiary-bg-color: var(--c-blue-grey-900);
 
