@@ -7,7 +7,15 @@ import ImageList from '../components/ImageList';
 import Input from '../components/Input';
 import { getDateText } from '../util/date';
 import { getDollarString } from '../util/currency';
-import { refresh, setUserToken } from '../util/tokens';
+import { refresh } from '../util/tokens';
+/**
+ * @category route
+ * @function ListingPage
+ * @author Thomas Scott
+ * @since October 30
+ * @description Displays a single listing and its details, allowing a user to add the listing to their cart.
+ * @returns {JSX.Element} Listing page
+ */
 export default function ListingPage() {
     const [listing, setListing] = useState();
     const [quantity, setQuantity] = useState(1);

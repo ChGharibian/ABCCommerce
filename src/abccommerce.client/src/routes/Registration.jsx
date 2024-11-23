@@ -1,8 +1,16 @@
 import { useState, useEffect } from 'react';
-import { useCookies } from 'react-cookie';
 import './Registration.css';
 import DropdownList from '../components/DropdownList';
 import { setTokens } from '../util/tokens';
+/**
+ * @category route
+ * @function Registration
+ * @author Thomas Scott
+ * @since October 11
+ * @description Displays a form that allows users to register
+ * for an account.
+ * @returns {JSX.Element} Registration page
+ */
 export default function Registration() {
   const [states, setStates] = useState([]);
   useEffect(() => {

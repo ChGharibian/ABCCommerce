@@ -2,6 +2,16 @@ import { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import './cart.css';
 
+/**
+ * 
+ * @category route
+ * @function Cart
+ * @author Angel Cortes
+ * @since November 12
+ * @description Displays the items that a user has in their cart along with their prices/total price. Allows user to proceed
+ * to checkout.
+ * @returns {JSX.Element} Cart page
+ */
 export default function Cart() {
 
   const [cartItems, setCartItems] = useState([]);

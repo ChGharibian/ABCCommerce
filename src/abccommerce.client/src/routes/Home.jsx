@@ -5,6 +5,15 @@ import searchImg from '../assets/search.svg';
 import PageSelector from '../components/PageSelector';
 import { handlePageChange } from '../util/paging';
 
+/**
+ * @category route
+ * @function Home
+ * @author Thomas Scott
+ * @since October 9
+ * @description Displays the home page, allowing users to use the 
+ * search bar to search for listings.
+ * @returns {JSX.Element} Home page
+ */
 export default function Home() {
     const [listings, setListings] = useState([]);
     const [query, setQuery] = useState('');
