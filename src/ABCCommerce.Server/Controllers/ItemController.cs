@@ -6,6 +6,9 @@ using SharedModels.Models.Requests;
 using System.Data;
 
 namespace ABCCommerce.Server.Controllers;
+/// <summary>
+/// The base controller controlling items.
+/// </summary>
 [ApiController]
 [Route("[controller]")]
 public class ItemController : Controller
@@ -18,35 +21,24 @@ public class ItemController : Controller
         Logger = logger;
         AbcDb = abcDb;
     }
-
-    [HttpGet]
-    public ActionResult<Item> GetItemQuery([FromQuery] string sku)
+    /// <summary>
+    /// Gets an item using an item id.
+    /// </summary>
+    /// <param name="itemId">The id of the requested item.</param>
+    /// <returns></returns>
+    [HttpGet("{item:int}", Name = "Get Item")]
+    public ActionResult<Item> GetItem(int itemId)
     {
-        var dto = AbcDb.Items.Where(i => i.SKU == sku).Include(i => i.Listings).Select(i => i.ToDto()).FirstOrDefault();
-        if(dto is null)
-        {
-            return NotFound();
-        }
-        return Ok(dto);
-
+        Item? item = AbcDb.Items.Where(i => i.Id == itemId).Include(i => i.Listings).Select(i => i.ToDto()).FirstOrDefault();
+        if (item is null) return NotFound();
+        return Ok(item);
     }
-
-    [HttpGet("exists")]
-    public ActionResult<ItemExists> GetItemExists([FromQuery] string sku)
-    {
-        bool exists = AbcDb.Items.Where(i => i.SKU == sku).Any();
-        return Ok(new ItemExists(
-exists
-        ));
-    }
-
-    [HttpGet("{item:int}")]
-    public ActionResult<IEnumerable<Item>> GetItems(int item)
-    {
-        return Ok(AbcDb.Items.Where(i => i.Id == item).Include(i => i.Listings).Select(i => i.ToDto()).ToArray());
-    }
-
-    [HttpPost]
+    /// <summary>
+    /// Created an item.
+    /// </summary>
+    /// <param name="createItem"></param>
+    /// <returns></returns>
+    [HttpPost(Name = "Create Item")]
     public async Task<ActionResult<Item>> CreateItem([FromBody] CreateItemRequest createItem)
     {
         var seller = await AbcDb.Sellers.FirstOrDefaultAsync(s => s.Id == createItem.Seller);
@@ -71,5 +63,8 @@ exists
         return Ok(item.ToDto());
     }
 }
-
+/// <summary>
+/// A Class to determine whether a database object exists.
+/// </summary>
+/// <param name="Exists">Does the database object exist.</param>
 public record ItemExists(bool Exists);

@@ -31,7 +31,11 @@ public class CartController : Controller
         _logger = logger;
         ABCDb = abcDb;
     }
-    [HttpGet]
+    /// <summary>
+    /// Gets all cart items belonging to the user.
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet(Name="Get Cart Items")]
     public ActionResult<IEnumerable<CartItem>> GetCart()
     {
         if (!int.TryParse(User.FindFirstValue("userid"), out int id))
@@ -49,7 +53,12 @@ public class CartController : Controller
             .ToArray();
         return Ok(cartItems);
     }
-    [HttpGet("{cartItemId:int}")]
+    /// <summary>
+    /// Get a singular cart item belonging to the user.
+    /// </summary>
+    /// <param name="cartItemId">The id of the cart item to get.</param>
+    /// <response code="404">Could not find cart item belonding to the user.</response>
+    [HttpGet("{cartItemId:int}", Name ="Get Cart Item")]
     public ActionResult<CartItem> GetCart(int cartItemId)
     {
         if (!int.TryParse(User.FindFirstValue("userid"), out int id))
@@ -66,7 +75,13 @@ public class CartController : Controller
         if (cartItem == null) return NotFound();
         return Ok(cartItem);
     }
-    [HttpPatch("{cartItemId:int}")]
+    /// <summary>
+    /// Updates the users cart item with the provided information. This will reset the users availability of the listing.
+    /// </summary>
+    /// <param name="cartItemId">The cart item to update.</param>
+    /// <param name="cartPatch"></param>
+    /// <returns></returns>
+    [HttpPatch("{cartItemId:int}", Name = "Update Cart Item")]
     public ActionResult<CartItem> PatchCart(int cartItemId, [FromBody] CartPatchRequest cartPatch)
     {
         if (!int.TryParse(User.FindFirstValue("userid"), out int id))
@@ -93,6 +108,11 @@ public class CartController : Controller
 
         return Ok(cartItem.ToDto());
     }
+    /// <summary>
+    /// Deletes the user's cart item.
+    /// </summary>
+    /// <param name="cartItemId">The cart item of the user to delete.</param>
+    /// <returns></returns>
     [HttpDelete("{cartItemId:int}")]
     public ActionResult DeleteCartItem(int cartItemId)
     {
@@ -114,7 +134,12 @@ public class CartController : Controller
 
         return NoContent();
     }
-    [HttpPost]
+    /// <summary>
+    /// Add an item to the users cart.
+    /// </summary>
+    /// <param name="addToCart"></param>
+    /// <returns></returns>
+    [HttpPost(Name = "Add Cart Item")]
     public ActionResult<CartItem> AddCartItem([FromBody] AddToCartRequest addToCart)
     {
         if (!int.TryParse(User.FindFirstValue("userid"), out int id))
@@ -135,6 +160,12 @@ public class CartController : Controller
         ABCDb.SaveChanges();
         return Ok(cartItem.ToDto());
     }
+    /// <summary>
+    /// Purchases the user's provided cart items at the requested quantities.
+    /// </summary>
+    /// <param name="purchaseItems"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
     [HttpPost("purchase")]
     public ActionResult PurchaseCartItems([FromBody] PurchaseItemsRequest purchaseItems)
     {

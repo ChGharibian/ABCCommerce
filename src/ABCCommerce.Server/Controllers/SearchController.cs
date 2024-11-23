@@ -19,8 +19,14 @@ public class SearchController : Controller
         ExamineManager = examineManager;
     }
 
-
-    [HttpGet]
+    /// <summary>
+    /// Search for listings using a query.
+    /// </summary>
+    /// <param name="q">The query string to search with.</param>
+    /// <param name="skip">The number of items to skip. Used for paging.</param>
+    /// <param name="count">The number of items to return from a search. Maximum of 50.</param>
+    /// <returns></returns>
+    [HttpGet(Name = "Search")]
     public ActionResult<IEnumerable<Listing>> Search([FromQuery] string q, [FromQuery] int? skip, [FromQuery] int? count)
     {
         var searchResults = ExamineManager.GetIndex("MyIndex").Searcher.CreateQuery()

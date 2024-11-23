@@ -17,7 +17,11 @@ public class ImageController : Controller
         ImageService = imageService;
         ContentTypeProvider = contentTypeProvider;
     }
-
+    /// <summary>
+    /// The request to get an image.
+    /// </summary>
+    /// <param name="path">The server path of the image.</param>
+    /// <returns></returns>
 
     [HttpGet("{**path}")]
     [DisableCors]

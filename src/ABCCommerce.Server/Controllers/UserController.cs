@@ -36,7 +36,7 @@ public class UserController : Controller
     /// </summary>
     /// <returns></returns>
     [Authorize]
-    [HttpGet("Cart")]
+    [HttpGet("Cart", Name = "Get User Cart Items")]
     public ActionResult GetCart()
     {
         if (!int.TryParse(User.FindFirstValue("userid"), out int id))
@@ -57,7 +57,7 @@ public class UserController : Controller
     /// </summary>
     /// <returns></returns>
     [Authorize]
-    [HttpGet("Sellers")]
+    [HttpGet("Sellers", Name = "Get User Sellers")]
     public ActionResult<IEnumerable<Seller>> GetSellers()
     {
         if (!int.TryParse(User.FindFirstValue("userid"), out int id))
@@ -76,7 +76,7 @@ public class UserController : Controller
     /// </summary>
     /// <param name="refreshRequest"></param>
     /// <returns></returns>
-    [HttpPost("Refresh")]
+    [HttpPost("Refresh", Name = "Refresh User Token")]
     public ActionResult<TokenResponse> RefreshUserToken([FromBody] RefreshTokenRequest refreshRequest)
     {
         var claims = TokenService.ValidateToken(refreshRequest.RefreshToken, out var token);
@@ -90,7 +90,7 @@ public class UserController : Controller
     /// </summary>
     /// <param name="registerUserRequest"></param>
     /// <returns></returns>
-    [HttpPost("Register")]
+    [HttpPost("Register", Name = "Register New User")]
     public ActionResult<TokenResponse> RegisterUser([FromBody] RegisterUserRequest registerUserRequest)
     {
         if (ABCDb.Users.Any(u => u.Email == registerUserRequest.Email))
@@ -138,7 +138,7 @@ public class UserController : Controller
     /// </summary>
     /// <param name="loginRequest"></param>
     /// <returns></returns>
-    [HttpPost("Login")]
+    [HttpPost("Login", Name = "Login To User")]
     public ActionResult<TokenResponse> LoginUser([FromBody] LoginRequest loginRequest)
     {
         var user = ABCDb.Users

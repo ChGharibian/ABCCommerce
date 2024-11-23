@@ -87,6 +87,8 @@ builder.Services.AddSwaggerGen(o =>
             new string[]{}
         }
     });
+    o.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "ABCCommerce.Server.xml"));
+    o.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "SharedModels.xml"));
 });
 
 var app = builder.Build();
