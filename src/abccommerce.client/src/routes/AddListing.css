@@ -44,6 +44,7 @@
 
 #add-listing-wrapper .tag-list .tag:hover {
     cursor: pointer;
+    background-color: var(--c-red-500);
 }
 
 #add-listing-wrapper .tag-list {
@@ -52,10 +53,15 @@
 
 #add-listing-new-item-wrapper {
     width: 100%;
-    position: relative;
+    display: contents;
 }
 
-#add-listing-new-item-wrapper > .input-wrapper + button {
+#add-listing-new-item-wrapper .input-with-button {
+    position: relative;
+    width: 100%;
+}
+
+#add-listing-new-item-wrapper .input-with-button .input-wrapper + button {
     position: absolute;
     top: 0;
     right: 30%;
@@ -67,6 +73,23 @@
     padding-right: 4.4rem;
 }
 
+
+#add-listing-wrapper .hidden {
+    visibility: hidden;
+    position: absolute;
+}
+
+#add-listing-wrapper label {
+    width: 40%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-left: 1rem;
+}
+
+#submit-add-listing {
+    padding: .2rem;
+}
 /* #add-listing-image-wrapper {
     position: relative;
     margin: auto;

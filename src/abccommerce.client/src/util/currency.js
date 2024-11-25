@@ -12,5 +12,7 @@
  * @returns {string} Dollar formatted price
  */
 export function getDollarString(price) {
-    return '$' + Number.parseFloat(price).toFixed(2);
+    let parsed = Number.parseFloat(price);
+    if(isNaN(parsed)) return "Not a valid price";
+    return '$' + parsed.toFixed(2);
 }
