@@ -11,11 +11,12 @@ import './Tag.css';
  * @param {String} props.fontSize Font size of the tag (CSS format)
  * @returns {JSX.Element}
  */
-export default function Tag({tag, maxWidth, fontSize}) {
+export default function Tag({tag, maxWidth, fontSize, ...rest}) {
 
     return <p className="tag small-text"
     style={{
         maxWidth,
         fontSize
-    }}>{tag}</p>
+    }}
+    {...rest}>{tag}</p>
 }

@@ -16,21 +16,20 @@ import './TagList.css';
  * @param {String} [props.fontSize=".7rem"] Font size of the tags (CSS format)
  * @returns {JSX.Element}
  */
-export default function TagList({tags, maxTags, maxTagWidth, fontSize=".7rem"
-}) {
+export default function TagList({tags, maxTags, maxTagWidth, fontSize=".7rem", ...rest}) {
     const maxMoreTagsAmt = 4;
     return <div className="tag-list">
         {tags.length > maxTags ?
         <>
             {tags.slice(0, maxTags).map((tag, i) =>
-                <Tag key={i} tag={tag} maxWidth={maxTagWidth} fontSize={fontSize}/>
+                <Tag key={i} tag={tag} maxWidth={maxTagWidth} fontSize={fontSize} {...rest}/>
             )}
             <p style={{fontSize}}>{' + ' + (tags.length - maxTags > maxMoreTagsAmt ? '' : tags.length - maxTags) + ' more'}</p>
             
         </>
         : 
             tags.map((tag, i) => 
-                <Tag key={i} tag={tag} maxWidth={maxTagWidth} fontSize={fontSize}/>
+                <Tag key={i} tag={tag} maxWidth={maxTagWidth} fontSize={fontSize} {...rest} />
             ) 
         }
     </div>
