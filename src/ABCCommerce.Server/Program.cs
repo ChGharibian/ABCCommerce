@@ -53,6 +53,7 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IImageService, DbImageService>();
 
 builder.Services.AddHostedService<InitializeSearchIndex>();
+builder.Services.AddScoped<ListingService>();
 
 builder.Services.AddControllers().AddJsonOptions(o =>
 {
