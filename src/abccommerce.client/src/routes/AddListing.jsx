@@ -171,7 +171,7 @@ export default function AddListing() {
             }
 
             let listing = await response.json();
-            navigate(`/seller/${sellerId}/listing${listing.id}`);
+            navigate(`/seller/${sellerId}/listing/${listing.id}`);
             
         }
         catch(error) {
