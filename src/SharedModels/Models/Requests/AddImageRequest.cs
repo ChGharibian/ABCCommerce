@@ -12,7 +12,7 @@ public class AddImageRequest
     [Required]
     public string Image { get; set; } = "";
     /// <summary>
-    /// The file type of the image.
+    /// The file extension of the image. This should include the period (.) at the beginning.
     /// </summary>
     [Required]
     [MaxLength(10)]
