@@ -1,0 +1,55 @@
+.image-input-wrapper {
+    width: 100%;
+    position: relative;
+    text-align: left;
+    background-color: var(--main-input-bg-color);
+    color: var(--secondary-text-color);
+}
+
+.image-input-wrapper table {
+    position: relative;
+    border-collapse: collapse;
+    /* table-layout: fixed; */
+    width: 100%;
+}
+
+.image-input-wrapper th {
+    padding: 1rem;
+    color: var(--main-text-color);
+}
+
+.image-input-wrapper thead tr {
+    border-bottom: 1px solid var(--secondary-border-color);
+    width: 100%;
+}
+
+.image-input-wrapper label {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-input-wrapper label > img {
+    height: 4rem;
+    filter: var(--secondary-svg-color);
+}
+
+.image-input-with-file-wrapper {
+    width: 100%;
+}
+
+.dropzone {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+label:has(> .dropzone):hover {
+    background-color: var(--secondary-input-bg-color);
+}
+
+.error {
+    color: var(--error-text-color);
+}

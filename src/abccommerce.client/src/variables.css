@@ -58,4 +58,6 @@
     --tertiary-bg-color: var(--c-blue-grey-900);
 
     --error-text-color: var(--c-red-300);
+    --main-error-svg-color: invert(16%) sepia(92%) saturate(5306%) hue-rotate(354deg) brightness(91%) contrast(101%);
+    --secondary-error-svg-color: invert(12%) sepia(79%) saturate(4455%) hue-rotate(352deg) brightness(90%) contrast(96%);
 }
