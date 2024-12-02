@@ -85,11 +85,33 @@ describe('DateUtil class test', () => {
     })
     
     describe('monthsSince', () => {
-        it('should return 1 month ago for a date on the previous month of the same day', () => {
+        it('should return <= 0 for a date in the same current month', () => {
+            const currentDate = new Date();
+            const sameMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() > 1 ? currentDate.getDate() - 1: currentDate.getDate());
+            const result = DateUtil.monthsSince(sameMonth);
+            expect(result).lessThanOrEqual(0);
+        })
+        
+        it('should return <= 0 for a date on the previous month of the following day', () => {
+            const currentDate = new Date();
+            const underMonthAgo = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1);
+            const result = DateUtil.monthsSince(underMonthAgo);
+            expect(result).lessThanOrEqual(0);
+        })
+
+        it('should return 1 for a date on the previous month of the same day', () => {
             const currentDate = new Date();
             const monthAgo = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1);
             const result = DateUtil.monthsSince(monthAgo);
             expect(result).toBe(1);
         })
+
+        it('should return 1 for a date on the previous month of the preceding day', () => {
+            const currentDate = new Date();
+            const monthAgo = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, currentDate.getDate() - 1);
+            const result = DateUtil.monthsSince(monthAgo);
+            expect(result).toBe(1);
+        })
+
     })
 })
