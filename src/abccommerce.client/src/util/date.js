@@ -59,7 +59,7 @@ export class DateUtil {
             return hours + (hours > 1 ? ' hours ago' : ' hour ago')
         }
         if(minutes > 0) {
-            return minutes + (minutes > 1 ? ' minutes ago' : 'minute ago');
+            return minutes + (minutes > 1 ? ' minutes ago' : ' minute ago');
         }
         return 'Just now';
     }

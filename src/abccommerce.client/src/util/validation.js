@@ -26,4 +26,37 @@ export class ValidationUtil {
         }
         return error;
     }
+    
+    static validateRegistrationPassword(password) {
+      const minLength = 8;
+      const maxLength = 20;
+      
+      const patterns = {
+        uppercase: /.*[A-Z].*/,
+        number: /.*[0-9].*/,
+      };
+      let errors = [];
+    
+      if (password.length < minLength) {
+        errors.push(`Password must be at least ${minLength} characters.`);
+      }
+
+      if (password.length > maxLength) {
+        errors.push(`Password must be no more than ${maxLength} characters.`);
+      
+      }
+      if(!patterns.uppercase.test(password)) {
+        errors.push('Password must include at least one uppercase character.');
+      }
+
+      if(!patterns.number.test(password)) {
+        errors.push('Password must include at least one number.');
+      }
+      
+      return {
+        isValid: errors.length === 0,
+        errors
+      };
+    }
+    
 }
