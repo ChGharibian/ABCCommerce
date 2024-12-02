@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import Arrow from './Arrow';
 import './ImageList.css';
-import { getInBoundIndex, getFromRange } from "../util/arrays";
+import { ArrayUtil } from "../util/arrays";
 /**
  * @category component
  * @function ImageList
@@ -18,13 +18,13 @@ export default function ImageList({images}) {
     const imageListWrapper = useRef(null);
 
     const scrollLeft = () => {
-        setRange([getInBoundIndex(images, range[0] - 1),
-                  getInBoundIndex(images, range[1] - 1)]);
+        setRange([ArrayUtil.getInBoundIndex(images, range[0] - 1),
+                  ArrayUtil.getInBoundIndex(images, range[1] - 1)]);
     }
 
     const scrollRight = () => {
-        setRange([getInBoundIndex(images, range[0] + 1),
-                  getInBoundIndex(images, range[1] + 1)]);
+        setRange([ArrayUtil.getInBoundIndex(images, range[0] + 1),
+                  ArrayUtil.getInBoundIndex(images, range[1] + 1)]);
     }
 
     const handleResize = () => {
@@ -45,9 +45,9 @@ export default function ImageList({images}) {
 
     useEffect(() => {
         images.length > imagesPerScroll ? 
-        setRange([range[0], getInBoundIndex(images, range[0] + imagesPerScroll - 1)])
+        setRange([range[0], ArrayUtil.getInBoundIndex(images, range[0] + imagesPerScroll - 1)])
         :
-        setRange([range[0], getInBoundIndex(images, range[0] + images.length - 1)]);
+        setRange([range[0], ArrayUtil.getInBoundIndex(images, range[0] + images.length - 1)]);
     }, [imagesPerScroll])
 
     useEffect(() => {
@@ -63,7 +63,7 @@ export default function ImageList({images}) {
                 <p>No Images</p>
             : images.length <= imagesPerScroll ?
                     
-                    getFromRange(images, range).map((i, index) => 
+                    ArrayUtil.getFromRange(images, range).map((i, index) => 
                         <img src={i} key={index}/>
                     )
             :   
@@ -72,7 +72,7 @@ export default function ImageList({images}) {
                     <Arrow size={20} direction="left" onClick={scrollLeft}/>
                 </div>
                     {
-                    getFromRange(images, range).map((i, index) => 
+                    ArrayUtil.getFromRange(images, range).map((i, index) => 
                         <img src={i} key={index}/>
                     )
                     }

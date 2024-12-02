@@ -5,9 +5,9 @@ import { useParams } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import ImageList from '../components/ImageList';
 import Input from '../components/Input';
-import { getDateText } from '../util/date';
-import { getDollarString } from '../util/currency';
-import { refresh } from '../util/tokens';
+import { DateUtil } from '../util/date';
+import { CurrencyUtil } from '../util/currency';
+import { TokenUtil } from '../util/tokens';
 /**
  * @category route
  * @function ListingPage
@@ -67,7 +67,7 @@ export default function ListingPage() {
           setError('');
         } else if(response.status === 401 && !refreshed) {
           // unauthorized
-          let refSuccess = await refresh(cookies.refreshToken);
+          let refSuccess = await TokenUtil.refresh(cookies.refreshToken);
           console.log(refSuccess);
           setRefreshed(true);
           if(refSuccess) {
@@ -105,10 +105,10 @@ export default function ListingPage() {
         </div>
         <div id="listing-page-details-section">
             <div id="listing-page-top-info" className="listing-detail">
-              {listing.name ? listing.name : <i>No name</i>} · {getDollarString(listing.pricePerUnit)} · {listing.quantity} available
+              {listing.name ? listing.name : <i>No name</i>} · {CurrencyUtil.getDollarString(listing.pricePerUnit)} · {listing.quantity} available
               </div>
             <a className="listing-detail" href={`/seller/${listing.item.seller.id}`}>{listing.item.seller.name}</a>
-            <p className="listing-detail">{'Posted ' + getDateText(new Date(listing.listingDate)).toLowerCase()}</p>
+            <p className="listing-detail">{'Posted ' + DateUtil.getDateText(new Date(listing.listingDate)).toLowerCase()}</p>
             <p className="listing-detail">{listing.description}</p>
             <div className="listing-detail">
                 <TagList tags={listing.tags} maxTags={35} maxTagWidth="6rem" fontSize="1rem" />

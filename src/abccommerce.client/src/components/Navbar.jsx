@@ -1,11 +1,9 @@
 import './Navbar.css';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import Logout from './Logout';
-import Select from './Select';
-import { refresh } from '../util/tokens';
-import { getSellerData } from '../util/users';
+import { TokenUtil } from '../util/tokens';
 import SellerSelector from './SellerSelector';
 /**
  * @category component
@@ -19,7 +17,7 @@ import SellerSelector from './SellerSelector';
 export default function Navbar() {
     const [cookies] = useCookies(['userToken', 'refreshToken']);
     useEffect(() => {
-      refresh(cookies.refreshToken);
+      TokenUtil.refresh(cookies.refreshToken);
     }, [])
     
     return (

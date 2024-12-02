@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Arrow from "./Arrow";
 import './ImageScroller.css';
-import { getInBoundIndex } from "../util/arrays";
+import { ArrayUtil } from "../util/arrays";
 /**
  * @category component
  * @function ImageScroller
@@ -16,11 +16,11 @@ export default function ImageScroller({images}) {
     const [currentImage, setCurrentImage] = useState(0);
 
     const scrollLeft = () => {
-        setCurrentImage(getInBoundIndex(images, currentImage - 1));
+        setCurrentImage(ArrayUtil.getInBoundIndex(images, currentImage - 1));
     }
 
     const scrollRight = () => {
-        setCurrentImage(getInBoundIndex(images, currentImage + 1));
+        setCurrentImage(ArrayUtil.getInBoundIndex(images, currentImage + 1));
     }
 
     return (

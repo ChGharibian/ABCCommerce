@@ -4,7 +4,7 @@ import { useCookies } from 'react-cookie';
 import './Seller.css';
 import Listing from '../components/Listing';
 import PageSelector from '../components/PageSelector';
-import { handlePageChange } from '../util/paging';
+import { PagingUtil } from '../util/paging';
 import plusImage from '../assets/plus-symbol.svg';
 /**
  * @category route
@@ -145,7 +145,7 @@ export default function Seller() {
             || (listings.length === listingsPerPage && pageNumber === 1)) 
             || pageNumber > 1) &&
             <PageSelector width={160} height={40} 
-            handlePageChange={(page) => handlePageChange(page, pageNumber, listings, setPageNumber)} 
+            handlePageChange={(page) => PagingUtil.handlePageChange(page, pageNumber, listings, setPageNumber)} 
             page={pageNumber}/>
             }
             </>

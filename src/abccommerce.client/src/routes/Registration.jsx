@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './Registration.css';
 import DropdownList from '../components/DropdownList';
-import { setTokens } from '../util/tokens';
+import { TokenUtil } from '../util/tokens';
 /**
  * @category route
  * @function Registration
@@ -35,7 +35,7 @@ export default function Registration() {
       });
   
       let data = await response.json();
-      setTokens(data);
+      TokenUtil.setTokens(data);
     } catch(error) {
       console.error(error);
     }

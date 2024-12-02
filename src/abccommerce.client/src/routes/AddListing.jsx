@@ -3,7 +3,7 @@ import Input from '../components/Input';
 import { useState } from 'react';
 import TagList from '../components/TagList';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getDollarString } from '../util/currency';
+import { CurrencyUtil } from '../util/currency';
 import ImageInput from '../components/ImageInput';
 export default function AddListing() {
     const [currentTag, setCurrentTag] = useState('');
@@ -193,7 +193,7 @@ export default function AddListing() {
             <textarea placeholder="Description" type="textarea" name="description" value={listingData.description} onChange={handleListingChange}/>
             <Input placeholder="Quantity" type="number" name="quantity" value={listingData.quantity} onChange={handleListingChange} required={true} />
             <Input placeholder="Price" name="price" value={listingData.price} onChange={handleListingChange} required={true} />
-            <p>{getDollarString(listingData.price)}</p>
+            <p>{CurrencyUtil.getDollarString(listingData.price)}</p>
             <Input placeholder="Tags (Press enter to add a tag)" value={currentTag} name="tags" onKeyDown={handleTagKeyDown} onChange={handleTagChange}/>            
             <div className={tagList.length === 0 ? 'hidden' : ''}>  
                 <TagList tags={tagList} onClick={removeTag}/>

@@ -2,8 +2,8 @@ import { useState } from 'react';
 import './ImageInput.css';
 import ImageUpload from './ImageUpload';
 import plusSymbol from '../assets/plus-symbol.svg';
-import { toBase64 } from '../util/files';
-import { validateFile } from '../util/validation';
+import { FileUtil } from '../util/files';
+import { ValidationUtil } from '../util/validation';
 /**
  * @typedef {Object} ImageFile
  * @prop {String} encoding Base64 encoding of image
@@ -63,7 +63,7 @@ export default function ImageInput({images, handleImageInput=()=>{}}) {
         let filesIncorrect = 0;
         for(const file of files) {
             // validate file types
-            if(!validateFile(typesAccepted, file)) {
+            if(!ValidationUtil.validateFile(typesAccepted, file)) {
                 filesIncorrect++;
                 continue;
             }
@@ -77,7 +77,7 @@ export default function ImageInput({images, handleImageInput=()=>{}}) {
             })
             
             // create ImageFile objects with base64 encoding of file
-            let encoding = await toBase64(file);
+            let encoding = await FileUtil.toBase64(file);
             imageFileObjects.push({
                 encoding,
                 extension: ".".concat(file.type.slice(file.type.indexOf('/') + 1))
