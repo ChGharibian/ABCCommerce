@@ -4,3 +4,5 @@
 /src/.vs/ProjectEvaluation/abccommerce.projects.v9.bin
 /src/.vs/ProjectEvaluation/abccommerce.metadata.v9.bin
 /src/.vs/ProjectEvaluation/abccommerce.strings.v9.bin
+/src/ABCAPITests/bin/Debug/net8.0
+/src/ABCAPITests/obj
