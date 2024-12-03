@@ -1,8 +1,11 @@
 import './Listing.css';
+import { useState } from 'react';
 import TagList from './TagList';
 import ImageScroller from './ImageScroller';
 import { getDateText } from '../util/date';
 import { getDollarString } from '../util/currency';
+import editSymbol from '../assets/edit-symbol.png';
+import { useCookies } from 'react-cookie';
 /**
  * @typedef {Object} SellerObject
  * @property {Number} id Seller ID
@@ -41,16 +44,33 @@ import { getDollarString } from '../util/currency';
  * @param {ListingObject} props
  * @returns {JSX.Element}
  */
-function Listing({listing}) {
+function Listing({listing, editable=false}) {
     const listingDate = new Date(listing.listingDate)
-    
-    return <li className="listing-wrapper" key={listing.id}>
+    const [cookies] = useCookies(['seller']);
+    const [listingEditStyle, setListingEditStyle] = useState({
+        visibility: "hidden"
+    })
+    return <li className="listing-wrapper" key={listing.id} onMouseOver={() => setListingEditStyle({
+        visibility: "visible"
+    })}
+    onMouseOut={() => setListingEditStyle({
+        visibility: "hidden"
+    })}>
         <a href={`/seller/${listing.item.seller.id}/listing/${listing.id}`} className="listing-redirect"></a>
         <div className="listing">
-        {/* image would go first */}
-        <div className="listing-image-wrapper">
-            <ImageScroller images={listing.images} />
-        </div>
+            {editable && 
+                <div className="listing-edit-button-wrapper"
+                style={listingEditStyle}>
+                    <div>
+                        <a href={`/seller/${cookies.seller}/editlisting/${listing.id}`}>
+                            <img src={editSymbol} />
+                        </a>
+                    </div>
+                </div>
+            }
+            <div className="listing-image-wrapper">
+                <ImageScroller images={listing.images} />
+            </div>
             <div className="listing-details-wrapper">
                 <p className="listing-price">{getDollarString(listing.pricePerUnit)}</p>
                 <p className="listing-quantity">{listing.quantity.toLocaleString()}</p>

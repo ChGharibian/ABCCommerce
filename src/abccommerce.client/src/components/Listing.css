@@ -35,17 +35,54 @@
 }
 
 .listing-redirect:hover + .listing, .listing:has(.listing-seller-name:hover), 
-.listing:has(.arrow-click-area:hover) {
+.listing:has(.arrow-click-area:hover),
+.listing:has(.listing-edit-button-wrapper > div > a:hover) {
     border: 1px solid var(--secondary-border-color);
 }
 
 .listing-redirect:hover + .listing .listing-image-wrapper, 
 .listing:has(.listing-seller-name:hover) .listing-image-wrapper,
-.listing:has(.arrow-click-area:hover) .listing-image-wrapper
+.listing:has(.arrow-click-area:hover) .listing-image-wrapper,
+listing:has(.listing-edit-button-wrapper > div > a:hover) .listing-image-wrapper
 {
     border-bottom: 1px solid var(--secondary-border-color);
 }
 
+.listing-edit-button-wrapper {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: right;
+}
+
+.listing-edit-button-wrapper > div {
+    position: relative;
+    height: 0;
+    width: 10%;
+    padding-bottom: 10%;
+}
+
+.listing-edit-button-wrapper > div > a:hover{
+    background-color: var(--c-blue-grey-900);
+}
+
+.listing-edit-button-wrapper > div > a { 
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    line-height: 100%;
+    height: 100%;
+    background-color: var(--secondary-bg-color);
+    border-left: 1px solid var(--secondary-border-color);
+    border-bottom: 1px solid var(--secondary-border-color);
+    z-index: 3000;
+}
+.listing-edit-button-wrapper img {
+    width: 100%;
+    filter: var(--secondary-svg-color);
+}
 .listing {
     position: absolute;
     top: 0;
