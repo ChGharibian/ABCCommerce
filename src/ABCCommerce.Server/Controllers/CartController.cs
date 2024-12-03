@@ -140,7 +140,7 @@ public class CartController : Controller
     /// <param name="addToCart"></param>
     /// <returns></returns>
     [HttpPost(Name = "Add Cart Item")]
-    public ActionResult<CartItem> AddCartItem([FromBody] AddToCartRequest addToCart)
+    public async Task<ActionResult<CartItem>> AddCartItem([FromBody] AddToCartRequest addToCart)
     {
         if (!int.TryParse(User.FindFirstValue("userid"), out int id))
         {
@@ -158,6 +158,7 @@ public class CartController : Controller
         };
         ABCDb.CartItems.Add(cartItem);
         ABCDb.SaveChanges();
+        await ListingService.Availability(cartItem.Id);
         return Ok(cartItem.ToDto());
     }
     /// <summary>
