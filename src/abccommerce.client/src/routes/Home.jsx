@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import Listing from '../components/Listing';
 import searchImg from '../assets/search.svg';
 import PageSelector from '../components/PageSelector';
-import { handlePageChange } from '../util/paging';
 import { useCookies } from 'react-cookie';
+import { PagingUtil } from '../util/paging';
 
 /**
  * @category route
@@ -89,7 +89,7 @@ export default function Home() {
         {
         (listings?.length > 0 || listings?.length === 0 && searched && pageNumber > 1) &&
           <PageSelector width={160} height={40} 
-          handlePageChange={(page) => handlePageChange(page, pageNumber, listings, setPageNumber)}
+          handlePageChange={(page) => PagingUtil.handlePageChange(page, pageNumber, listings, setPageNumber)}
           page={pageNumber}/>
         }
     </div>

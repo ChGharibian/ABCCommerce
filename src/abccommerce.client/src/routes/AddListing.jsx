@@ -3,7 +3,8 @@ import Input from '../components/Input';
 import { useState } from 'react';
 import TagList from '../components/TagList';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getDollarString } from '../util/currency';
+import { CurrencyUtil } from '../util/currency';
+import ImageInput from '../components/ImageInput';
 export default function AddListing() {
     const [currentTag, setCurrentTag] = useState('');
     const { sellerId } = useParams();
@@ -13,6 +14,7 @@ export default function AddListing() {
     const [errors, setErrors] = useState({
 
     })
+    const [images, setImages] = useState([]);
     const [listingData, setListingData] = useState({
         name: '',
         description: '',
@@ -180,15 +182,18 @@ export default function AddListing() {
     }
     
     return (
+        <div id="add-listing-page-wrapper">
+        <h1>Add Listing</h1>
         <form id="add-listing-wrapper" onKeyDown={e => { if(e.key === 'Enter') e.preventDefault(); }}>
             <button className="hidden" type="submit" onSubmit={e => e.preventDefault()}></button>
-            <h1>Add Listing</h1>
-            <input type="file" /> {/* will try to add image input component later */}
+            <div id="add-listing-image-wrapper">
+                <ImageInput images={images} handleImageInput={(i) => setImages(i)}/>
+            </div>
             <Input placeholder="Name" required={true} name="name" value={listingData.name} onChange={handleListingChange}/>
             <textarea placeholder="Description" type="textarea" name="description" value={listingData.description} onChange={handleListingChange}/>
             <Input placeholder="Quantity" type="number" name="quantity" value={listingData.quantity} onChange={handleListingChange} required={true} />
             <Input placeholder="Price" name="price" value={listingData.price} onChange={handleListingChange} required={true} />
-            <p>{getDollarString(listingData.price)}</p>
+            <p>{CurrencyUtil.getDollarString(listingData.price)}</p>
             <Input placeholder="Tags (Press enter to add a tag)" value={currentTag} name="tags" onKeyDown={handleTagKeyDown} onChange={handleTagChange}/>            
             <div className={tagList.length === 0 ? 'hidden' : ''}>  
                 <TagList tags={tagList} onClick={removeTag}/>
@@ -209,5 +214,6 @@ export default function AddListing() {
             <button id="submit-add-listing" onClick={handleSubmit}>Add</button>
             
         </form>
+        </div>
     )
 }

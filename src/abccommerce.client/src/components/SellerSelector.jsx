@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
-import { getSellerData } from "../util/users";
+import { UserUtil } from "../util/users";
 import Select from "./Select";
 /**
  * @category component
@@ -18,7 +18,7 @@ export default function SellerSelector() {
       }, [cookies.userToken])
   
       async function manageSellerData() {
-        let data = await getSellerData(cookies.userToken);
+        let data = await UserUtil.getSellerData(cookies.userToken);
         if(data) {
           setSellers(data);
           setCookie('seller', data[0].id ?? "", {path: "/"});

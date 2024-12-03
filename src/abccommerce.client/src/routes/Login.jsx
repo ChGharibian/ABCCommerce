@@ -3,8 +3,8 @@ import '../components/Input';
 import Input from '../components/Input';
 import { useNavigate } from 'react-router-dom';
 import './login.css';
-import { setTokens } from '../util/tokens';
-
+import { TokenUtil } from '../util/tokens';
+import { ValidationUtil } from '../util/validation';
 /**
  * @category route
  * @function Login
@@ -50,7 +50,7 @@ export default function Login(){
       setServerMessage('We in boys');
       
 
-      setTokens(data);
+      TokenUtil.setTokens(data);
       navigate('/');
     } else{
       setServerMessage(data.error || "Authentication failed");
@@ -62,23 +62,6 @@ export default function Login(){
       setServerMessage('Network error, try again later');
     }
 
-  }
-  //validation
-  const validateUsername = (username) => {
-    let error = '';
-    if(!username.trim()) {
-      error = 'Username is required';
-    }
-    return error;
-  };
-  const validatePassword = (password) => {
-    let error = '';
-    if(!password) {
-      error = 'Password is required.';
-    } else if (password.length < 10) {
-      error = 'Password must be at least 10 characters long.';
-    }
-    return error;
   }
 
   //onChange
@@ -96,9 +79,9 @@ export default function Login(){
     let error = '';
 
     if(name === 'username') {
-      error = validateUsername(value);
+      error = ValidationUtil.validateUsername(value);
     } else if (name === 'password'){
-      error = validatePassword(value);
+      error = ValidationUtil.validatePassword(value);
     }
 
     setErrors({...errors, [name]: error});
@@ -136,6 +119,9 @@ export default function Login(){
         <button type="submit" disabled={!!errors.username || !!errors.password}>
           Login
         </button>
+        {errors.submit && 
+        <p className='error'>{errors.submit}</p>
+        }
       </form>
     </div>
   )

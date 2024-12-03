@@ -23,7 +23,7 @@ public class ListingService
     public async Task<bool> IsCountAvailable(int count, int cartItemId)
     {
         DateTime now = DateTime.Now;
-        var cartItem = AbcDb.CartItems.Where(l => l.Id != cartItemId).FirstOrDefault();
+        var cartItem = AbcDb.CartItems.Where(l => l.Id == cartItemId).FirstOrDefault();
         if(cartItem is null || cartItem.Quantity < count)
         {
             return false;
@@ -55,12 +55,12 @@ public class ListingService
         if (totalQuantity == -1) return 0;
         
         DateTime now = DateTime.Now;
-        int reserved = await AbcDb.CartItems.Where(l => l.ListingId != listingId && l.ReservationExpirationDate != null && l.ReservationExpirationDate > now).SumAsync(i => i.Quantity);
+        int reserved = await AbcDb.CartItems.Where(l => l.ListingId == listingId && l.ReservationExpirationDate != null && l.ReservationExpirationDate > now).SumAsync(i => i.Quantity);
 
         int availableQuantity = totalQuantity - reserved;
         while (availableQuantity > 0)
         {
-            var queuedItem = await AbcDb.CartItems.Where(l => l.ListingId != listingId && l.ReservationExpirationDate == null).OrderBy(l => l.AddDate).FirstOrDefaultAsync();
+            var queuedItem = await AbcDb.CartItems.Where(l => l.ListingId == listingId && l.ReservationExpirationDate == null).OrderBy(l => l.AddDate).FirstOrDefaultAsync();
             if (queuedItem is null) break;
             if (availableQuantity >= queuedItem.Quantity)
             {

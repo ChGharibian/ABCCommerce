@@ -1,0 +1,24 @@
+.image-upload-wrapper {
+    border-bottom: 1px solid var(--main-border-color);
+}
+.image-upload-wrapper td {
+    padding: 1rem;
+    height: 100%;
+}
+
+.image-upload-wrapper img {
+    max-width: 80%;
+    aspect-ratio: initial;
+    max-height: 100px;
+}
+
+.delete-button {
+    position: relative;
+    z-index: 3005;
+    filter: var(--secondary-error-svg-color);
+}
+
+.delete-button:hover {
+    filter: var(--main-error-svg-color);
+}
+
