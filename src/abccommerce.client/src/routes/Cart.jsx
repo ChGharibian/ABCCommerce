@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
 import './cart.css';
 
 /**
@@ -17,7 +18,7 @@ export default function Cart() {
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [cookies] = useCookies(['userToken']);
-
+  const navigate = useNavigate();
 
   //when component is rerendered rerender cart list
   //useEffect will be used
@@ -61,8 +62,9 @@ export default function Cart() {
   }, []);
 
   
-    //send request to the backend for the 
-  
+  const handleButtonClick = () => {
+    navigate('/checkout')
+  }
 
   //map the list of cartItems from the Cart
     //each list will be displayed as a row
@@ -100,7 +102,7 @@ export default function Cart() {
           </tfoot>
           
       </table>
-      <button style={{backgroundColor: 'white'}}>Proceed to Checkout</button>
+      <button onClick={handleButtonClick} style={{backgroundColor: 'white'}}>Proceed to Checkout</button>
     </div>
   )
 }
