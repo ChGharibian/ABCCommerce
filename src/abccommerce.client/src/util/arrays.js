@@ -51,4 +51,37 @@ export class ArrayUtil {
         if(arr[range[1]]) newArr.push(arr[range[1]]);
         return newArr;
     }
+
+
+    /**
+     * Returns an object that contains two arrays. The "added" array describes items that were added to the original array
+     * based on the current array. The "removed" array describes items that were removed from the original array based on the current array.
+     * @static
+     * @function
+     * @author Thomas Scott
+     * @param {Array<any>} original Original array
+     * @param {Array<any>} current  Current array to be compared against
+     * @returns {Object} Object containing "added" and "current" arrays
+     */
+    static getAddedRemovedItems(original, current) {
+        let diff = {
+            added: [],
+            removed: []
+        }
+        let currMut = [...current];
+        for(const item of original) {
+            let index = currMut.indexOf(item);
+            if(index !== -1) {
+                // currMut list still contains this item, it was not removed
+                // remove item from currMut 
+                currMut.splice(index, 1);
+            } else {
+                // currMut list does not contain this item, it was removed
+                diff.removed.push(item);
+            }
+        }
+        // remaining items in currMut are added
+        diff.added = [...currMut];
+        return diff;
+    }
 }
