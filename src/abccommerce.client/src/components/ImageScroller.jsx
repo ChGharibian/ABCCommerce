@@ -26,8 +26,8 @@ export default function ImageScroller({images}) {
     return (
         <div className="image-scroller-wrapper">
             {images.length > 1 &&
-            <div className="image-scroller-left-controls">
-                <Arrow size={13} thickness={3} onClick={scrollLeft} direction="left" zIndex={2000} />
+            <div className="image-scroller-left-controls" onClick={scrollLeft}>
+                <Arrow size={13} thickness={3} direction="left" zIndex={2000} />
             </div>
             }
             {images.length > 0 ?
@@ -36,8 +36,8 @@ export default function ImageScroller({images}) {
             "No images"
             }
             {images.length > 1 &&
-            <div className="image-scroller-right-controls">
-                <Arrow size={13} thickness={3} onClick={scrollRight} direction="right" zIndex={2000} />
+            <div className="image-scroller-right-controls" onClick={scrollRight} >
+                <Arrow size={13} thickness={3} direction="right" zIndex={2000} />
             </div>
             }
         </div>
