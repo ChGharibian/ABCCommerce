@@ -11,6 +11,7 @@ import ListingPage from "./ListingPage";
 import AddListing from "./AddListing";
 import '../App.css'
 import '../variables.css';
+import EditListing from "./EditListing";
 import Checkout from "./Checkout";
 /**
  * @global
@@ -30,6 +31,7 @@ export default function App() {
         <Route path="registration" element={<Registration/>}/>
         <Route path="seller/:sellerId" element={<Seller/>}/>
         <Route path="seller/:sellerId/addlisting" element={<AddListing />} />
+        <Route path="seller/:sellerId/editlisting/:listingId" element={<EditListing />} />
         <Route path="seller/:sellerId/listing/:listingId" element={<ListingPage />} />
         <Route path="cart" element={<Cart/>}/>
         <Route path="checkout" element={<Checkout/>}/>

@@ -126,7 +126,7 @@ export default function Seller() {
                 {listings?.length > 0 ? 
                 <ul className="listings">
                     {listings.map(l => 
-                        <Listing listing={l} key={l.id} />
+                        <Listing listing={l} key={l.id} editable={Number(sellerId) === Number(cookies.seller)}/>
                     )}
                 </ul>
                 : seller.exists && listings?.loading ?

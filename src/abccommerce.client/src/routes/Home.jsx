@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Listing from '../components/Listing';
 import searchImg from '../assets/search.svg';
 import PageSelector from '../components/PageSelector';
+import { useCookies } from 'react-cookie';
 import { PagingUtil } from '../util/paging';
 
 /**
@@ -21,6 +22,7 @@ export default function Home() {
     const [pageNumber, setPageNumber] = useState(1);
     const [loading, setLoading] = useState(false);
     const [searched, setSearched] = useState(false);
+    const [cookies] = useCookies(['seller']);
     // const [prevSearch, setPrevSearch] = useState('');
 
     // max 50
@@ -72,7 +74,7 @@ export default function Home() {
                 <p className="no-listings">Loading</p>
               :
               listings?.length > 0 ?
-                listings.map(l => <Listing listing={l} key={l.id} />)
+                listings.map(l => <Listing listing={l} key={l.id} editable={Number(cookies.seller) === Number(l.item.seller.id)} />)
               : 
               listings?.length === 0 && searched ?
                 pageNumber > 1 ?

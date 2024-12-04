@@ -2,8 +2,8 @@
 #cart-page-wrapper {
   position: relative;
   top: var(--nav-bar-height);
-  min-height: calc(100vh - var(--nav-bar-height));
-  overflow-x: auto;
+  height: calc(100vh - var(--nav-bar-height));
+  overflow: auto;
   background-color: var(--main-bg-color);
   color: var(--main-text-color);
   padding: 1rem;
