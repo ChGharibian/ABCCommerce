@@ -3,6 +3,8 @@ using ListingDTO = SharedModels.Models.Listing;
 using ItemDTO = SharedModels.Models.Item;
 using SellerDTO = SharedModels.Models.Seller;
 using CartItemDTO = SharedModels.Models.CartItem;
+using MemberDTO = SharedModels.Models.Member;
+using UserDTO = SharedModels.Models.User;
 using ABCCommerceDataAccess.Models;
 
 namespace ABCCommerce.Server;
@@ -54,5 +56,13 @@ public static class ModelExtensions
             Quantity = cartItem.Quantity,
             Listing = cartItem.Listing?.ToDto(),
         };
+    }
+    public static MemberDTO ToDto(this UserSeller userSeller)
+    {
+        return new MemberDTO { Role = userSeller.Role, User = userSeller.User.ToDto() };
+    }
+    public static UserDTO ToDto(this User user)
+    {
+        return new UserDTO(user.Id, user.Username, user.Email, user.ContactName, user.Phone);
     }
 }

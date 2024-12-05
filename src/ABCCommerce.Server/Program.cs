@@ -54,6 +54,7 @@ builder.Services.AddScoped<IImageService, DbImageService>();
 
 builder.Services.AddHostedService<InitializeSearchIndex>();
 builder.Services.AddScoped<ListingService>();
+builder.Services.AddScoped<PermissionService>();
 
 builder.Services.AddControllers().AddJsonOptions(o =>
 {
