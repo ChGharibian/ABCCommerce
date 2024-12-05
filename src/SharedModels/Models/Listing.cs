@@ -16,5 +16,6 @@ public class Listing
     public string? Description {get; set;}
     public bool Active { get; set; }
     public ImagePath[] Images { get; set; } = Array.Empty<ImagePath>();
+    public int[] ImageIds { get; set; } = [];
     public string[] Tags {get; set;}
 }

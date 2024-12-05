@@ -30,6 +30,7 @@ public class ListingController : Controller
         ExamineManager = examineManager;
         HostEnvironment = hostEnvironment;
     }
+
     /// <summary>
     /// Adds image to a listing.
     /// </summary>
@@ -48,6 +49,23 @@ public class ListingController : Controller
         editListing.Images.Add(new ABCCommerceDataAccess.Models.ListingImage() { Image = imagePath.Path });
         AbcDb.SaveChanges();
         return Ok(imagePath);
+    }
+    /// <summary>
+    /// Delete an image from a listing.
+    /// </summary>
+    /// <param name="listingId">The id of the listing to delete the image from.</param>
+    /// <param name="imageId">The listing image id of the liting image to delete.</param>
+    /// <returns></returns>
+    [HttpDelete("{listingId:int}/Image/{imageId:int}", Name = "Remove Image From Listing")]
+    public ActionResult DeleteImageInListing(int listingId, int imageId)
+    {
+        var imageToDelete = AbcDb.ListingImages.Where(li => li.ListingId == listingId && li.Id == imageId).FirstOrDefault();
+        
+        if(imageToDelete is null) return NotFound();
+
+        ImageService.DeleteImage(imageToDelete.Image);
+        AbcDb.SaveChanges();
+        return Ok();
     }
     /// <summary>
     /// Get a listing via a listing id.

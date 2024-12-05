@@ -21,7 +21,8 @@ public static class ModelExtensions
             PricePerUnit = listing.PricePerUnit,
             Quantity = listing.Quantity,
             Tags = listing.Tags,
-            Images = listing.Images.Select(i => new ImagePath(i.Image)).ToArray(),
+            ImageIds = listing.Images.OrderBy(i => i.Id).Select(i => i.Id).ToArray(),
+            Images = listing.Images.OrderBy(i => i.Id).Select(i => new ImagePath(i.Image)).ToArray(),
             Item = listing.Item?.ToDto()
         };
     }
