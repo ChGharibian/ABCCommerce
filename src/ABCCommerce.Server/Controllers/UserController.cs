@@ -125,7 +125,7 @@ public class UserController : Controller
         {
             User = user,
             Seller = seller,
-            Role = "Owner",
+            Role = PermissionLevel.Personal,
         };
 
         ABCDb.UserSellers.Add(userSeler);

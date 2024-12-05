@@ -6,7 +6,7 @@ namespace ABCCommerce.Server.Services;
 
 public class PermissionService
 {
-    string[] roleQueue = [PermissionLevel.Owner, PermissionLevel.Admin, PermissionLevel.Member];
+    string[] roleQueue = [PermissionLevel.Personal, PermissionLevel.Owner, PermissionLevel.Admin, PermissionLevel.Member];
     public ABCCommerceContext AbcDb { get; }
     public PermissionService(ABCCommerceContext abcDb)
     {
@@ -70,4 +70,5 @@ public static class PermissionLevel
     public static string Owner { get; } = nameof(Owner);
     public static string Admin { get; } = nameof(Admin);
     public static string Member { get; } = nameof(Member);
+    public static string Personal { get; } = nameof(Personal);
 }

@@ -162,18 +162,30 @@ public class SellerController : ControllerBase
         }
         if (!Permission.GetPermissionLevel(id, sellerId, out string? modifierPermissionLevel)) return Unauthorized();
         if (!Permission.RoleExists(roleChange.NewRole)) return NotFound("Role not found.");
-        if (!Permission.GetPermissionLevel(userId, sellerId, out string? targetPermissionLevel)) return NotFound("Memeber not found.");
-
-        if(Permission.HasExplicitPermission(modifierPermissionLevel, targetPermissionLevel) &&
-            Permission.HasExplicitPermission(modifierPermissionLevel, roleChange.NewRole))
+        if (!Permission.HasExplicitPermission(modifierPermissionLevel, roleChange.NewRole)) return Unauthorized();
+        if (id != userId)
         {
-            Permission.SetPermission(userId, sellerId, roleChange.NewRole);
-            return Ok();
+            if (!Permission.GetPermissionLevel(userId, sellerId, out string? targetPermissionLevel)) return NotFound("Memeber not found.");
+            if (!Permission.HasExplicitPermission(modifierPermissionLevel, targetPermissionLevel)) return Unauthorized();
         }
-        else
+        Permission.SetPermission(userId, sellerId, roleChange.NewRole);
+        return Ok();
+    }
+    [Authorize]
+    [HttpPatch("{sellerId:int}/Members/{userId:int}/Role/Owner")]
+    public ActionResult MakeOwner(int sellerId, int userId)
+    {
+        if (!int.TryParse(User.FindFirstValue("userid"), out int id))
         {
             return Unauthorized();
         }
+        if (!Permission.GetPermissionLevel(id, sellerId, out string? modifierPermissionLevel)) return Unauthorized();
+        if (modifierPermissionLevel == PermissionLevel.Personal) return Unauthorized();
+        if (!Permission.HasPermission(modifierPermissionLevel, PermissionLevel.Owner)) return Unauthorized();
+        if (!Permission.GetPermissionLevel(userId, sellerId, out string? targetPermissionLevel)) return NotFound("Memeber not found.");
+
+        Permission.SetPermission(userId, sellerId, PermissionLevel.Owner);
+        return Ok();
     }
     [Authorize]
     [HttpPut("{sellerId:int}/Members/{userId:int}")]
@@ -187,15 +199,10 @@ public class SellerController : ControllerBase
         if (!Permission.RoleExists(roleChange.NewRole)) return NotFound("Role not found.");
         if (Permission.IsMember(userId, sellerId)) return BadRequest("User is already a member of the seller.");
 
-        if(Permission.HasExplicitPermission(modifierPermissionLevel, roleChange.NewRole))
-        {
-            Permission.SetPermission(userId, sellerId, roleChange.NewRole);
-            return Ok();
-        }
-        else
-        {
-            return Unauthorized();
-        }
+        if(!Permission.HasExplicitPermission(modifierPermissionLevel, roleChange.NewRole)) return Unauthorized();
+
+        Permission.SetPermission(userId, sellerId, roleChange.NewRole);
+        return Ok();
     }
     [Authorize]
     [HttpDelete("{sellerId:int}/Members/{userId:int}")]
@@ -206,17 +213,14 @@ public class SellerController : ControllerBase
             return Unauthorized();
         }
         if (!Permission.GetPermissionLevel(id, sellerId, out string? modifierPermissionLevel)) return Unauthorized();
-        if (!Permission.GetPermissionLevel(userId, sellerId, out string? targetPermissionLevel)) return BadRequest("User is not a member.");
+        if(id != userId)
+        {
+            if (!Permission.GetPermissionLevel(userId, sellerId, out string? targetPermissionLevel)) return BadRequest("User is not a member.");
+            if(!Permission.HasExplicitPermission(modifierPermissionLevel, targetPermissionLevel)) return Unauthorized();
+        }
 
-        if(Permission.HasExplicitPermission(modifierPermissionLevel, targetPermissionLevel))
-        {
-            Permission.DeleteMember(userId, sellerId);
-            return Ok();
-        }
-        else
-        {
-            return Unauthorized();
-        }
+        Permission.DeleteMember(userId, sellerId);
+        return Ok();
     }
 }
 public class MemberRoleChange
