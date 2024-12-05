@@ -13,7 +13,7 @@ export default function ImageUpload({previewURL, name, size, onDelete=()=>{}}) {
                 {size}
             </td>
             <td>
-                <img onClick={onDelete} src={deleteSymbol} className="delete-button"/>
+                <img alt="remove" onClick={onDelete} src={deleteSymbol} className="delete-button"/>
             </td>
         </tr>
     )

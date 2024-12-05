@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
+import { CurrencyUtil } from '../util/currency';
+import { useNavigate } from 'react-router-dom';
 import './cart.css';
 
 /**
@@ -17,7 +19,7 @@ export default function Cart() {
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [cookies] = useCookies(['userToken']);
-
+  const navigate = useNavigate();
 
   //when component is rerendered rerender cart list
   //useEffect will be used
@@ -61,8 +63,9 @@ export default function Cart() {
   }, []);
 
   
-    //send request to the backend for the 
-  
+  const handleButtonClick = () => {
+    navigate('/checkout')
+  }
 
   //map the list of cartItems from the Cart
     //each list will be displayed as a row
@@ -83,24 +86,24 @@ export default function Cart() {
             {cartItems.map((currentListing) => (
               <tr key={currentListing.id}>
                 <td data-label="Image">
-                  <img src={currentListing}/>
+                  <img src={currentListing.listing.images[0]}/>
                 </td>
-                <td data-label="Name">{currentListing.listing.item.name}</td>
+                <td data-label="Name">{currentListing.listing.name}</td>
                 <td data-label="Description">Description</td>
                 <td data-label="Quantity">{currentListing.quantity}</td>
-                <td data-label="Cost">{currentListing.listing.pricePerUnit*currentListing.quantity}</td>
+                <td data-label="Cost">{CurrencyUtil.getDollarString(currentListing.listing.pricePerUnit*currentListing.quantity)}</td>
               </tr>
             ))}
           </tbody>
           <tfoot>
             <tr>
               <th scope="row" colSpan="4">Total Cost</th>
-              <td>{totalPrice}</td>
+              <td>{CurrencyUtil.getDollarString(totalPrice)}</td>
             </tr>
           </tfoot>
           
       </table>
-      <button style={{backgroundColor: 'white'}}>Proceed to Checkout</button>
+      <button onClick={handleButtonClick} style={{backgroundColor: 'white'}}>Proceed to Checkout</button>
     </div>
   )
 }

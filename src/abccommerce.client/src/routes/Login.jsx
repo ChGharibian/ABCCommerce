@@ -119,6 +119,9 @@ export default function Login(){
         <button type="submit" disabled={!!errors.username || !!errors.password}>
           Login
         </button>
+        {errors.submit && 
+        <p className='error'>{errors.submit}</p>
+        }
       </form>
     </div>
   )

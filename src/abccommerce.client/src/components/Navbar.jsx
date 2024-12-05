@@ -15,7 +15,7 @@ import SellerSelector from './SellerSelector';
  * @returns {JSX.Element}
  */
 export default function Navbar() {
-    const [cookies] = useCookies(['userToken', 'refreshToken']);
+    const [cookies] = useCookies(['userToken', 'refreshToken', 'seller']);
     useEffect(() => {
       TokenUtil.refresh(cookies.refreshToken);
     }, [])
@@ -41,6 +41,12 @@ export default function Navbar() {
               <li>
                 <Logout/>
               </li>
+              {cookies.seller &&
+              <li>
+                <Link to={`/seller/${cookies.seller}`}>Listings</Link>
+              </li>
+              }
+              
               <li>
                 <Link to="/cart">Cart</Link>
               </li>
