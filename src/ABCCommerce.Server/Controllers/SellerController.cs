@@ -216,7 +216,15 @@ public class SellerController : ControllerBase
         if(id != userId)
         {
             if (!Permission.GetPermissionLevel(userId, sellerId, out string? targetPermissionLevel)) return BadRequest("User is not a member.");
-            if(!Permission.HasExplicitPermission(modifierPermissionLevel, targetPermissionLevel)) return Unauthorized();
+            if (!Permission.HasExplicitPermission(modifierPermissionLevel, targetPermissionLevel)) return Unauthorized();
+        }
+        else
+        {
+            if (modifierPermissionLevel == PermissionLevel.Personal) return Unauthorized();
+            if (modifierPermissionLevel == PermissionLevel.Owner)
+            {
+                if (ABCDb.UserSellers.Count(u => u.SellerId == sellerId && (u.Role == PermissionLevel.Owner || u.Role == PermissionLevel.Personal)) < 2) return Unauthorized();
+            }
         }
 
         Permission.DeleteMember(userId, sellerId);
