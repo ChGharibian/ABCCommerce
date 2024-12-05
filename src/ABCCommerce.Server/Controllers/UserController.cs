@@ -31,6 +31,21 @@ public class UserController : Controller
         TokenService = tokenService;
         PasswordHasher = passwordHasher;
     }
+    [HttpGet("{userId:int}")]
+    public ActionResult<User> GetUser(int userId)
+    {
+        var user = ABCDb.Users.Where(u => u.Id == userId).FirstOrDefault();
+        if(user is null) return NotFound();
+
+        if (this.User.Identity is not null && this.User.Identity.IsAuthenticated && int.TryParse(User.FindFirstValue("userid"), out int id) && id == userId)
+        {
+            return Ok(user.ToFullDto());
+        }
+        else
+        {
+            return Ok(user.ToDto());
+        }
+    }
     /// <summary>
     /// Get the cart items belonging to the user.
     /// </summary>

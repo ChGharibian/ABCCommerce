@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,33 +13,15 @@ public class Member
 }
 public class User
 {
-    public int Id { get; }
-    public string Username { get; }
-    public string Email { get; }
-    public string? ContactName { get; }
-    public string? Phone { get; }
 
-    public User(int id, string username, string email, string? contactName, string? phone)
-    {
-        Id = id;
-        Username = username;
-        Email = email;
-        ContactName = contactName;
-        Phone = phone;
-    }
-
-    public override bool Equals(object? obj)
-    {
-        return obj is User other &&
-               Id == other.Id &&
-               Username == other.Username &&
-               Email == other.Email &&
-               ContactName == other.ContactName &&
-               Phone == other.Phone;
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(Id, Username, Email, ContactName, Phone);
-    }
+    public int Id { get; set; }
+    public string Username { get; set; } = "";
+    public string Street { get; set; } = "";
+    public string? StreetPlus { get; set; }
+    public string City { get; set; } = "";
+    public string State { get; set; } = "";
+    public string Zip { get; set; } = "";
+    public string? ContactName { get; set; }
+    public string? Phone { get; set; }
+    public string Email { get; set; } = "";
 }

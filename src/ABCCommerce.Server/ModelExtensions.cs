@@ -63,6 +63,28 @@ public static class ModelExtensions
     }
     public static UserDTO ToDto(this User user)
     {
-        return new UserDTO(user.Id, user.Username, user.Email, user.ContactName, user.Phone);
+        return new UserDTO
+        {
+            Id = user.Id, 
+            Username = user.Username, 
+            Email = user.Email, 
+            ContactName = user.ContactName, 
+            Phone = user.Phone 
+        };
+    }
+    public static UserDTO ToFullDto(this User user)
+    {
+        return new UserDTO
+        {
+            Id = user.Id, 
+            Username = user.Username, 
+            Email = user.Email, 
+            ContactName = user.ContactName, 
+            Phone = user.Phone,
+            Street = user.Street,
+            City = user.City,
+            State = user.State,
+            Zip = user.Zip
+        };
     }
 }
