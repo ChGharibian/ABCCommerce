@@ -1,5 +1,6 @@
 import './Home.css';
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Listing from '../components/Listing';
 import searchImg from '../assets/search.svg';
 import PageSelector from '../components/PageSelector';
@@ -16,6 +17,7 @@ import { PagingUtil } from '../util/paging';
  * @returns {JSX.Element} Home page
  */
 export default function Home() {
+    const [searchParams, setSearchParams] = useSearchParams(); 
     const [listings, setListings] = useState([]);
     const [query, setQuery] = useState('');
     const [searchInput, setSearchInput] = useState('')
@@ -29,8 +31,22 @@ export default function Home() {
     const listingsPerPage = 24;
 
     useEffect(() => {
-        search(query, pageNumber - 1, listingsPerPage);
+      if(searchParams.get('search')) {
+        setQuery(searchParams.get('search'))
+
+        if(searchParams.get('page')) {
+          setPageNumber(searchParams.get('page'))
+        }
+      }
+    }, [])
+
+    useEffect(() => {
+        setSearchParams({search: query, page: pageNumber})
     }, [query, pageNumber])
+
+    useEffect(() => {
+        search(searchParams.get('search'), Number(searchParams.get('page')) - 1, listingsPerPage);
+    }, [searchParams])
 
     const handleKeyDown = (e) => {
         if(e.key === "Enter") {
