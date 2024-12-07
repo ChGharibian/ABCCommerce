@@ -1,5 +1,6 @@
 import './Home.css';
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Listing from '../components/Listing';
 import searchImg from '../assets/search.svg';
 import PageSelector from '../components/PageSelector';
@@ -16,6 +17,7 @@ import { PagingUtil } from '../util/paging';
  * @returns {JSX.Element} Home page
  */
 export default function Home() {
+    const [searchParams, setSearchParams] = useSearchParams(); 
     const [listings, setListings] = useState([]);
     const [query, setQuery] = useState('');
     const [searchInput, setSearchInput] = useState('')
@@ -29,8 +31,34 @@ export default function Home() {
     const listingsPerPage = 24;
 
     useEffect(() => {
-        search(query, pageNumber - 1, listingsPerPage);
+      if(searchParams.get('search')) {
+        setQuery(searchParams.get('search'))
+
+        if(searchParams.get('page')) {
+          setPageNumber(searchParams.get('page'))
+        }
+      }
+    }, [])
+
+    useEffect(() => {
+      if(query) {
+        setSearchParams({search: query, page: pageNumber})
+      }
     }, [query, pageNumber])
+
+    useEffect(() => {
+      if(searchParams.get('search') && searchParams.get('page')) {
+        search(searchParams.get('search'), Number(searchParams.get('page')) - 1, listingsPerPage);
+        setSearchInput(searchParams.get('search'));
+      } else {
+        setListings([]);
+        setQuery('');
+        setPageNumber(1);
+        setSearched(false);
+        setSearchInput('');
+      }
+        
+    }, [searchParams])
 
     const handleKeyDown = (e) => {
         if(e.key === "Enter") {
@@ -61,7 +89,7 @@ export default function Home() {
     <div id="home-page-wrapper">
         <div id="search-controls-wrapper">
             <div id="search-controls">
-                <input onKeyDown={handleKeyDown} id="search-bar" placeholder="Search" onChange={e => setSearchInput(e.target.value)}/>
+                <input onKeyDown={handleKeyDown} id="search-bar" placeholder="Search" value={searchInput} onChange={e => setSearchInput(e.target.value)}/>
                 <button onClick={handleSearchSubmit} id="search-button">
                   <img id="search-img" src={searchImg} />
                 </button>

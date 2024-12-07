@@ -5,11 +5,13 @@ using System.Text;
 using Image = ABCCommerce.Server.Services.Image;
 using DbImage = ABCCommerceDataAccess.Models.Image;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
 namespace ABCCommerce.Server.Services;
 public interface IImageService
 {
     Image? GetImage(string path);
     ImagePath AddImage(string base64, string type, string? basePath = null);
+    void DeleteImage(string path);
 }
 public class DbImageService : IImageService
 {
@@ -41,6 +43,11 @@ public class DbImageService : IImageService
         AbcDb.Images.Add(image);
         AbcDb.SaveChanges();
         return new ImagePath(path);
+    }
+
+    public void DeleteImage(string path)
+    {
+        AbcDb.Images.Where(i => i.Key == path).ExecuteDelete();
     }
 }
 public class FileSystemImageService : IImageService
@@ -75,6 +82,11 @@ public class FileSystemImageService : IImageService
         }
         var bytes = File.ReadAllBytes(fullPath);
         return new Image(bytes, Path.GetExtension(path));
+    }
+
+    public void DeleteImage(string path)
+    {
+        throw new NotImplementedException();
     }
 }
 public class Image

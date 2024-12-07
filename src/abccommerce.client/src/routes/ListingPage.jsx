@@ -22,7 +22,7 @@ export default function ListingPage() {
     const [error, setError] = useState('');
     const [refreshed, setRefreshed] = useState(false);
     const {sellerId, listingId} = useParams();
-    const [cookies ,setCookie,] = useCookies(['userToken', 'refreshToken']);
+    const [cookies] = useCookies(['userToken', 'refreshToken', 'seller']);
     useEffect(() => {
         getListing();
     }, [])
@@ -106,6 +106,7 @@ export default function ListingPage() {
         <div id="listing-page-details-section">
             <div id="listing-page-top-info" className="listing-detail">
               {listing.name ? listing.name : <i>No name</i>} · {CurrencyUtil.getDollarString(listing.pricePerUnit)} · {listing.quantity} available
+              {Number(cookies.seller) === Number(sellerId) && <> · <a href={`/seller/${sellerId}/editlisting/${listingId}`}>Edit</a></>}
               </div>
             <a className="listing-detail" href={`/seller/${listing.item.seller.id}`}>{listing.item.seller.name}</a>
             <p className="listing-detail">{'Posted ' + DateUtil.getDateText(new Date(listing.listingDate)).toLowerCase()}</p>

@@ -21,11 +21,11 @@ export default function PageSelector({width, height, handlePageChange, page}) {
     // width and height passed in as integers representing pixels
 
     const downPage = () => {
-        if(page > 1) handlePageChange(page - 1)
+        if(page > 1) handlePageChange(Number(page) - 1)
     }
 
     const upPage = () => {
-        handlePageChange(page + 1)
+        handlePageChange(Number(page) + 1)
     }
 
     return (

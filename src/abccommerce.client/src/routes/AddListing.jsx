@@ -154,6 +154,7 @@ export default function AddListing() {
         }
 
         // attempt to add listing
+        let listingId;
         try {
             let response = await fetch('http://localhost:5147/listing', {
                 method: "POST",
@@ -173,12 +174,48 @@ export default function AddListing() {
             }
 
             let listing = await response.json();
-            navigate(`/seller/${sellerId}/listing/${listing.id}`);
+            listingId = listing.id;
+            
             
         }
         catch(error) {
             setErrors({...errors, listing: "Error occured while adding listing"})
         }
+
+        // attempt to add images 
+        if(listingId) {
+            try {
+                let count = 0;
+                for(const image of images) {
+                    let res = await fetch(`http://localhost:5147/listing/${listingId}/image`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            image: image.encoding,
+                            fileType: image.extension
+                        })
+                    })
+                    if(!res.ok) count++;
+                }
+                if(count > 0) {
+                    setErrors({...errors, listing: `${count} images failed to upload, the listing has been uploaded`});
+                    setTimeout(() => {
+                        navigate(`/seller/${sellerId}/listing/${listingId}`);
+                    }, 5000);
+                } else {
+                    navigate(`/seller/${sellerId}/listing/${listingId}`);
+                }
+            }
+            catch(error) {
+                setErrors({...errors, listing: "Error occured while adding images, the listing has been uploaded"})
+                setTimeout(() => {
+                    navigate(`/seller/${sellerId}/listing/${listingId}`);
+                }, 5000);
+            }
+        }
+        
     }
     
     return (

@@ -72,7 +72,7 @@ export default function ImageInput({images, handleImageInput=()=>{}}) {
             let previewURL = URL.createObjectURL(file);
             imageUploadObjects.push({
                 name: file.name,
-                size: Math.floor(file.size / 1000).toString().concat(' KB'),
+                size: Math.floor(file.size / 1024).toString().concat(' KB'),
                 previewURL
             })
             

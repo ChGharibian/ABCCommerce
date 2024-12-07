@@ -3,6 +3,8 @@ using ListingDTO = SharedModels.Models.Listing;
 using ItemDTO = SharedModels.Models.Item;
 using SellerDTO = SharedModels.Models.Seller;
 using CartItemDTO = SharedModels.Models.CartItem;
+using MemberDTO = SharedModels.Models.Member;
+using UserDTO = SharedModels.Models.User;
 using ABCCommerceDataAccess.Models;
 
 namespace ABCCommerce.Server;
@@ -21,7 +23,8 @@ public static class ModelExtensions
             PricePerUnit = listing.PricePerUnit,
             Quantity = listing.Quantity,
             Tags = listing.Tags,
-            Images = listing.Images.Select(i => new ImagePath(i.Image)).ToArray(),
+            ImageIds = listing.Images.OrderBy(i => i.Id).Select(i => i.Id).ToArray(),
+            Images = listing.Images.OrderBy(i => i.Id).Select(i => new ImagePath(i.Image)).ToArray(),
             Item = listing.Item?.ToDto()
         };
     }
@@ -52,6 +55,36 @@ public static class ModelExtensions
             AddDate = cartItem.AddDate,
             Quantity = cartItem.Quantity,
             Listing = cartItem.Listing?.ToDto(),
+        };
+    }
+    public static MemberDTO ToDto(this UserSeller userSeller)
+    {
+        return new MemberDTO { Role = userSeller.Role, User = userSeller.User.ToDto() };
+    }
+    public static UserDTO ToDto(this User user)
+    {
+        return new UserDTO
+        {
+            Id = user.Id, 
+            Username = user.Username, 
+            Email = user.Email, 
+            ContactName = user.ContactName, 
+            Phone = user.Phone 
+        };
+    }
+    public static UserDTO ToFullDto(this User user)
+    {
+        return new UserDTO
+        {
+            Id = user.Id, 
+            Username = user.Username, 
+            Email = user.Email, 
+            ContactName = user.ContactName, 
+            Phone = user.Phone,
+            Street = user.Street,
+            City = user.City,
+            State = user.State,
+            Zip = user.Zip
         };
     }
 }
