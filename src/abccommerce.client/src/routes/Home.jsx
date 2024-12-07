@@ -41,11 +41,23 @@ export default function Home() {
     }, [])
 
     useEffect(() => {
+      if(query) {
         setSearchParams({search: query, page: pageNumber})
+      }
     }, [query, pageNumber])
 
     useEffect(() => {
+      if(searchParams.get('search') && searchParams.get('page')) {
         search(searchParams.get('search'), Number(searchParams.get('page')) - 1, listingsPerPage);
+        setSearchInput(searchParams.get('search'));
+      } else {
+        setListings([]);
+        setQuery('');
+        setPageNumber(1);
+        setSearched(false);
+        setSearchInput('');
+      }
+        
     }, [searchParams])
 
     const handleKeyDown = (e) => {
@@ -77,7 +89,7 @@ export default function Home() {
     <div id="home-page-wrapper">
         <div id="search-controls-wrapper">
             <div id="search-controls">
-                <input onKeyDown={handleKeyDown} id="search-bar" placeholder="Search" onChange={e => setSearchInput(e.target.value)}/>
+                <input onKeyDown={handleKeyDown} id="search-bar" placeholder="Search" value={searchInput} onChange={e => setSearchInput(e.target.value)}/>
                 <button onClick={handleSearchSubmit} id="search-button">
                   <img id="search-img" src={searchImg} />
                 </button>
