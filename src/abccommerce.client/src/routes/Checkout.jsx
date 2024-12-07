@@ -1,19 +1,42 @@
 import { useEffect, useState } from "react"
 import { useCookies } from 'react-cookie';
 import Input from "../components/Input";
+import generalHandleChange from '../util/generalHandleChange';
+import generalHandleBlur from '../util/generalHandleBlur'
+import { ValidationUtil } from "../util/validation";
 import './Checkout.css';
 
+//WHAT I NEED TO DO FOR THIS COMPONENT:
+//handleChange: address,addresss2,city,state,ZIP Code
 export default function Checkout(){
 
   const [cartItems, setCartItems] = useState([]);
   const [paymentInfo, setPaymentInfo] = useState({
     cardNumber: '',
     expirationDate: '',
-    cvv: '',
+    SecurityCode: '',
   })
+  const [mailingAddr, setMailingAddr] = useState({
+    street: '',
+    streetPlus: '',
+    city: '',
+    state: '',
+    zip: '',
+  })
+
+  const [errors, setErrors] = useState({
+    cardNumber:'',
+    expirationDate:'',
+    SecurityCode: '',
+    street: '',
+    city: '',
+    state: '',
+    zip: '',
+
+  })
+
   const [cookies] = useCookies(['userToken']);
   
-
   useEffect(()=> {
       
     const getCartData = async () => {
@@ -37,30 +60,123 @@ export default function Checkout(){
     getCartData();
   }, []);
 
+  const expireHandleChange = (element) => {
+    const { name, value } = element.target;
+
+    // Validate the input
+    const validationResult = ValidationUtil.validateExpirDateOnChange(value);
+
+    if (validationResult === true) {
+      // Remove any non-numeric characters except '/'
+      let cleanedValue = value.replace(/[^\d]/g, '');
+
+      // Add a slash after the first two digits
+      if (cleanedValue.length > 2) {
+        cleanedValue = cleanedValue.slice(0, 2) + '/' + cleanedValue.slice(2);
+      }
+
+      // Update the state with the formatted value
+      setPaymentInfo((prevState) => ({
+        ...prevState,
+        [name]: cleanedValue,
+      }));
+    }
+
+  };
+  
+
+
   return (
     <div id="checkout-wrapper">
       <form action="checkout-Form">
         <h2>Checkout</h2>
-        {/* <Input
-        label="CardNumber"
+        <h2>Mailing Address</h2>
+        <Input
+        label="Address Line 1:"
+        name="street"
         type="text"
+        value={mailingAddr.street}
+        placeholder="Street address"
+        onChange={generalHandleChange(setMailingAddr)}
+        onBlur={generalHandleBlur(ValidationUtil.validateCreditCard, setErrors)}
+        required
+        error={errors.street} 
+        />
+        <Input
+        label="Address Line 2:"
+        name="streetPlus"
+        type="text"
+        value={mailingAddr.streetPlus}
+        placeholder="Apt,suite,unit,building,floor,etc."
+        onChange={generalHandleChange(setMailingAddr)}
+        onBlur={generalHandleBlur(ValidationUtil.validateCreditCard, setErrors)}
+        />
+        <Input
+        label="City:"
+        name="city"
+        type="text"
+        value={mailingAddr.city}
+        placeholder="City Name"
+        onChange={generalHandleChange(setMailingAddr)}
+        onBlur={generalHandleBlur(ValidationUtil.validateCreditCard, setErrors)}
+        required
+        error={errors.city} 
+        />
+        <Input
+        label="State:"
+        name="state"
+        type="text"
+        value={mailingAddr.state}
+        placeholder="State"
+        onChange={generalHandleChange(setMailingAddr)}
+        onBlur={generalHandleBlur(ValidationUtil.validateCreditCard, setErrors)}
+        required
+        error={errors.state} 
+        />
+        <Input
+        label="ZIP Code:"
+        name="zip"
+        type="number"
+        value={mailingAddr.zip}
+        placeholder="5 Digit Zip Code"
+        onChange={generalHandleChange(setMailingAddr)}
+        onBlur={generalHandleBlur(ValidationUtil.validateCreditCard, setErrors)}
+        required
+        error={errors.zip} 
+        />
+        <h2>Credit Card Information</h2>
+        <Input
+        label="Credit CardNumber"
+        name="cardNumber"
+        type="text"
+        value={paymentInfo.cardNumber}
         placeholder="cardnumber"
-        onChange={handleChange}
-        onBlur={handleBlur}
-        required 
+        onChange={generalHandleChange(setPaymentInfo)}
+        onBlur={generalHandleBlur(ValidationUtil.validateCreditCard, setErrors)}
+        required
+        error={errors.cardNumber} 
         />
         <Input
-        label="Month"
+        label="Expiration Date:"
+        name="expirationDate"
         type="text"
-        placeholder="carcardnumber"
-        onChange={handleChange}
-        onBlur={handleBlur}
+        value={paymentInfo.expirationDate}
+        placeholder="MM/YY"
+        onChange={expireHandleChange}
+        onBlur={generalHandleBlur(ValidationUtil.validateExpirDateOnBlur, setErrors)}
         required 
+        error={errors.expirationDate}
         />
         <Input
-        label="Year"
-        type
-        /> */}
+        label="CCV"
+        name="SecurityCode"
+        type="number"
+        value={paymentInfo.SecurityCode}
+        placeholder="000"
+        onChange={generalHandleChange(setPaymentInfo,4)}
+
+        maxLength={2}
+        />  
       </form>
     </div>
   )
