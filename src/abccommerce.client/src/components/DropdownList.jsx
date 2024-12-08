@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import Input from "./Input";
 import './DropdownList.css';
 
 /**
@@ -15,7 +16,10 @@ import './DropdownList.css';
  * @param {Boolean} props.required Whether or not the input field is required
  * @returns {JSX.Element}
  */
-export default function DropdownList({placeholder, list, name, width, required}) {
+export default function DropdownList({placeholder, list, name, width, required, onChange=()=>{},
+    filter = (list, input) => { return list.filter(item => item.toLowerCase().includes(input.toLowerCase())) },
+    display = (item) => item, 
+     ...rest}) {
     const [userInput, setUserInput] = useState("");
     const [listShown, setListShown] = useState(false);
     const [listLength, setListLength] = useState(0);
@@ -27,21 +31,23 @@ export default function DropdownList({placeholder, list, name, width, required})
         width,
         left: "calc((100% - " + width + ") / 2 + 0.7rem)"
         }}>*</div> }
-    <input style={{width}} required={required} placeholder={placeholder} name={name} value={userInput} 
+    <Input style={{width}} required={required} placeholder={placeholder} name={name} value={userInput} 
         onChange={e => {
         if(!listShown) setListShown(true);
         setUserInput(e.target.value)
+        onChange(e);
         }} 
         onBlur={(e) => {
         if(e.relatedTarget !== dropdown.current) setListShown(false);
         }}
+        {...rest}
     />
     <select style={{width,
         left: "calc(50% - " + width + " / 2)",
         maxHeight: listLength === 0 ? "0" : "6rem",
-        borderLeft: listLength > 0 ? "1px solid white" : "none",
-        borderRight: listLength > 0 ? "1px solid white" : "none",
-        borderBottom: listLength > 0 ? "1px solid white" : "none",
+        borderLeft: listLength > 0 ? "1px solid var(--main-input-border-color)" : "none",
+        borderRight: listLength > 0 ? "1px solid var(--main-input-border-color)" : "none",
+        borderBottom: listLength > 0 ? "1px solid var(--main-input-border-color)" : "none",
         borderTop: "none"
     }} size={Math.min(Math.max(1, listLength), 5)} ref={dropdown} multiple className={"dropdown-list" + (
         !listShown ? " hidden" :
@@ -57,9 +63,9 @@ export default function DropdownList({placeholder, list, name, width, required})
     )
 
     function getFilteredList() {
-        let options = list.filter(item => item.toLowerCase().includes(userInput.toLowerCase())).map(item => 
-            <option className="dropdown-item" key={item} >
-            {item}
+        let options = filter(list, userInput).map((item, i) => 
+            <option className="dropdown-item" key={i} >
+            {display(item)}
             </option>
         )
 

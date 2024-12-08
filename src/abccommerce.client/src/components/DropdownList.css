@@ -4,9 +4,13 @@
     height: 100%;
 }
 
+.dropdown-list-wrapper .input-wrapper {
+    margin: 0;
+}
+
 .required-mark {
     height: 0;
-    color: var(--c-red-300);
+    color: var(--error-text-color);
     text-align: right;
     position: absolute;
 }
@@ -19,7 +23,7 @@
     z-index: 1000;
     overflow-y: scroll;
     text-align: left;
-    background-color: var(--c-grey-200);
+    background-color: var(--main-input-bg-color);
     color: var(--main-text-color);
 }
 
@@ -30,5 +34,5 @@
 }
 
 .dropdown-item:hover {
-    background-color: var(--c-grey-500);
+    background-color: var(--secondary-input-bg-color);
 }

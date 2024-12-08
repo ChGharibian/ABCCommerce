@@ -1,11 +1,12 @@
 import './AddListing.css';
 import Input from '../components/Input';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TagList from '../components/TagList';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CurrencyUtil } from '../util/currency';
 import ImageInput from '../components/ImageInput';
 import { useCookies } from 'react-cookie';
+import DropdownList from '../components/DropdownList';
 export default function AddListing() {
     const [currentTag, setCurrentTag] = useState('');
     const { sellerId } = useParams();
@@ -29,6 +30,32 @@ export default function AddListing() {
         sku: '',
     })
     const [useExistingItem, setUseExistingItem] = useState(false);
+    const [existingItems, setExistingItems] = useState([]);
+
+    useEffect(() => {
+        getExistingItems();
+    }, [])
+
+    async function getExistingItems() {
+        try {
+            let response = await fetch(`http://localhost:5147/seller/${sellerId}/items`, {
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + cookies.userToken
+                }
+            })
+
+            if(!response.ok) {
+                setErrors({...error, existingSKU: "Error retrieving existing items"})
+                return;
+            }
+
+            setExistingItems(await response.json());
+        }
+        catch(error) {
+            setErrors({...errors, existingSKU: "Server error retrieving existing items"})
+        }
+    }
 
     function handleListingChange(e) {
         e.preventDefault();
@@ -206,10 +233,11 @@ export default function AddListing() {
             try {
                 let count = 0;
                 for(const image of images) {
-                    let res = await fetch(`http://localhost:5147/seller/${sellerId}/listings/${listingId}/image`, {
+                    let res = await fetch(`http://localhost:5147/seller/${sellerId}/listings${listingId}/image`, {
                         method: "POST",
                         headers: {
-                            "Content-Type": "application/json"
+                            "Content-Type": "application/json",
+                            "Authorization": "Bearer " + cookies.userToken
                         },
                         body: JSON.stringify({
                             image: image.encoding,
@@ -256,7 +284,20 @@ export default function AddListing() {
             </div>
             <label htmlFor="item-check">Create listing with existing item?<input type="checkbox" name="item-check" value={useExistingItem} onChange={e => setUseExistingItem(e.target.checked)}/></label>
             {useExistingItem ?
-                <Input placeholder="Enter existing item SKU" error={errors.existingSKU} name="sku" onChange={handleItemChange} required={true} />
+                <DropdownList placeholder="Enter existing item SKU" 
+                error={errors.existingSKU} name="sku" onChange={handleItemChange} required={true} 
+                list={existingItems}
+                filter={(list, input) => {
+                    return list.filter(itemObj => {
+                        return itemObj.name.toLowerCase().includes(input.toLowerCase())
+                        || itemObj.sku.toLowerCase().includes(input.toLowerCase());
+                    })
+                }}
+                display={(itemObj) => {
+                    return itemObj.sku;
+                }}
+                width="100%"
+                />
                 
             : 
                 <div id="add-listing-new-item-wrapper">
