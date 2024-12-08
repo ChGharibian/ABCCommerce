@@ -23,11 +23,13 @@ public class CartController : Controller
     private readonly ILogger<CartController> _logger;
 
     public ListingService ListingService { get; }
+    public TransactionService TransactionService { get; }
     public ABCCommerceContext ABCDb { get; }
 
-    public CartController(ListingService listingService, ILogger<CartController> logger, ABCCommerceContext abcDb)
+    public CartController(ListingService listingService, TransactionService transactionService, ILogger<CartController> logger, ABCCommerceContext abcDb)
     {
         ListingService = listingService;
+        TransactionService = transactionService;
         _logger = logger;
         ABCDb = abcDb;
     }
@@ -168,7 +170,7 @@ public class CartController : Controller
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
     [HttpPost("purchase")]
-    public ActionResult PurchaseCartItems([FromBody] PurchaseItemsRequest purchaseItems)
+    public async Task<ActionResult<Transaction>> PurchaseCartItems([FromBody] PurchaseItemsRequest purchaseItems)
     {
         if (!int.TryParse(User.FindFirstValue("userid"), out int id))
         {
@@ -183,43 +185,49 @@ public class CartController : Controller
 
         List<int> notInCartItems = new();
         List<int> tooMuchQuantityItems = new();
+        List<int> notAvailable = new();
         int j = 0;
 
-        for(int i = 0; i < requestItems.Count; i++)
+        for (int i = 0; i < requestItems.Count; i++)
         {
-            var cartItem = cartItems[j];
             var requestItem = requestItems[i];
-            if(cartItem.Id != requestItem.CartItem)
+            var cartItem = cartItems.Where(c => requestItem.CartItem == c.Id).FirstOrDefault();
+            if (cartItem is null)
             {
                 notInCartItems.Add(requestItem.CartItem);
             }
             else
             {
-                if(requestItem.Quantity > cartItem.Quantity)
+                if (requestItem.Quantity > cartItem.Quantity)
                 {
                     tooMuchQuantityItems.Add(requestItem.CartItem);
                 }
                 else
                 {
-                    //ListingService.IsCountAvailable(requestItem.Quantity)
+                    if (!await ListingService.IsCountAvailable(requestItem.Quantity, cartItem.Id))
+                    {
+                        notAvailable.Add(cartItem.Id);
+                    }
                 }
                 j++;
             }
         }
-        if(notInCartItems.Count > 0)
+        if (notInCartItems.Count > 0)
         {
-            errorDetails.Errors["Item not in cart."] = notInCartItems.Select(i => $"{i} is not a cart id.").ToArray();
+            errorDetails.Errors["Item not in cart."] = notInCartItems.Select(i => i.ToString()).ToArray();
         }
-        if(tooMuchQuantityItems.Count > 0)
+        if (tooMuchQuantityItems.Count > 0)
         {
-            errorDetails.Errors["Quantity greater than expected."] = tooMuchQuantityItems.Select(i => $"{i} is to many items. Add more quantity to cart.").ToArray();
+            errorDetails.Errors["Quantity greater than expected. Add more quantity to cart."] = tooMuchQuantityItems.Select(i => i.ToString()).ToArray();
         }
-        if(errorDetails.Errors.Count != 0)
+        if (notAvailable.Count > 0)
+        {
+            errorDetails.Errors["Quantity not available to purchase."] = notAvailable.Select(i => i.ToString()).ToArray();
+        }
+        if (errorDetails.Errors.Count != 0)
         {
             return ValidationProblem(errorDetails);
         }
-
-        var listings = ABCDb.Listings.Where(l => cartItems.Any(c => c.ListingId == l.Id)).OrderBy(l => l.Id);
-        throw new NotImplementedException();
+        return Ok(TransactionService.Purchase(purchaseItems, id));
     }
 }

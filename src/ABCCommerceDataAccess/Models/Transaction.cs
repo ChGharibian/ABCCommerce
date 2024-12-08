@@ -16,5 +16,6 @@ public class Transaction
     [StringLength(4)]
     public string Last4 { get; set; } = null!;
     public User User { get; set; } = null!;
+    public DateTime PurchaseDate { get; set; } = DateTime.Now;
     public ICollection<TransactionItem> Items { get; set; } = new List<TransactionItem>();
 }

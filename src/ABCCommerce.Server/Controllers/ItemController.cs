@@ -33,35 +33,6 @@ public class ItemController : Controller
         if (item is null) return NotFound();
         return Ok(item);
     }
-    /// <summary>
-    /// Created an item.
-    /// </summary>
-    /// <param name="createItem"></param>
-    /// <returns></returns>
-    [HttpPost(Name = "Create Item")]
-    public async Task<ActionResult<Item>> CreateItem([FromBody] CreateItemRequest createItem)
-    {
-        var seller = await AbcDb.Sellers.FirstOrDefaultAsync(s => s.Id == createItem.Seller);
-        if(seller is null)
-        {
-            return BadRequest(new
-            {
-                Error = "Seller Not Found"
-            });
-        }
-        if(AbcDb.Items.Any(i => i.SellerId == seller.Id && i.SKU == createItem.Sku))
-        {
-            return Problem("Item sku already exists.", statusCode: StatusCodes.Status400BadRequest);
-        }
-        var item = new ABCCommerceDataAccess.Models.Item
-        {
-            SKU = createItem.Sku,
-            Name = createItem.Name,
-        };
-        seller.Items.Add(item);
-        await AbcDb.SaveChangesAsync();
-        return Ok(item.ToDto());
-    }
 }
 /// <summary>
 /// A Class to determine whether a database object exists.
