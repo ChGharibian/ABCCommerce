@@ -41,11 +41,23 @@ export default function Home() {
     }, [])
 
     useEffect(() => {
+      if(query) {
         setSearchParams({search: query, page: pageNumber})
+      }
     }, [query, pageNumber])
 
     useEffect(() => {
+      if(searchParams.get('search') && searchParams.get('page')) {
         search(searchParams.get('search'), Number(searchParams.get('page')) - 1, listingsPerPage);
+        setSearchInput(searchParams.get('search'));
+      } else {
+        setListings([]);
+        setQuery('');
+        setPageNumber(1);
+        setSearched(false);
+        setSearchInput('');
+      }
+        
     }, [searchParams])
 
     const handleKeyDown = (e) => {
@@ -61,7 +73,17 @@ export default function Home() {
 
     async function search(query, step, count) {
       if(query === '' || typeof query === undefined) return;
+      if(isNaN(step) || step < 0) {
+        console.log("step isNan or less than 0");
+        setPageNumber(1);
+        return;
+      } else if(Math.floor(step) !== step) {
+        console.log('step is not int')
+        setPageNumber(Math.floor(step));
+        return;
+      }
       if(!searched) setSearched(true);
+      
       try {
         setLoading(true);
         let response = await fetch(`http://localhost:5147/search?q=${query}&skip=${(step) * count}&count=${count}`);
@@ -77,7 +99,7 @@ export default function Home() {
     <div id="home-page-wrapper">
         <div id="search-controls-wrapper">
             <div id="search-controls">
-                <input onKeyDown={handleKeyDown} id="search-bar" placeholder="Search" onChange={e => setSearchInput(e.target.value)}/>
+                <input onKeyDown={handleKeyDown} id="search-bar" placeholder="Search" value={searchInput} onChange={e => setSearchInput(e.target.value)}/>
                 <button onClick={handleSearchSubmit} id="search-button">
                   <img id="search-img" src={searchImg} />
                 </button>
