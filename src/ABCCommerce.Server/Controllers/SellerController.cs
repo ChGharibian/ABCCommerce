@@ -195,7 +195,7 @@ public class SellerController : ControllerBase
     /// <param name="listingId">The id of the listing to add an image to.</param>
     /// <param name="imageRequest"></param>
     /// <returns></returns>
-    [HttpPost("{sellerId:int}/Listings{listingId:int}/Image", Name = "Add Image To Listing")]
+    [HttpPost("{sellerId:int}/Listings/{listingId:int}/Image", Name = "Add Image To Listing")]
     public ActionResult<ImagePath> AddImageToListing(int sellerId, int listingId, [FromBody] AddImageRequest imageRequest)
     {
         if (!int.TryParse(User.FindFirstValue("userid"), out int id) || !Permission.IsMember(id, sellerId))
