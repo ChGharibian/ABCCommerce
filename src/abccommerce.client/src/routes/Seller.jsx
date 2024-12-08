@@ -20,7 +20,7 @@ export default function Seller() {
     const [listings, setListings] = useState();
     const [pageNumber, setPageNumber] = useState();
     const [canEdit, setCanEdit] = useState(false);
-    const [cookies] = useCookies(['seller']);
+    const [cookies] = useCookies(['seller', 'userToken']);
     const { sellerId } = useParams();
     const [searchParams, setSearchParams] = useSearchParams();
     const listingsPerPage = 24;
@@ -38,7 +38,7 @@ export default function Seller() {
             setListings({
                 loading: true
             })
-            let response = await fetch(`http://localhost:5147/seller/${sellerId}/listings?skip=${(page - 1) * listingsPerPage}&count=${listingsPerPage}`);
+            let response = await fetch(`http://localhost:5147/listing?sellerId=${sellerId}&skip=${(page - 1) * listingsPerPage}&count=${listingsPerPage}`);
             if(!response.ok) {
                 setListings({
                     error: true

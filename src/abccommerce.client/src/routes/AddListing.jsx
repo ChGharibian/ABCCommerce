@@ -5,12 +5,14 @@ import TagList from '../components/TagList';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CurrencyUtil } from '../util/currency';
 import ImageInput from '../components/ImageInput';
+import { useCookies } from 'react-cookie';
 export default function AddListing() {
     const [currentTag, setCurrentTag] = useState('');
     const { sellerId } = useParams();
     const [tagList, setTagList] = useState([]);
     const [newSKU, setNewSKU] = useState("");
     const navigate = useNavigate();
+    const [cookies] = useCookies(['userToken']);
     const [errors, setErrors] = useState({
 
     })
@@ -77,7 +79,12 @@ export default function AddListing() {
             sku = firstDigit + rest;
             // check if sku exists
             try{
-                let response = await fetch(`http://localhost:5147/seller/${sellerId}/items/${sku}/exists`);
+                let response = await fetch(`http://localhost:5147/seller/${sellerId}/items/sku/${sku}/exists`, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": "Bearer " + cookies.userToken
+                    }
+                });
                 let data = await response.json();
                 skuIsntUnique = data.exists;
             }
@@ -110,7 +117,12 @@ export default function AddListing() {
         let item = itemData;
         if(useExistingItem) {
             try {
-                let response = await fetch(`http://localhost:5147/seller/${sellerId}/items/${itemData.sku}`);
+                let response = await fetch(`http://localhost:5147/seller/${sellerId}/items/sku/${itemData.sku}/exists`, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": "Bearer " + cookies.userToken
+                    }
+                });
                 if(!response.ok) {
                     setErrors({...errors, existingSKU: "SKU not found"})
                     return;
@@ -126,19 +138,25 @@ export default function AddListing() {
             // adding new item first
             try {
                 // check to see if item sku exists already
-                let response = await fetch(`http://localhost:5147/seller/${sellerId}/items/${itemData.sku}/exists`);
+                let response = await fetch(`http://localhost:5147/seller/${sellerId}/items/sku/${itemData.sku}/exists`, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": "Bearer " + cookies.userToken
+                    }
+                });
                 let data = await response.json();
                 if(data.exists) {
                     setErrors({...errors, newSKU: "SKU already exists"});
                     return;
                 }
                 // attempt to add item
-                response = await fetch('http://localhost:5147/item', {
+                response = await fetch(`http://localhost:5147/seller/${sellerId}/item`, {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + cookies.userToken
                     },
-                    body: JSON.stringify({...itemData, seller: Number(sellerId)})
+                    body: JSON.stringify({...itemData})
                 })
 
                 if(!response.ok) {
@@ -156,10 +174,11 @@ export default function AddListing() {
         // attempt to add listing
         let listingId;
         try {
-            let response = await fetch('http://localhost:5147/listing', {
+            let response = await fetch(`http://localhost:5147/seller/${sellerId}/listings`, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + cookies.userToken
                 },
                 body: JSON.stringify({
                     ...listingData,
@@ -187,7 +206,7 @@ export default function AddListing() {
             try {
                 let count = 0;
                 for(const image of images) {
-                    let res = await fetch(`http://localhost:5147/listing/${listingId}/image`, {
+                    let res = await fetch(`http://localhost:5147/seller/${sellerId}/listings/${listingId}/image`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json"
