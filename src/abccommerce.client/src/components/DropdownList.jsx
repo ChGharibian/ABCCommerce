@@ -19,6 +19,7 @@ import './DropdownList.css';
 export default function DropdownList({placeholder, list, name, width, required, onChange=()=>{},
     filter = (list, input) => { return list.filter(item => item.toLowerCase().includes(input.toLowerCase())) },
     display = (item) => item, 
+    optionValue = (item) => item,
      ...rest}) {
     const [userInput, setUserInput] = useState("");
     const [listShown, setListShown] = useState(false);
@@ -42,7 +43,7 @@ export default function DropdownList({placeholder, list, name, width, required, 
         }}
         {...rest}
     />
-    <select style={{width,
+    <select name={name} style={{width,
         left: "calc(50% - " + width + " / 2)",
         maxHeight: listLength === 0 ? "0" : "6rem",
         borderLeft: listLength > 0 ? "1px solid var(--main-input-border-color)" : "none",
@@ -55,6 +56,7 @@ export default function DropdownList({placeholder, list, name, width, required, 
     )}
     onChange={(e) => {
         setUserInput(e.target.value);
+        onChange(e);
         setListShown(false);
         }}>
         {getFilteredList()}
@@ -64,7 +66,7 @@ export default function DropdownList({placeholder, list, name, width, required, 
 
     function getFilteredList() {
         let options = filter(list, userInput).map((item, i) => 
-            <option className="dropdown-item" key={i} >
+            <option value={optionValue(item)} className="dropdown-item" key={i} >
             {display(item)}
             </option>
         )

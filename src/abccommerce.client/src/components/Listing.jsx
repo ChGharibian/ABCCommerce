@@ -1,8 +1,9 @@
 import './Listing.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TagList from './TagList';
 import ImageScroller from './ImageScroller';
 import editSymbol from '../assets/edit-symbol.png';
+import activateSymbol from '../assets/activate-symbol.png';
 import { useCookies } from 'react-cookie';
 import { DateUtil } from '../util/date';
 import { CurrencyUtil } from '../util/currency';
@@ -46,19 +47,44 @@ import { CurrencyUtil } from '../util/currency';
  */
 function Listing({listing, editable=false}) {
     const listingDate = new Date(listing.listingDate)
-    const [cookies] = useCookies(['seller']);
+    const [cookies] = useCookies(['seller', 'userToken']);
+    const [active, setActive] = useState(true);
     const [listingEditStyle, setListingEditStyle] = useState({
         visibility: "hidden"
     })
+
+    useEffect(() => {
+        setActive(listing.active);
+    }, [])
+
+    async function activateListing() {
+        try {
+            let response = await fetch(`http://localhost:5147/seller/${listing.item.seller.id}/listings/${listing.id}`, {
+                method: "PATCH",
+                headers: {
+                    "Authorization": "Bearer " + cookies.userToken,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({active: true})
+            })
+
+            if(response.ok) setActive(true);
+        }   
+        catch(error) {
+            console.error(error);
+        }
+    }
+
     return <li className="listing-wrapper" key={listing.id} onMouseOver={() => setListingEditStyle({
         visibility: "visible"
     })}
     onMouseOut={() => setListingEditStyle({
         visibility: "hidden"
     })}>
-        <a href={`/seller/${listing.item.seller.id}/listing/${listing.id}`} className="listing-redirect"></a>
+        <a href={active ? `/seller/${listing.item.seller.id}/listing/${listing.id}`
+                : '#'} className="listing-redirect"></a>
         <div className="listing">
-            {editable && 
+            {editable && active ?
                 <div className="listing-edit-button-wrapper"
                 style={listingEditStyle}>
                     <div>
@@ -67,11 +93,20 @@ function Listing({listing, editable=false}) {
                         </a>
                     </div>
                 </div>
+            : editable &&
+                <div className="listing-edit-button-wrapper"
+                style={listingEditStyle}>
+                    <div>
+                        <a onClick={activateListing}>
+                            <img className='activate' src={activateSymbol} />
+                        </a>
+                    </div>
+                </div>
             }
-            <div className="listing-image-wrapper">
+            <div className={"listing-image-wrapper" + (!active ? " inactive" : "")}>
                 <ImageScroller images={listing.images} />
             </div>
-            <div className="listing-details-wrapper">
+            <div className={"listing-details-wrapper" + (!active ? " inactive" : "")}>
                 <p className="listing-price">{CurrencyUtil.getDollarString(listing.pricePerUnit)}</p>
                 <p className="listing-quantity">{listing.quantity.toLocaleString()}</p>
                 <div className="listing-top-info">

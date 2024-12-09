@@ -202,7 +202,6 @@ export default function AddListing() {
         // attempt to add listing
         let listingId;
         try {
-            console.log(item);
             let response = await fetch(`http://localhost:5147/seller/${sellerId}/listings`, {
                 method: "POST",
                 headers: {
@@ -287,7 +286,7 @@ export default function AddListing() {
             <label htmlFor="item-check">Create listing with existing item?<input type="checkbox" name="item-check" value={useExistingItem} onChange={e => setUseExistingItem(e.target.checked)}/></label>
             {useExistingItem ?
                 <DropdownList placeholder="Enter existing item SKU" 
-                error={errors.existingSKU} name="sku" onChange={handleItemChange} required={true} 
+                error={errors.existingSKU} name="sku" onChange={handleItemChange}
                 list={existingItems}
                 filter={(list, input) => {
                     return list.filter(itemObj => {
@@ -296,8 +295,9 @@ export default function AddListing() {
                     })
                 }}
                 display={(itemObj) => {
-                    return itemObj.sku;
+                    return `${itemObj.name}: ${itemObj.sku}`;
                 }}
+                optionValue={(item) => item.sku}
                 width="100%"
                 />
                 

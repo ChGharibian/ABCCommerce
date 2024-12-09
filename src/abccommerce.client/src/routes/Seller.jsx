@@ -38,7 +38,22 @@ export default function Seller() {
             setListings({
                 loading: true
             })
-            let response = await fetch(`http://localhost:5147/listing?sellerId=${sellerId}&skip=${(page - 1) * listingsPerPage}&count=${listingsPerPage}`);
+            let response;
+            if(canEdit) {
+                response = await fetch(`http://localhost:5147/seller/${sellerId}/listings`, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": "Bearer " + cookies.userToken
+                    }
+                });
+                if(!response.ok) {
+                    setCanEdit(false);
+                    response = await fetch(`http://localhost:5147/listing?sellerId=${sellerId}&skip=${(page - 1) * listingsPerPage}&count=${listingsPerPage}`);
+                }
+            } else {
+                response = await fetch(`http://localhost:5147/listing?sellerId=${sellerId}&skip=${(page - 1) * listingsPerPage}&count=${listingsPerPage}`);
+            }
+            
             if(!response.ok) {
                 setListings({
                     error: true

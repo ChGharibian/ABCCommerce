@@ -80,6 +80,7 @@
 
 #add-listing-wrapper .dropdown-list-wrapper {
     width: 40%;
+    height: auto!important;
     min-width: var(--min-width);
     max-width: var(--max-width);
 }
