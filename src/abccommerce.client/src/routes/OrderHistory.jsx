@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
+import './Orderhistory.css'
 export default function OrderHistory(){
 
   const [transactions, setTransactions] = useState([]);
+  const [cookies] = useCookies(['userToken']);
 
-
+  //
   //upon navigation get request
   useEffect( () => {
 
@@ -32,7 +34,17 @@ export default function OrderHistory(){
       }
     }
     getCartData();
-  })
+  },[]);
+
+  function getReadableDate(dateObj) {
+    const readableDate = dateObj.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+    return readableDate
+  }
 
   return (
     <div id="cart-page-wrapper">
@@ -47,12 +59,12 @@ export default function OrderHistory(){
           <tbody>
             {transactions.map((currentTransaction) => (
               <tr key={currentTransaction.id}>
-                <td data-label="Purchase Date">{currentTransaction.purchaseDate}</td>
-                <td data-label="Total Cost">{currentTransaction.items.map((currentItem)=>{
-                    <p>{currentItem.item.name +':' + currentItem.quantity}</p>
-                  }
+                <td data-label="Purchase Date">{getReadableDate(new Date(currentTransaction.purchaseDate))}</td>
+                <td data-label="Total Cost">{currentTransaction.totalPrice}</td>
+                <td data-label="Items purchased">{currentTransaction.items.map((currentItem)=>(
+                    <p key={currentItem.id}>{currentItem.item.name +':' + currentItem.quantity}</p>
+                  )
                 )}</td>
-                <td data-label="Items">{currentTransaction.quantity}</td>
               </tr>
             ))}
           </tbody>

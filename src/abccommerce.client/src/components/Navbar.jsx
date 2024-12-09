@@ -51,6 +51,9 @@ export default function Navbar() {
                 <Link to="/cart">Cart</Link>
               </li>
               <li>
+                <Link to="/orderhistory">Order History</Link>
+              </li>
+              <li>
                 <SellerSelector />
               </li>
             </>
