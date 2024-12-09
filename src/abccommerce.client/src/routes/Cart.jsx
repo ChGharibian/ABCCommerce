@@ -45,6 +45,7 @@ export default function Cart() {
             return a
           },0)
 
+
           //setting total price
           setTotalPrice(totalAmount);
           

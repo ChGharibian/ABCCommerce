@@ -1,5 +1,5 @@
 import './ListingTable.css'
-const ListingTable = ({ cartItems, totalPrice, CurrencyUtil }) => {
+const ListingTable = ({ cartLists, totalPrice, CurrencyUtil }) => {
   return (
     <div id="listing-table-wrapper">
       <table>
@@ -12,7 +12,7 @@ const ListingTable = ({ cartItems, totalPrice, CurrencyUtil }) => {
           </tr>
         </thead>
         <tbody>
-          {cartItems.map((currentListing) => (
+          {cartLists.map((currentListing) => (
             <tr key={currentListing.id}>
               <td data-label="Name">{currentListing.listing.name}</td>
               <td data-label="Description">{currentListing.listing.description}</td>

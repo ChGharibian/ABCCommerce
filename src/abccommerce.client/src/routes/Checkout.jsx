@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useCookies } from 'react-cookie';
+
 import Input from "../components/Input";
 import generalHandleChange from '../util/generalHandleChange';
 import generalHandleBlur from '../util/generalHandleBlur'
@@ -7,17 +8,22 @@ import { ValidationUtil } from "../util/validation";
 import './Checkout.css';
 import ListingTable from "../components/listingTable";
 import { CurrencyUtil } from "../util/currency";
+import deepMerge from "../util/deepMerge"
 
 
 export default function Checkout(){
 
+  //Allows this page to be authenticated
+  const [cookies] = useCookies(['userToken']);
+
+  const [cartLists, setPresentcartLists] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [delivDate, setDelivDate] = useState('');
   const [paymentInfo, setPaymentInfo] = useState({
     cardNumber: '',
     expirationDate: '',
-    SecurityCode: '',
+    securityCode: '',
   })
   const [mailingAddr, setMailingAddr] = useState({
     street: '',
@@ -30,7 +36,7 @@ export default function Checkout(){
   const [errors, setErrors] = useState({
     cardNumber:'',
     expirationDate:'',
-    SecurityCode: '',
+    securityCode: '',
     street: '',
     city: '',
     state: '',
@@ -38,8 +44,6 @@ export default function Checkout(){
 
   })
 
-  const [cookies] = useCookies(['userToken']);
-  
   useEffect(()=> {
       
     const getCartData = async () => {
@@ -54,7 +58,7 @@ export default function Checkout(){
       const data = await response.json(); 
       console.log(data);
       if(response.ok) {
-        setCartItems(data) 
+        setPresentcartLists(data) 
         const totalAmount = data.reduce((a,currentListing)=>{
           a+= (currentListing.listing.pricePerUnit*currentListing.quantity);
           return a
@@ -70,36 +74,90 @@ export default function Checkout(){
     setDelivDate(getDeleveiryDate(4));
   }, []);
 
+  //HANDLE SUBMIT FUNCTION
   const handleSubmit = async e => {
-      e.preventDefault()
+    e.preventDefault();
 
-      function correctPaymentFormat(expireString,cardState){
-        const monthSt = expireString.slice(0,2)
-        const yearSt = expireString.slice(3,5)
+    //Format the request object
+    function correctPaymentFormat(expireString,cardState){
+      const monthSt = expireString.slice(0,2)
+      const yearSt = expireString.slice(3,5)
+  
+      const expirationMonth = parseInt(monthSt, 10);
+      const year = parseInt('20' + yearSt, 10);
+  
+      const returnedState = {...cardState};
+      delete returnedState.expirationDate;
+  
+      returnedState['expirationYear'] = year;
+      returnedState['expirationMonth'] = expirationMonth;
+  
+      return returnedState;
+    }
+    function formatCartItems(cartLists) {
+      const resultData = cartLists.map((currentListing) => {
+          return {
+            "cartItem": currentListing.id,
+            "quantity": currentListing.quantity
+          }
+      })
+      return resultData;
+    }
 
-        const month = parseInt(monthSt, 10);
-        const year = parseInt('20' + yearSt, 10);
-
-        const returnedState = {...cardState};
-        delete returnedState.expirationDate;
-
-        returnedState['year'] = year;
-        returnedState['month'] = month;
-
-        return returnedState;
-      }
-      const formatedPaymentState = correctPaymentFormat(paymentInfo.expirationDate, paymentInfo);
-
-      try {
-        let response = await fetch("http://localhost:5147/user/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON. stringify(formatedPaymentState)
+    // const formatedPaymentState = correctPaymentFormat(paymentInfo.expirationDate, paymentInfo);
+    // console.log(formatedPaymentState);
+    // const formatedCartItems = formatCartItems(cartLists);
+    // console.log(formatedCartItems);
+    // setCartItems(...formatedCartItems);
+    // const formatedPurchaseRequestObject = {...formatedPaymentState, cartItems};
+    // console.log('Underneath is the request:');
+    // console.log(formatedPurchaseRequestObject);
+    const test = {
+      "cartItems": [
+        {
+          "cartItem": 50,
+          "quantity": 2
+        }
+      ],
+      "cardNumber": "4111111111111111",
+      "expirationMonth": 11,
+      "expirationYear": 2025,
+      "securityCode": "454"
+    }
+    //FETCH REQUEST
+    try {
+      let response = await fetch("http://localhost:5147/cart/purchase", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${cookies.userToken}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(test)
       });
-  }
 
+      const data = await response.json();
+      console.log(data);
+      if(response.ok) {
+        console.log('We manged to properly send the request woo')
+      } 
+      else{
+        console.log('Request failed with status:', response.status);
+        console.log('Response body:', response.data);
+        setErrors({...errors, submit: "Username and/or password do not match system"});
+      }
+        
+      } 
+      catch(error) {
+        console.error('Fetch error',error);
+      }
+
+    }
+  
+
+
+
+
+  //HANDLE CHANGE FUNCTIONS
   const expireHandleChange = (element) => {
     const { name, value } = element.target;
 
@@ -124,6 +182,8 @@ export default function Checkout(){
 
   };
 
+  
+
   const getDeleveiryDate = (daysToDeliver) => {
     const delivDate = new Date();
     delivDate.setDate(delivDate.getDate() + daysToDeliver);
@@ -142,7 +202,7 @@ export default function Checkout(){
 
   return (
     <div id="checkout-wrapper">
-      <form action="checkout-Form">
+      <form action="checkout-Form" onSubmit={handleSubmit}>
         <h2>Checkout</h2>
         <h2>Mailing Address</h2>
         <Input
@@ -223,9 +283,9 @@ export default function Checkout(){
         />
         <Input
         label="CCV"
-        name="SecurityCode"
+        name="securityCode"
         type="number"
-        value={paymentInfo.SecurityCode}
+        value={paymentInfo.securityCode}
         placeholder="000"
         onChange={generalHandleChange(setPaymentInfo,4)}
 
@@ -234,10 +294,13 @@ export default function Checkout(){
         <h2>Delevery Date:</h2>
         <h2>{delivDate}</h2>
         <ListingTable
-          cartItems={cartItems}
+          cartLists={cartLists}
           totalPrice={totalPrice}
           CurrencyUtil={CurrencyUtil}
         />
+        <button type="submit" >
+          Place your order
+        </button>
       </form>
     </div>
   )
