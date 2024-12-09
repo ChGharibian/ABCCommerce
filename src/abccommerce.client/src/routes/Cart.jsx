@@ -44,7 +44,6 @@ export default function Cart() {
             a+= (currentListing.listing.pricePerUnit*currentListing.quantity);
             return a
           },0)
-          console.log(totalAmount);
 
           //setting total price
           setTotalPrice(totalAmount);

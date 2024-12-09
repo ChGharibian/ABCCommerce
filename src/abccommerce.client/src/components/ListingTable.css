@@ -1,0 +1,99 @@
+.listing-table-wrapper {
+  /* Removed fixed positioning and sizing to allow parent-based layout */
+  background-color: var(--main-bg-color);
+  color: var(--main-text-color);
+  padding: 1rem;
+}
+
+.listing-table-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+.listing-table-wrapper th,
+.listing-table-wrapper td {
+  border: 1px solid var(--c-grey-500);
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.listing-table-wrapper th {
+  background-color: var(--secondary-bg-color);
+}
+
+.listing-table-wrapper tr:nth-child(even) {
+  background-color: var(--tertiary-bg-color);
+}
+
+.listing-table-wrapper img {
+  max-width: 60px; /* Reduced size for a more compact layout */
+  height: auto;
+  display: block;
+}
+
+.listing-table-wrapper .total-price {
+  text-align: right;
+  font-size: 1.2rem;
+  margin-top: 1rem;
+}
+
+.listing-table-wrapper button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: var(--c-yellow-100);
+  color: var(--main-bg-color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.listing-table-wrapper button:hover {
+  background-color: var(--c-white-500);
+}
+
+.listing-table-wrapper a {
+  color: var(--main-text-color);
+  text-decoration: underline;
+}
+
+.listing-table-wrapper a:hover {
+  color: var(--c-yellow-100);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .listing-table-wrapper table,
+  .listing-table-wrapper thead,
+  .listing-table-wrapper tbody,
+  .listing-table-wrapper th,
+  .listing-table-wrapper td,
+  .listing-table-wrapper tr {
+    display: block;
+  }
+
+  .listing-table-wrapper tr {
+    margin-bottom: 1rem;
+  }
+
+  .listing-table-wrapper th {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  .listing-table-wrapper td {
+    border: none;
+    position: relative;
+    padding-left: 50%;
+  }
+
+  .listing-table-wrapper td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    width: 45%;
+    padding-left: 0.75rem;
+    font-weight: bold;
+  }
+}

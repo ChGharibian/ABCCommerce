@@ -5,13 +5,14 @@ import generalHandleChange from '../util/generalHandleChange';
 import generalHandleBlur from '../util/generalHandleBlur'
 import { ValidationUtil } from "../util/validation";
 import './Checkout.css';
+import ListingTable from "../components/listingTable";
+import { CurrencyUtil } from "../util/currency";
 
 
-//WHAT I NEED TO DO FOR THIS COMPONENT:
-//handleChange: address,addresss2,city,state,ZIP Code
 export default function Checkout(){
 
   const [cartItems, setCartItems] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
   const [delivDate, setDelivDate] = useState('');
   const [paymentInfo, setPaymentInfo] = useState({
     cardNumber: '',
@@ -54,6 +55,12 @@ export default function Checkout(){
       console.log(data);
       if(response.ok) {
         setCartItems(data) 
+        const totalAmount = data.reduce((a,currentListing)=>{
+          a+= (currentListing.listing.pricePerUnit*currentListing.quantity);
+          return a
+        },0)
+
+        setTotalPrice(totalAmount);
       } }catch(error) {
         console.error('Error getting cart data:', error);
       }
@@ -62,6 +69,36 @@ export default function Checkout(){
     getCartData();
     setDelivDate(getDeleveiryDate(4));
   }, []);
+
+  const handleSubmit = async e => {
+      e.preventDefault()
+
+      function correctPaymentFormat(expireString,cardState){
+        const monthSt = expireString.slice(0,2)
+        const yearSt = expireString.slice(3,5)
+
+        const month = parseInt(monthSt, 10);
+        const year = parseInt('20' + yearSt, 10);
+
+        const returnedState = {...cardState};
+        delete returnedState.expirationDate;
+
+        returnedState['year'] = year;
+        returnedState['month'] = month;
+
+        return returnedState;
+      }
+      const formatedPaymentState = correctPaymentFormat(paymentInfo.expirationDate, paymentInfo);
+
+      try {
+        let response = await fetch("http://localhost:5147/user/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON. stringify(formatedPaymentState)
+      });
+  }
 
   const expireHandleChange = (element) => {
     const { name, value } = element.target;
@@ -196,6 +233,11 @@ export default function Checkout(){
         />
         <h2>Delevery Date:</h2>
         <h2>{delivDate}</h2>
+        <ListingTable
+          cartItems={cartItems}
+          totalPrice={totalPrice}
+          CurrencyUtil={CurrencyUtil}
+        />
       </form>
     </div>
   )
