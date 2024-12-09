@@ -12,21 +12,20 @@ public class TransactionService
     {
         AbcDb = abcDb;
     }
-    public Transaction Purchase(PurchaseItemsRequest itemsRequest, int userId)
+    public Transaction Purchase(string cardNumber, List<PurchaseItem> requestItems, int userId)
     {
         var dbTransaction = AbcDb.Database.BeginTransaction();
         try
         {
             var transaction = new Transaction()
             {
-                Last4 = itemsRequest.CardNumber[(Math.Max(0, itemsRequest.CardNumber.Length - 4))..],
+                Last4 = cardNumber[(Math.Max(0, cardNumber.Length - 4))..],
                 UserId = userId,
                 TotalPrice = 0,
 
             };
             AbcDb.Transactions.Add(transaction);
-            var requestItems = itemsRequest.CartItems.ToArray();
-            for (int i = 0; i < requestItems.Length; i++)
+            for (int i = 0; i < requestItems.Count; i++)
             {
                 var requestItem = requestItems[i];
                 var cartItem = AbcDb.CartItems.Where(c => requestItem.CartItem == c.Id).Include(c => c.Listing).FirstOrDefault();
