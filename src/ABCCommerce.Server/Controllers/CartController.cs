@@ -231,6 +231,6 @@ public class CartController : Controller
         {
             return ValidationProblem(errorDetails);
         }
-        return Ok(TransactionService.Purchase(purchaseItems, id));
+        return Ok(TransactionService.Purchase(purchaseItems, id).ToDto());
     }
 }

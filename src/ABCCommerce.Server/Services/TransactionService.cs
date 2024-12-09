@@ -58,7 +58,8 @@ public class TransactionService
             transaction.PurchaseDate = DateTime.Now;
             AbcDb.SaveChanges();
             dbTransaction.Commit();
-            return transaction;
+            return 
+                AbcDb.Transactions.Where(t => t.Id == transaction.Id).Include(t => t.Items).ThenInclude(t => t.Item).ThenInclude(i => i.Seller).First();
         }
         catch
         {
