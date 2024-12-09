@@ -35,7 +35,7 @@ public class ListingController : Controller
         var listing = await AbcDb.Listings
             .Include(l => l.Item)
             .Include(l => l.Images)
-            .Where(l => l.Item.Id == listingId)
+            .Where(l => l.Id == listingId)
             .Where(l => l.Active)
             .Select(l => l.ToDto())
             .FirstOrDefaultAsync();
