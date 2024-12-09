@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Registration.css';
 import DropdownList from '../components/DropdownList';
 import { TokenUtil } from '../util/tokens';
@@ -13,6 +14,7 @@ import { TokenUtil } from '../util/tokens';
  */
 export default function Registration() {
   const [states, setStates] = useState([]);
+  const navigate = useNavigate();
   useEffect(() => {
     getStateData();
   }, [])
@@ -33,9 +35,12 @@ export default function Registration() {
         },
         body: JSON.stringify(formObject)
       });
-  
-      let data = await response.json();
-      TokenUtil.setTokens(data);
+      if(response.ok) {
+        let data = await response.json();
+        TokenUtil.setTokens(data);
+        navigate('/');
+      }
+      
     } catch(error) {
       console.error(error);
     }
