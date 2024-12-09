@@ -28,7 +28,7 @@ public class TransactionController : Controller
             return Unauthorized();
         }
 
-        var transactions = AbcDb.Transactions.Where(t => t.UserId == id).Include(t => t.Items).ThenInclude(t => t.Item)
+        var transactions = AbcDb.Transactions.Where(t => t.UserId == id).Include(t => t.Items).ThenInclude(t => t.Item).ThenInclude(i => i.Seller)
             .OrderByDescending(t => t.PurchaseDate)
             .Skip(skip ?? 0)
             .Take(Math.Min(50, count ?? 50))

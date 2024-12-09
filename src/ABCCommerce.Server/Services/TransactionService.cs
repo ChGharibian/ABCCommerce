@@ -24,6 +24,7 @@ public class TransactionService
                 TotalPrice = 0,
 
             };
+            AbcDb.Transactions.Add(transaction);
             var requestItems = itemsRequest.CartItems.ToArray();
             for (int i = 0; i < requestItems.Length; i++)
             {
@@ -57,7 +58,8 @@ public class TransactionService
             transaction.PurchaseDate = DateTime.Now;
             AbcDb.SaveChanges();
             dbTransaction.Commit();
-            return transaction;
+            return 
+                AbcDb.Transactions.Where(t => t.Id == transaction.Id).Include(t => t.Items).ThenInclude(t => t.Item).ThenInclude(i => i.Seller).First();
         }
         catch
         {
