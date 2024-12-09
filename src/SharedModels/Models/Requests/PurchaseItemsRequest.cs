@@ -16,6 +16,7 @@ namespace SharedModels.Models.Requests
         /// The individual cart items to be purchased.
         /// </summary>
         [Required]
+        [MinLength(1)]
         public IEnumerable<PurchaseItem> CartItems { get; set; } = [];
         /// <summary>
         /// The card number to purchase with.
