@@ -84,7 +84,7 @@ public class CartController : Controller
     /// <param name="cartPatch"></param>
     /// <returns></returns>
     [HttpPatch("{cartItemId:int}", Name = "Update Cart Item")]
-    public ActionResult<CartItem> PatchCart(int cartItemId, [FromBody] CartPatchRequest cartPatch)
+    public async Task<ActionResult<CartItem>> PatchCart(int cartItemId, [FromBody] CartPatchRequest cartPatch)
     {
         if (!int.TryParse(User.FindFirstValue("userid"), out int id))
         {
@@ -108,6 +108,8 @@ public class CartController : Controller
         cartItem.ReservationExpirationDate = null;
         ABCDb.SaveChanges();
 
+        await ListingService.Availability(cartItem.ListingId);
+
         return Ok(cartItem.ToDto());
     }
     /// <summary>
@@ -116,13 +118,14 @@ public class CartController : Controller
     /// <param name="cartItemId">The cart item of the user to delete.</param>
     /// <returns></returns>
     [HttpDelete("{cartItemId:int}")]
-    public ActionResult DeleteCartItem(int cartItemId)
+    public async Task<ActionResult> DeleteCartItem(int cartItemId)
     {
         if (!int.TryParse(User.FindFirstValue("userid"), out int id))
         {
             return Unauthorized();
         }
         using var transaction = ABCDb.Database.BeginTransaction();
+        var listingId = ABCDb.CartItems.Where(c => c.UserId == id && c.Id == cartItemId).Select(c => c.ListingId).FirstOrDefault();
         var deleteCount = ABCDb.CartItems.Where(c => c.UserId == id && c.Id == cartItemId).ExecuteDelete();
         if (deleteCount > 1)
         {
@@ -133,6 +136,8 @@ public class CartController : Controller
 
         ABCDb.SaveChanges();
         transaction.Commit();
+
+        await ListingService.Availability(listingId);
 
         return NoContent();
     }
@@ -178,8 +183,6 @@ public class CartController : Controller
         }
         var requestItems = purchaseItems.CartItems.OrderBy(i => i.CartItem).ToList();
 
-        var cartItems = ABCDb.CartItems.Where(c => c.UserId == id && requestItems.Any(i => c.Id == i.CartItem)).OrderBy(c => c.Id).ToArray();
-
         var errorDetails = ProblemDetailsFactory.CreateValidationProblemDetails(HttpContext, ModelState);
 
 
@@ -191,7 +194,7 @@ public class CartController : Controller
         for (int i = 0; i < requestItems.Count; i++)
         {
             var requestItem = requestItems[i];
-            var cartItem = cartItems.Where(c => requestItem.CartItem == c.Id).FirstOrDefault();
+            var cartItem = ABCDb.CartItems.Where(c => requestItem.CartItem == c.Id).FirstOrDefault();
             if (cartItem is null)
             {
                 notInCartItems.Add(requestItem.CartItem);

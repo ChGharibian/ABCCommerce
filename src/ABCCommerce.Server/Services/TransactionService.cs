@@ -24,6 +24,7 @@ public class TransactionService
                 TotalPrice = 0,
 
             };
+            AbcDb.Transactions.Add(transaction);
             var requestItems = itemsRequest.CartItems.ToArray();
             for (int i = 0; i < requestItems.Length; i++)
             {
