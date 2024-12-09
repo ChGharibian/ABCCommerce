@@ -97,7 +97,7 @@ function Listing({listing, editable=false}) {
                 <div className="listing-edit-button-wrapper"
                 style={listingEditStyle}>
                     <div>
-                        <a onClick={activateListing}>
+                        <a href='#' onClick={activateListing}>
                             <img className='activate' src={activateSymbol} />
                         </a>
                     </div>

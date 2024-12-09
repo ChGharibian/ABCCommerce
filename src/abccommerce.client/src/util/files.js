@@ -31,4 +31,20 @@ export class FileUtil {
         })
         
     }
+
+    static isValidImgSrc(src) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.src = src;
+
+            img.onerror = function() {
+                resolve(false)
+            };
+
+            img.onload = function() {
+                resolve(true)
+            };
+        })
+        
+    }
 }

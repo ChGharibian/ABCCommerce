@@ -55,9 +55,16 @@
     border: none;
 }
 
+#listing-page-wrapper .error, #listing-page-wrapper .success {
+    display: inline;
+}
+
 #listing-page-wrapper .error {
     color: var(--error-text-color);
-    display: inline;
+}
+
+#listing-page-wrapper .success {
+    color: var(--success-text-color);
 }
 
 #listing-page-wrapper button:hover {

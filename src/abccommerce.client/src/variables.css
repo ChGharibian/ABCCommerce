@@ -64,7 +64,7 @@
     --main-error-svg-color: invert(16%) sepia(92%) saturate(5306%) hue-rotate(354deg) brightness(91%) contrast(101%);
     --secondary-error-svg-color: invert(12%) sepia(79%) saturate(4455%) hue-rotate(352deg) brightness(90%) contrast(96%);
 
-    --success-text-color: var(--c-green-500);
+    --success-text-color: var(--c-green-300);
     --main-success-svg-color: invert(22%) sepia(15%) saturate(2292%) hue-rotate(71deg) brightness(101%) contrast(94%);
     --secondary-success-svg-color: invert(35%) sepia(16%) saturate(1779%) hue-rotate(72deg) brightness(101%) contrast(90%);
 }

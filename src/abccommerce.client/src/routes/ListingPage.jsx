@@ -19,7 +19,9 @@ import { TokenUtil } from '../util/tokens';
 export default function ListingPage() {
     const [listing, setListing] = useState();
     const [quantity, setQuantity] = useState(1);
+    const [addedQuantity, setAddedQuantity] = useState(0);
     const [error, setError] = useState('');
+    const [success, setSuccess] = useState(false);
     const [refreshed, setRefreshed] = useState(false);
     const {sellerId, listingId} = useParams();
     const [cookies] = useCookies(['userToken', 'refreshToken', 'seller']);
@@ -49,7 +51,7 @@ export default function ListingPage() {
 
     async function addToCart() {
       // refresh token method here
-
+      setSuccess(false);
       try {
         let response = await fetch("http://localhost:5147/cart", {
           method: "POST",
@@ -65,6 +67,8 @@ export default function ListingPage() {
         
         if(response.ok) {
           setError('');
+          setSuccess(true);
+          setAddedQuantity(quantity);
         } else if(response.status === 401 && !refreshed) {
           // unauthorized
           let refSuccess = await TokenUtil.refresh(cookies.refreshToken);
@@ -105,7 +109,7 @@ export default function ListingPage() {
         </div>
         <div id="listing-page-details-section">
             <div id="listing-page-top-info" className="listing-detail">
-              {listing.name ? listing.name : <i>No name</i>} · {CurrencyUtil.getDollarString(listing.pricePerUnit)} · {listing.quantity} available
+              {listing.name ? listing.name : <i>No name</i>} · {CurrencyUtil.getDollarString(listing.pricePerUnit)} · {listing.quantity} in stock
               {Number(cookies.seller) === Number(sellerId) && <> · <a href={`/seller/${sellerId}/editlisting/${listingId}`}>Edit</a></>}
               </div>
             <a className="listing-detail" href={`/seller/${listing.item.seller.id}`}>{listing.item.seller.name}</a>
@@ -124,6 +128,9 @@ export default function ListingPage() {
         </>
         :
         <p>Loading</p>
+        }
+        {success &&
+        <p className="success">{`You added ${addedQuantity} item${addedQuantity !== 1 ? 's' : ''} to cart`}</p>
         }
         
     </div>
