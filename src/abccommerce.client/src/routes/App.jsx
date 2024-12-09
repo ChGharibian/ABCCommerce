@@ -9,6 +9,7 @@ import WrongLink from "./WrongLink";
 import Seller from "./Seller";
 import ListingPage from "./ListingPage";
 import AddListing from "./AddListing";
+import OrderHistory from "./OrderHistory";
 import '../App.css'
 import '../variables.css';
 import EditListing from "./EditListing";
@@ -35,6 +36,7 @@ export default function App() {
         <Route path="seller/:sellerId/listing/:listingId" element={<ListingPage />} />
         <Route path="cart" element={<Cart/>}/>
         <Route path="checkout" element={<Checkout/>}/>
+        <Route path="orderhistory" element={<OrderHistory/>}/>
         <Route path="*" element={<WrongLink/>}/>
         <Route/>
       </Route>
