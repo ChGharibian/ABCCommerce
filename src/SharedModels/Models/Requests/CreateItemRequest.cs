@@ -7,10 +7,6 @@ namespace SharedModels.Models.Requests;
 public class CreateItemRequest
 {
     /// <summary>
-    /// Deprecated
-    /// </summary>
-    public int Seller { get; set; }
-    /// <summary>
     /// The new sku of the item to add.
     /// </summary>
     [Required]

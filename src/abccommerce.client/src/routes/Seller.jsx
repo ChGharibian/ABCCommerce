@@ -1,4 +1,4 @@
-import {useParams} from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import './Seller.css';
@@ -18,25 +18,52 @@ export default function Seller() {
     // const location = useLocation();
     const [seller, setSeller] = useState();
     const [listings, setListings] = useState();
-    const [pageNumber, setPageNumber] = useState(1);
+    const [pageNumber, setPageNumber] = useState();
     const [canEdit, setCanEdit] = useState(false);
-    const [cookies] = useCookies(['seller']);
+    const [cookies] = useCookies(['seller', 'userToken']);
     const { sellerId } = useParams();
+    const [searchParams, setSearchParams] = useSearchParams();
     const listingsPerPage = 24;
 
     async function getSellerListingData(page, listingsPerPage) {
+        if(!page || isNaN(Number(page)) || page < 1) {
+            setPageNumber(1);
+            return;
+        } else if(Math.floor(Number(page)) !== Number(page)) {
+            setPageNumber(Math.floor(Number(page)));
+            return;
+        }
+
         try {
             setListings({
                 loading: true
             })
-            let response = await fetch(`http://localhost:5147/seller/${sellerId}/listings?skip=${(page - 1) * listingsPerPage}&count=${listingsPerPage}`);
+            let response;
+            if(canEdit) {
+                response = await fetch(`http://localhost:5147/seller/${sellerId}/listings`, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": "Bearer " + cookies.userToken
+                    }
+                });
+                if(!response.ok) {
+                    setCanEdit(false);
+                    response = await fetch(`http://localhost:5147/listing?sellerId=${sellerId}&skip=${(page - 1) * listingsPerPage}&count=${listingsPerPage}`);
+                }
+            } else {
+                response = await fetch(`http://localhost:5147/listing?sellerId=${sellerId}&skip=${(page - 1) * listingsPerPage}&count=${listingsPerPage}`);
+            }
+            
             if(!response.ok) {
+                setListings({
+                    error: true
+                })
                 return;
             }
             let listingData = await response.json();
             listingData = listingData.map(l => {
                 l.item.seller = {
-                    id: seller?.id,
+                    id: seller?.id || sellerId,
                     name: seller?.name,
                     image: seller?.image
                 }
@@ -84,27 +111,31 @@ export default function Seller() {
         }
     }
 
-    function getPageData(page, listingsPerPage) {
-        if(seller === undefined) {
-            // seller not instantiated, make fetch
-            getSellerData();
-        } else if(seller?.exists) {
-            getSellerListingData(page, listingsPerPage);
-        }
-    }
-
-    useEffect(() => {
-        getPageData(pageNumber, listingsPerPage)
-    }, [pageNumber, seller])
-
     useEffect(() => {
         setCanEdit(Number(cookies.seller) === Number(sellerId));
     }, [cookies.seller])
 
     useEffect(() => {
+        setSearchParams({ page: pageNumber});
+    }, [pageNumber])
+
+    useEffect(() => {
+        let pageParam = searchParams.get('page');
+        if(seller && pageParam && Number(pageParam)) {
+            getSellerListingData(Number(pageParam), listingsPerPage);
+        }
+    }, [searchParams, seller])
+
+    useEffect(() => {
         // on mount
         setCanEdit(Number(cookies.seller) === Number(sellerId));
-        // setCanEdit(true);
+        getSellerData();
+        let pageParam = searchParams.get('page');
+        if(pageParam && Number(pageParam)) {
+            setPageNumber(Number(pageParam));
+        } else {
+            setPageNumber(1);
+        }
     }, [])
     
     return (

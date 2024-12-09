@@ -15,6 +15,7 @@ using UserSellerModel = ABCCommerceDataAccess.Models.UserSeller;
 
 namespace ABCCommerce.Server.Controllers;
 [ApiController]
+[Authorize]
 [Route("[controller]")]
 public class UserController : Controller
 {
@@ -31,6 +32,7 @@ public class UserController : Controller
         TokenService = tokenService;
         PasswordHasher = passwordHasher;
     }
+    [AllowAnonymous]
     [HttpGet("{userId:int}")]
     public ActionResult<User> GetUser(int userId)
     {
@@ -46,11 +48,41 @@ public class UserController : Controller
             return Ok(user.ToDto());
         }
     }
+    [HttpPatch]
+    public ActionResult<User> PatchUser(UserPatchRequest patchRequest)
+    {
+        if (!int.TryParse(User.FindFirstValue("userid"), out int id))
+        {
+            return Unauthorized();
+        }
+        var user = ABCDb.Users.Where(u => u.Id == id).FirstOrDefault();
+        if (user is null) return NotFound("How did you manage to get here?");
+        if(patchRequest.Username is null 
+            && patchRequest.Street is null 
+            && patchRequest.StreetPlus is null
+            && patchRequest.City is null
+            && patchRequest.State is null
+            && patchRequest.Zip is null
+            && patchRequest.ContactName is null
+            && patchRequest.Phone is null)
+        {
+            return BadRequest("Must include a change.");
+        }
+        if (patchRequest.Username is not null) user.Username = patchRequest.Username;
+        if (patchRequest.Street is not null) user.Street = patchRequest.Street;
+        if (patchRequest.StreetPlus is not null) user.StreetPlus = patchRequest.StreetPlus;
+        if (patchRequest.City is not null) user.City = patchRequest.City;
+        if (patchRequest.State is not null) user.State = patchRequest.State;
+        if (patchRequest.Zip is not null) user.Zip = patchRequest.Zip;
+        if (patchRequest.ContactName is not null) user.ContactName = patchRequest.ContactName;
+        if (patchRequest.Phone is not null) user.Phone = patchRequest.Phone;
+        ABCDb.SaveChanges();
+        return Ok(user);
+    }
     /// <summary>
     /// Get the cart items belonging to the user.
     /// </summary>
     /// <returns></returns>
-    [Authorize]
     [HttpGet("Cart", Name = "Get User Cart Items")]
     public ActionResult GetCart()
     {
@@ -71,7 +103,6 @@ public class UserController : Controller
     /// Get the sellers the user belongs to.
     /// </summary>
     /// <returns></returns>
-    [Authorize]
     [HttpGet("Sellers", Name = "Get User Sellers")]
     public ActionResult<IEnumerable<Seller>> GetSellers()
     {
@@ -91,6 +122,7 @@ public class UserController : Controller
     /// </summary>
     /// <param name="refreshRequest"></param>
     /// <returns></returns>
+    [AllowAnonymous]
     [HttpPost("Refresh", Name = "Refresh User Token")]
     public ActionResult<TokenResponse> RefreshUserToken([FromBody] RefreshTokenRequest refreshRequest)
     {
@@ -105,6 +137,7 @@ public class UserController : Controller
     /// </summary>
     /// <param name="registerUserRequest"></param>
     /// <returns></returns>
+    [AllowAnonymous]
     [HttpPost("Register", Name = "Register New User")]
     public ActionResult<TokenResponse> RegisterUser([FromBody] RegisterUserRequest registerUserRequest)
     {
@@ -153,6 +186,7 @@ public class UserController : Controller
     /// </summary>
     /// <param name="loginRequest"></param>
     /// <returns></returns>
+    [AllowAnonymous]
     [HttpPost("Login", Name = "Login To User")]
     public ActionResult<TokenResponse> LoginUser([FromBody] LoginRequest loginRequest)
     {

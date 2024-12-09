@@ -5,10 +5,12 @@ import { CurrencyUtil } from '../util/currency';
 import { ArrayUtil } from '../util/arrays';
 import TagList from '../components/TagList';
 import './EditListing.css';
+import { useCookies } from 'react-cookie';
 
 export default function EditListing({}) {
     const [currentTag, setCurrentTag] = useState('');
     const { sellerId, listingId } = useParams();
+    const [cookies] = useCookies(['userToken']);
     const navigate = useNavigate();
     const [tagList, setTagList] = useState([]);
     const [errors, setErrors] = useState({});
@@ -84,10 +86,11 @@ export default function EditListing({}) {
         e.preventDefault();
         let tagDiff = ArrayUtil.getAddedRemovedItems(listingData.originalTags, tagList);
         try {
-            let response = await fetch(`http://localhost:5147/listing/${listingId}`, {
+            let response = await fetch(`http://localhost:5147/seller/${sellerId}/listings/${listingId}`, {
                 method: "PATCH",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + cookies.userToken
                 },
                 body: JSON.stringify({
                     quantity: listingData.quantity,

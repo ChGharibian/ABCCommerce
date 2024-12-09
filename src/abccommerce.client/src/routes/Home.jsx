@@ -73,7 +73,15 @@ export default function Home() {
 
     async function search(query, step, count) {
       if(query === '' || typeof query === undefined) return;
+      if(isNaN(step) || step < 0) {
+        setPageNumber(1);
+        return;
+      } else if(Math.floor(step) !== step) {
+        setPageNumber(Math.floor(step));
+        return;
+      }
       if(!searched) setSearched(true);
+
       try {
         setLoading(true);
         let response = await fetch(`http://localhost:5147/search?q=${query}&skip=${(step) * count}&count=${count}`);

@@ -5,6 +5,8 @@ using SellerDTO = SharedModels.Models.Seller;
 using CartItemDTO = SharedModels.Models.CartItem;
 using MemberDTO = SharedModels.Models.Member;
 using UserDTO = SharedModels.Models.User;
+using TransactionDTO = SharedModels.Models.Transaction;
+using TransactionItemDTO = SharedModels.Models.TransactionItem;
 using ABCCommerceDataAccess.Models;
 
 namespace ABCCommerce.Server;
@@ -85,6 +87,29 @@ public static class ModelExtensions
             City = user.City,
             State = user.State,
             Zip = user.Zip
+        };
+    }
+
+    public static TransactionItemDTO ToDto(this TransactionItem transactionItem)
+    {
+        return new TransactionItemDTO
+        {
+            Id = transactionItem.Id,
+            Item = transactionItem.Item.ToDto(),
+            Quantity = transactionItem.Quantity,
+            TotalPrice = transactionItem.TotalPrice,
+            UnitPrice = transactionItem.UnitPrice,
+        };
+    }
+    public static TransactionDTO ToDto(this Transaction transaction)
+    {
+        return new TransactionDTO
+        {
+            Id = transaction.Id,
+            Last4 = transaction.Last4,
+            TotalPrice = transaction.TotalPrice,
+            Items = transaction.Items.Select(i => i.ToDto()),
+            PurchaseDate = transaction.PurchaseDate
         };
     }
 }

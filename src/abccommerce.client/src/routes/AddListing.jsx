@@ -1,16 +1,19 @@
 import './AddListing.css';
 import Input from '../components/Input';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TagList from '../components/TagList';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CurrencyUtil } from '../util/currency';
 import ImageInput from '../components/ImageInput';
+import { useCookies } from 'react-cookie';
+import DropdownList from '../components/DropdownList';
 export default function AddListing() {
     const [currentTag, setCurrentTag] = useState('');
     const { sellerId } = useParams();
     const [tagList, setTagList] = useState([]);
     const [newSKU, setNewSKU] = useState("");
     const navigate = useNavigate();
+    const [cookies] = useCookies(['userToken']);
     const [errors, setErrors] = useState({
 
     })
@@ -27,6 +30,32 @@ export default function AddListing() {
         sku: '',
     })
     const [useExistingItem, setUseExistingItem] = useState(false);
+    const [existingItems, setExistingItems] = useState([]);
+
+    useEffect(() => {
+        getExistingItems();
+    }, [])
+
+    async function getExistingItems() {
+        try {
+            let response = await fetch(`http://localhost:5147/seller/${sellerId}/items`, {
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + cookies.userToken
+                }
+            })
+
+            if(!response.ok) {
+                setErrors({...errors, existingSKU: "Error retrieving existing items"})
+                return;
+            }
+
+            setExistingItems(await response.json());
+        }
+        catch(error) {
+            setErrors({...errors, existingSKU: "Server error retrieving existing items"})
+        }
+    }
 
     function handleListingChange(e) {
         e.preventDefault();
@@ -77,7 +106,12 @@ export default function AddListing() {
             sku = firstDigit + rest;
             // check if sku exists
             try{
-                let response = await fetch(`http://localhost:5147/seller/${sellerId}/items/${sku}/exists`);
+                let response = await fetch(`http://localhost:5147/seller/${sellerId}/items/sku/${sku}/exists`, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": "Bearer " + cookies.userToken
+                    }
+                });
                 let data = await response.json();
                 skuIsntUnique = data.exists;
             }
@@ -107,10 +141,16 @@ export default function AddListing() {
         e.preventDefault();
         listingData.price = Number(listingData.price);
         listingData.quantity = Number(listingData.quantity);
-        let item = itemData;
+        let item;
         if(useExistingItem) {
             try {
-                let response = await fetch(`http://localhost:5147/seller/${sellerId}/items/${itemData.sku}`);
+                console.log(itemData);
+                let response = await fetch(`http://localhost:5147/seller/${sellerId}/items/sku/${itemData.sku}`, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": "Bearer " + cookies.userToken
+                    }
+                });
                 if(!response.ok) {
                     setErrors({...errors, existingSKU: "SKU not found"})
                     return;
@@ -126,19 +166,25 @@ export default function AddListing() {
             // adding new item first
             try {
                 // check to see if item sku exists already
-                let response = await fetch(`http://localhost:5147/seller/${sellerId}/items/${itemData.sku}/exists`);
+                let response = await fetch(`http://localhost:5147/seller/${sellerId}/items/sku/${itemData.sku}/exists`, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": "Bearer " + cookies.userToken
+                    }
+                });
                 let data = await response.json();
                 if(data.exists) {
                     setErrors({...errors, newSKU: "SKU already exists"});
                     return;
                 }
                 // attempt to add item
-                response = await fetch('http://localhost:5147/item', {
+                response = await fetch(`http://localhost:5147/seller/${sellerId}/item`, {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + cookies.userToken
                     },
-                    body: JSON.stringify({...itemData, seller: Number(sellerId)})
+                    body: JSON.stringify({...itemData})
                 })
 
                 if(!response.ok) {
@@ -156,10 +202,11 @@ export default function AddListing() {
         // attempt to add listing
         let listingId;
         try {
-            let response = await fetch('http://localhost:5147/listing', {
+            let response = await fetch(`http://localhost:5147/seller/${sellerId}/listings`, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + cookies.userToken
                 },
                 body: JSON.stringify({
                     ...listingData,
@@ -187,10 +234,11 @@ export default function AddListing() {
             try {
                 let count = 0;
                 for(const image of images) {
-                    let res = await fetch(`http://localhost:5147/listing/${listingId}/image`, {
+                    let res = await fetch(`http://localhost:5147/seller/${sellerId}/listings/${listingId}/image`, {
                         method: "POST",
                         headers: {
-                            "Content-Type": "application/json"
+                            "Content-Type": "application/json",
+                            "Authorization": "Bearer " + cookies.userToken
                         },
                         body: JSON.stringify({
                             image: image.encoding,
@@ -237,7 +285,21 @@ export default function AddListing() {
             </div>
             <label htmlFor="item-check">Create listing with existing item?<input type="checkbox" name="item-check" value={useExistingItem} onChange={e => setUseExistingItem(e.target.checked)}/></label>
             {useExistingItem ?
-                <Input placeholder="Enter existing item SKU" error={errors.existingSKU} name="sku" onChange={handleItemChange} required={true} />
+                <DropdownList placeholder="Enter existing item SKU" 
+                error={errors.existingSKU} name="sku" onChange={handleItemChange}
+                list={existingItems}
+                filter={(list, input) => {
+                    return list.filter(itemObj => {
+                        return itemObj.name.toLowerCase().includes(input.toLowerCase())
+                        || itemObj.sku.toLowerCase().includes(input.toLowerCase());
+                    })
+                }}
+                display={(itemObj) => {
+                    return `${itemObj.name}: ${itemObj.sku}`;
+                }}
+                optionValue={(item) => item.sku}
+                width="100%"
+                />
                 
             : 
                 <div id="add-listing-new-item-wrapper">

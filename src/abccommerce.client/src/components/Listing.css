@@ -78,9 +78,18 @@
     border-bottom: 1px solid var(--secondary-border-color);
     z-index: 3000;
 }
-.listing-edit-button-wrapper img {
-    width: 100%;
+.listing-edit-button-wrapper img:not(.activate) {
     filter: var(--secondary-svg-color);
+    width: 100%;
+}
+
+.listing-edit-button-wrapper .activate {
+    width: 90%;
+    filter: var(--main-error-svg-color);
+}
+
+.listing-edit-button-wrapper .activate:hover {
+    filter: var(--secondary-success-svg-color);
 }
 
 .listing {
@@ -104,6 +113,10 @@
     height: 20%;
     background-color: var(--c-blue-grey-500);
     /* border-radius: 0 0 5px 5px; */
+}
+
+.listing .inactive {
+    background-color: var(--c-blue-grey-800);
 }
 
 .listing-price, .listing-quantity {
