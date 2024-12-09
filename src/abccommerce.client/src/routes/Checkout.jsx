@@ -6,11 +6,13 @@ import generalHandleBlur from '../util/generalHandleBlur'
 import { ValidationUtil } from "../util/validation";
 import './Checkout.css';
 
+
 //WHAT I NEED TO DO FOR THIS COMPONENT:
 //handleChange: address,addresss2,city,state,ZIP Code
 export default function Checkout(){
 
   const [cartItems, setCartItems] = useState([]);
+  const [delivDate, setDelivDate] = useState('');
   const [paymentInfo, setPaymentInfo] = useState({
     cardNumber: '',
     expirationDate: '',
@@ -58,6 +60,7 @@ export default function Checkout(){
     }
     
     getCartData();
+    setDelivDate(getDeleveiryDate(4));
   }, []);
 
   const expireHandleChange = (element) => {
@@ -83,6 +86,20 @@ export default function Checkout(){
     }
 
   };
+
+  const getDeleveiryDate = (daysToDeliver) => {
+    const delivDate = new Date();
+    delivDate.setDate(delivDate.getDate() + daysToDeliver);
+
+    const formatter = new Intl.DateTimeFormat('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+    const readableDate = formatter.format(delivDate);
+    return readableDate;
+  }
   
 
 
@@ -176,7 +193,9 @@ export default function Checkout(){
         onChange={generalHandleChange(setPaymentInfo,4)}
 
         maxLength={2}
-        />  
+        />
+        <h2>Delevery Date:</h2>
+        <h2>{delivDate}</h2>
       </form>
     </div>
   )

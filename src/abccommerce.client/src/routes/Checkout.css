@@ -1,9 +1,8 @@
-/* Checkout.css */
-
 #checkout-wrapper {
   position: relative;
   top: var(--nav-bar-height);
-  min-height: calc(100vh - var(--nav-bar-height));
+  height: calc(100vh - var(--nav-bar-height));
+  overflow: auto;
   background-color: var(--main-bg-color);
   color: var(--main-text-color);
   padding: 1rem;
@@ -17,12 +16,18 @@
 #checkout-wrapper form {
   max-width: 600px;
   margin: 0 auto;
+  background-color: var(--secondary-bg-color);
+  padding: 1.5rem;
+  border: 1px solid var(--c-grey-500);
+  border-radius: 4px;
 }
 
+/* Label and Input Styling */
 #checkout-wrapper label {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: bold;
+  color: var(--main-text-color);
 }
 
 #checkout-wrapper input[type="text"],
@@ -35,14 +40,16 @@
   margin-bottom: 1rem;
   border: 1px solid var(--c-grey-500);
   border-radius: 4px;
-  background-color: var(--secondary-bg-color);
+  background-color: var(--tertiary-bg-color);
   color: var(--main-text-color);
+  font-size: 1rem;
 }
 
 #checkout-wrapper input::placeholder {
   color: var(--c-grey-500);
 }
 
+/* Button Styling */
 #checkout-wrapper button {
   display: block;
   width: 100%;
@@ -53,15 +60,33 @@
   border-radius: 4px;
   cursor: pointer;
   font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  transition: background-color 0.2s ease-in-out;
 }
 
 #checkout-wrapper button:hover {
   background-color: var(--c-white-500);
 }
 
+/* Make form elements a bit more spaced */
+#checkout-wrapper form > *:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
+  #checkout-wrapper {
+    padding: 1rem;
+  }
+  
   #checkout-wrapper form {
-    padding: 0 1rem;
+    padding: 1rem;
+  }
+
+  #checkout-wrapper label,
+  #checkout-wrapper input,
+  #checkout-wrapper button {
+    font-size: 0.9rem;
   }
 }

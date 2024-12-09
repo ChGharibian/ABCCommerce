@@ -89,7 +89,7 @@ export default function Cart() {
                   <img src={currentListing.listing.images[0]}/>
                 </td>
                 <td data-label="Name">{currentListing.listing.name}</td>
-                <td data-label="Description">Description</td>
+                <td data-label="Description">{currentListing.listing.description}</td>
                 <td data-label="Quantity">{currentListing.quantity}</td>
                 <td data-label="Cost">{CurrencyUtil.getDollarString(currentListing.listing.pricePerUnit*currentListing.quantity)}</td>
               </tr>
