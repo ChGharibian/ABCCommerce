@@ -109,7 +109,7 @@ export default function ListingPage() {
         </div>
         <div id="listing-page-details-section">
             <div id="listing-page-top-info" className="listing-detail">
-              {listing.name ? listing.name : <i>No name</i>} · {CurrencyUtil.getDollarString(listing.pricePerUnit)} · {listing.quantity} available
+              {listing.name ? listing.name : <i>No name</i>} · {CurrencyUtil.getDollarString(listing.pricePerUnit)} · {listing.quantity} in stock
               {Number(cookies.seller) === Number(sellerId) && <> · <a href={`/seller/${sellerId}/editlisting/${listingId}`}>Edit</a></>}
               </div>
             <a className="listing-detail" href={`/seller/${listing.item.seller.id}`}>{listing.item.seller.name}</a>
