@@ -215,7 +215,6 @@ export default function Checkout(){
         onChange={generalHandleChange(setMailingAddr)}
         onBlur={generalHandleBlur(ValidationUtil.validateCreditCard, setErrors)}
         required
-        error={errors.street} 
         />
         <Input
         label="Address Line 2:"
@@ -235,7 +234,6 @@ export default function Checkout(){
         onChange={generalHandleChange(setMailingAddr)}
         onBlur={generalHandleBlur(ValidationUtil.validateCreditCard, setErrors)}
         required
-        error={errors.city} 
         />
         <Input
         label="State:"
@@ -246,7 +244,6 @@ export default function Checkout(){
         onChange={generalHandleChange(setMailingAddr)}
         onBlur={generalHandleBlur(ValidationUtil.validateCreditCard, setErrors)}
         required
-        error={errors.state} 
         />
         <Input
         label="ZIP Code:"
@@ -257,7 +254,6 @@ export default function Checkout(){
         onChange={generalHandleChange(setMailingAddr)}
         onBlur={generalHandleBlur(ValidationUtil.validateCreditCard, setErrors)}
         required
-        error={errors.zip} 
         />
         <h2>Credit Card Information</h2>
         <Input
@@ -292,7 +288,7 @@ export default function Checkout(){
 
         maxLength={2}
         />
-        <h2>Delevery Date:</h2>
+        <h2>Delivery Date:</h2>
         <h2>{delivDate}</h2>
         <ListingTable
           cartLists={cartLists}
