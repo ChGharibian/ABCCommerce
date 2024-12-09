@@ -104,19 +104,20 @@ export default function Checkout(){
       return resultData;
     }
 
-    // const formatedPaymentState = correctPaymentFormat(paymentInfo.expirationDate, paymentInfo);
-    // console.log(formatedPaymentState);
-    // const formatedCartItems = formatCartItems(cartLists);
-    // console.log(formatedCartItems);
-    // setCartItems(...formatedCartItems);
-    // const formatedPurchaseRequestObject = {...formatedPaymentState, cartItems};
-    // console.log('Underneath is the request:');
-    // console.log(formatedPurchaseRequestObject);
+    const formatedPaymentState = correctPaymentFormat(paymentInfo.expirationDate, paymentInfo);
+    console.log(formatedPaymentState);
+    const formatedCartItems = formatCartItems(cartLists);
+    console.log(formatedCartItems);
+    setCartItems(...formatedCartItems);
+    const formatedPurchaseRequestObject = {...formatedPaymentState, cartItems};
+    console.log('Underneath is the request:');
+    console.log(formatedPurchaseRequestObject);
+
     const test = {
       "cartItems": [
         {
-          "cartItem": 50,
-          "quantity": 2
+          "cartItem": 2012,
+          "quantity": 1
         }
       ],
       "cardNumber": "4111111111111111",
