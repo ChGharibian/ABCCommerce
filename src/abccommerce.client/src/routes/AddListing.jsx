@@ -46,7 +46,7 @@ export default function AddListing() {
             })
 
             if(!response.ok) {
-                setErrors({...error, existingSKU: "Error retrieving existing items"})
+                setErrors({...errors, existingSKU: "Error retrieving existing items"})
                 return;
             }
 
@@ -141,10 +141,11 @@ export default function AddListing() {
         e.preventDefault();
         listingData.price = Number(listingData.price);
         listingData.quantity = Number(listingData.quantity);
-        let item = itemData;
+        let item;
         if(useExistingItem) {
             try {
-                let response = await fetch(`http://localhost:5147/seller/${sellerId}/items/sku/${itemData.sku}/exists`, {
+                console.log(itemData);
+                let response = await fetch(`http://localhost:5147/seller/${sellerId}/items/sku/${itemData.sku}`, {
                     method: "GET",
                     headers: {
                         "Authorization": "Bearer " + cookies.userToken
@@ -201,6 +202,7 @@ export default function AddListing() {
         // attempt to add listing
         let listingId;
         try {
+            console.log(item);
             let response = await fetch(`http://localhost:5147/seller/${sellerId}/listings`, {
                 method: "POST",
                 headers: {
@@ -233,7 +235,7 @@ export default function AddListing() {
             try {
                 let count = 0;
                 for(const image of images) {
-                    let res = await fetch(`http://localhost:5147/seller/${sellerId}/listings${listingId}/image`, {
+                    let res = await fetch(`http://localhost:5147/seller/${sellerId}/listings/${listingId}/image`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
