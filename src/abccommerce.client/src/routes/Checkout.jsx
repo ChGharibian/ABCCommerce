@@ -104,26 +104,27 @@ export default function Checkout(){
       return resultData;
     }
 
-    // const formatedPaymentState = correctPaymentFormat(paymentInfo.expirationDate, paymentInfo);
-    // console.log(formatedPaymentState);
-    // const formatedCartItems = formatCartItems(cartLists);
-    // console.log(formatedCartItems);
-    // setCartItems(...formatedCartItems);
-    // const formatedPurchaseRequestObject = {...formatedPaymentState, cartItems};
-    // console.log('Underneath is the request:');
-    // console.log(formatedPurchaseRequestObject);
-    const test = {
-      "cartItems": [
-        {
-          "cartItem": 50,
-          "quantity": 2
-        }
-      ],
-      "cardNumber": "4111111111111111",
-      "expirationMonth": 11,
-      "expirationYear": 2025,
-      "securityCode": "454"
-    }
+    const formatedPaymentState = correctPaymentFormat(paymentInfo.expirationDate, paymentInfo);
+    console.log(formatedPaymentState);
+    const formatedCartItems = formatCartItems(cartLists);
+    console.log(formatedCartItems);
+    setCartItems(...formatedCartItems);
+    const formatedPurchaseRequestObject = {...formatedPaymentState, cartItems};
+    console.log('Underneath is the request:');
+    console.log(formatedPurchaseRequestObject);
+
+    // const test = {
+    //   "cartItems": [
+    //     {
+    //       "cartItem": 2012,
+    //       "quantity": 1
+    //     }
+    //   ],
+    //   "cardNumber": "4111111111111111",
+    //   "expirationMonth": 11,
+    //   "expirationYear": 2025,
+    //   "securityCode": "454"
+    // }
     //FETCH REQUEST
     try {
       let response = await fetch("http://localhost:5147/cart/purchase", {
@@ -132,7 +133,7 @@ export default function Checkout(){
           "Authorization": `Bearer ${cookies.userToken}`,
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(test)
+        body: JSON.stringify(formatedPurchaseRequestObject)
       });
 
       const data = await response.json();
