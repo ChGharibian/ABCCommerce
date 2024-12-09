@@ -71,7 +71,7 @@
     color: var(--main-input-placeholder-color);
 }
 
-#add-listing-wrapper > div:not(.input-wrapper, #add-listing-new-item-wrapper, #add-listing-image-wrapper, .dropdown-list-wrapper) {
+#add-listing-wrapper > div:not(.input-wrapper, #add-listing-new-item-wrapper, #add-listing-image-wrapper, .dropdown-list-wrapper, .image-scroller-delete-wrapper) {
     width: 40%; /* to match input width */
     min-width: var(--min-width);
     max-width: var(--max-width);

@@ -1,0 +1,9 @@
+.image-scroller-delete-wrapper {
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+}
+/* 
+.image-scroller-delete-wrapper .delete-controls {
+    height: 100px;
+} */

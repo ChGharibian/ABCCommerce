@@ -12,3 +12,10 @@
     align-items: center;
     gap: 1rem;
 }
+
+#add-listing-wrapper .image-scroller-delete-wrapper .image-scroller-wrapper {
+    max-width: 40%;
+    max-height: 300px;
+    min-width: var(--min-width);
+    max-width: var(--max-width);
+}
