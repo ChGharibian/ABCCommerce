@@ -181,7 +181,6 @@ public class CartController : Controller
         {
             return Unauthorized();
         }
-        var requestItems = purchaseItems.CartItems.OrderBy(i => i.CartItem).ToList();
 
         var errorDetails = ProblemDetailsFactory.CreateValidationProblemDetails(HttpContext, ModelState);
 
@@ -190,10 +189,9 @@ public class CartController : Controller
         List<int> tooMuchQuantityItems = new();
         List<int> notAvailable = new();
         int j = 0;
-
-        for (int i = 0; i < requestItems.Count; i++)
+        List<PurchaseItem> requestItems = purchaseItems.CartItems.ToList();
+        foreach (var requestItem in requestItems)
         {
-            var requestItem = requestItems[i];
             var cartItem = ABCDb.CartItems.Where(c => requestItem.CartItem == c.Id).FirstOrDefault();
             if (cartItem is null)
             {
@@ -231,6 +229,6 @@ public class CartController : Controller
         {
             return ValidationProblem(errorDetails);
         }
-        return Ok(TransactionService.Purchase(purchaseItems, id).ToDto());
+        return Ok(TransactionService.Purchase(purchaseItems.CardNumber, requestItems, id).ToDto());
     }
 }
