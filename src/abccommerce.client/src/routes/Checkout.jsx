@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useCookies } from 'react-cookie';
-
+import { useNavigate } from 'react-router-dom';
 import Input from "../components/Input";
 import generalHandleChange from '../util/generalHandleChange';
 import generalHandleBlur from '../util/generalHandleBlur'
@@ -18,6 +18,7 @@ export default function Checkout(){
 
   const [cartLists, setPresentcartLists] = useState([]);
   const [cartItems, setCartItems] = useState([]);
+  const navigate = useNavigate();
   const [totalPrice, setTotalPrice] = useState(0);
   const [delivDate, setDelivDate] = useState('');
   const [paymentInfo, setPaymentInfo] = useState({
@@ -140,6 +141,7 @@ export default function Checkout(){
       console.log(data);
       if(response.ok) {
         console.log('We manged to properly send the request woo')
+        navigate('/orderhistory');
       } 
       else{
         console.log('Request failed with status:', response.status);
