@@ -109,7 +109,7 @@ export default function Checkout(){
     const formatedCartItems = formatCartItems(cartLists);
     console.log(formatedCartItems);
     setCartItems(...formatedCartItems);
-    const formatedPurchaseRequestObject = {...formatedPaymentState, cartItems};
+    const formatedPurchaseRequestObject = {...formatedPaymentState, cartItems: formatedCartItems};
     console.log('Underneath is the request:');
     console.log(formatedPurchaseRequestObject);
 
